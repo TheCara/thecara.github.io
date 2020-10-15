@@ -164,35 +164,6 @@
     
     
     <entry>
-      <title>Python的依赖库</title>
-      <link href="/2020/08/22/Python%E7%9A%84%E4%BE%9D%E8%B5%96%E5%BA%93/"/>
-      <url>/2020/08/22/Python%E7%9A%84%E4%BE%9D%E8%B5%96%E5%BA%93/</url>
-      
-        <content type="html"><![CDATA[]]></content>
-      
-      
-      <categories>
-          
-          <category> Python </category>
-          
-      </categories>
-      
-      
-        <tags>
-            
-            <tag> Python </tag>
-            
-            <tag> Tensorflow </tag>
-            
-            <tag> pandas </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    
-    
-    <entry>
       <title>RxJava2 Android 中使用</title>
       <link href="/2020/08/21/Android-RxJava/"/>
       <url>/2020/08/21/Android-RxJava/</url>
@@ -562,9 +533,9 @@
       
         <tags>
             
-            <tag> git </tag>
-            
             <tag> hexo-theme </tag>
+            
+            <tag> git </tag>
             
         </tags>
       
