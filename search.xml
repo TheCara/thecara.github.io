@@ -4,31 +4,6 @@
   
     
     <entry>
-      <title>12</title>
-      <link href="/2020/10/15/12/"/>
-      <url>/2020/10/15/12/</url>
-      
-        <content type="html"><![CDATA[]]></content>
-      
-      
-      <categories>
-          
-          <category> Android </category>
-          
-      </categories>
-      
-      
-        <tags>
-            
-            <tag> Android </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    
-    
-    <entry>
       <title>Kotlin 协程</title>
       <link href="/2020/10/14/Kotlin-%E5%8D%8F%E7%A8%8B/"/>
       <url>/2020/10/14/Kotlin-%E5%8D%8F%E7%A8%8B/</url>
@@ -193,33 +168,6 @@
     
     
     <entry>
-      <title>rxkPrefs</title>
-      <link href="/2020/08/17/rxkPrefs/"/>
-      <url>/2020/08/17/rxkPrefs/</url>
-      
-        <content type="html"><![CDATA[]]></content>
-      
-      
-      <categories>
-          
-          <category> Android </category>
-          
-      </categories>
-      
-      
-        <tags>
-            
-            <tag> Android </tag>
-            
-            <tag> rxkPrefs </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    
-    
-    <entry>
       <title>koin依赖注入框架</title>
       <link href="/2020/08/13/%E4%BE%9D%E8%B5%96%E6%B3%A8%E5%85%A5-koin/"/>
       <url>/2020/08/13/%E4%BE%9D%E8%B5%96%E6%B3%A8%E5%85%A5-koin/</url>
@@ -238,9 +186,9 @@
             
             <tag> Android </tag>
             
-            <tag> 软件工程 </tag>
-            
             <tag> Kotlin </tag>
+            
+            <tag> 软件工程 </tag>
             
             <tag> koin </tag>
             
@@ -450,9 +398,9 @@
             
             <tag> Android </tag>
             
-            <tag> DataBinding </tag>
-            
             <tag> Kotlin </tag>
+            
+            <tag> DataBinding </tag>
             
         </tags>
       
