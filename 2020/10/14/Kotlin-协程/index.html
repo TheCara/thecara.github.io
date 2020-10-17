@@ -608,7 +608,34 @@ coroutineScope.launch {
         ...
     }
 });</code></pre>
-<h2 id="更为麻烦的并发场景"><a href="#更为麻烦的并发场景" class="headerlink" title="更为麻烦的并发场景"></a>更为麻烦的并发场景</h2><p><strong>引用：</strong></p>
+<h2 id="更为麻烦的并发场景"><a href="#更为麻烦的并发场景" class="headerlink" title="更为麻烦的并发场景"></a>更为麻烦的并发场景</h2><p>对于回调式的写法，如果并发场景再复杂一点，嵌套的可能够多。如果使用协程，多层网络请求。</p>
+<pre><code class="kotlin">coroutineScope.launch(Dispatchers.Main) {       // 开始协程：主线程
+    val token = api.getToken()                  // 网络请求：IO 线程
+    val user = api.getUser(token)               // 网络请求：IO 线程
+    nameTv.text = user.name                     // 更新 UI：主线程
+}</code></pre>
+<p>如果进行多个<strong>网络请求</strong>等待完成后<strong>再刷新UI</strong>。</p>
+<pre><code class="kotlin">api.getAvatar(user, callback)
+api.getCompanyLogo(user, callback)</code></pre>
+<p>如果使用回调式写法，我们可能会选择妥协，则使用先后请求代替同时请求。</p>
+<pre><code class="kotlin">api.getAvatar(user) { avatar -&gt;
+    api.getCompanyLogo(user) { logo -&gt;
+        show(merge(avatar, logo))
+    }
+}</code></pre>
+<p>使用窗帘方式去实现可能会导致等待时长了一倍，也相差了一倍的性能。</p>
+<h5 id="协程并行请求网络"><a href="#协程并行请求网络" class="headerlink" title="协程并行请求网络"></a>协程并行请求网络</h5><p>使用协程可以直接并行请求上下两行，最后把结果合并即可：</p>
+<pre><code class="kotlin">coroutineScope.launch(Dispatchers.Main) {
+    //            👇  async 函数之后再讲
+    val avatar = async { api.getAvatar(user) }    // 获取用户头像
+    val logo = async { api.getCompanyLogo(user) } // 获取用户所在公司的 logo
+    val merged = suspendingMerge(avatar, logo)    // 合并结果
+    //                  👆
+    show(merged) // 更新 UI
+}</code></pre>
+<p>即便是比较复杂的并行网络请求，也可以使用并行写出结构清晰的代码。<strong>suspendingMerge</strong> 并不是协程API提供的方法，而是自定义挂起的结果合并方法。</p>
+<h5 id="协程的优势"><a href="#协程的优势" class="headerlink" title="协程的优势"></a>协程的优势</h5><p>让复杂的并发代码，变得简单且清晰是协程的优势。</p>
+<p><strong>引用：</strong></p>
 <p><a href="https://kaixue.io/kotlin-coroutines-1/" target="_blank" rel="noopener">Kotlin 的协程用力瞥一眼 - 学不会协程？很可能因为你看过的教程都是错的</a></p>
 
             </div>
