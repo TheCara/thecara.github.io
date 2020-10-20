@@ -635,6 +635,119 @@ api.getCompanyLogo(user, callback)</code></pre>
 }</code></pre>
 <p>即便是比较复杂的并行网络请求，也可以使用并行写出结构清晰的代码。<strong>suspendingMerge</strong> 并不是协程API提供的方法，而是自定义挂起的结果合并方法。</p>
 <h5 id="协程的优势"><a href="#协程的优势" class="headerlink" title="协程的优势"></a>协程的优势</h5><p>让复杂的并发代码，变得简单且清晰是协程的优势。</p>
+<h1 id="协程如何在项目中使用"><a href="#协程如何在项目中使用" class="headerlink" title="协程如何在项目中使用"></a>协程如何在项目中使用</h1><h2 id="在项目中配置对Kotlin协程的支持"><a href="#在项目中配置对Kotlin协程的支持" class="headerlink" title="在项目中配置对Kotlin协程的支持"></a>在项目中配置对Kotlin协程的支持</h2><p>使用协程前，需要在 build.gradle 文件中增加 Kotlin 协程的依赖：</p>
+<ul>
+<li>项目目录下</li>
+</ul>
+<pre><code class="kotlin">buildscript {
+    ...
+    // 👇
+    ext.kotlin_coroutines = &#39;1.3.1&#39;
+    ...
+}</code></pre>
+<ul>
+<li>Module 目录下：</li>
+</ul>
+<pre><code class="kotlin">dependencies {
+    ...
+    //                                       👇 依赖协程核心库
+    implementation &quot;org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlin_coroutines&quot;
+    //                                       👇 依赖当前平台所对应的平台库
+    implementation &quot;org.jetbrains.kotlinx:kotlinx-coroutines-android:$kotlin_coroutines&quot;
+    ...
+}</code></pre>
+<p>Kotlin 协程以官方扩展库的形式进行支持。其中【核心库】和【平台库】的版本应该保持一致。</p>
+<ul>
+<li><strong>核心库</strong>为协程的公共API部分。为拉在各个平台统一接口。</li>
+<li><strong>平台库</strong>主要为协程在具体平台的具体实现方式。原因：多线程在各个平台的实现方式不同。</li>
+</ul>
+<h2 id="开始使用协程"><a href="#开始使用协程" class="headerlink" title="开始使用协程"></a>开始使用协程</h2><p><strong>协程最简单的使用</strong>。通过<strong>launch</strong>函数实现线程切换的功能：</p>
+<pre><code class="kotlin">//               👇
+coroutineScope.launch(Dispatchers.IO) {
+    ...
+}</code></pre>
+<h5 id="代码中协程的表现。"><a href="#代码中协程的表现。" class="headerlink" title="代码中协程的表现。"></a><strong>代码中协程的表现。</strong></h5><p><strong>launch</strong> 函数：我要创建协程，并在指定的线程中运行它。被创建的【协程】是谁？ 就是你传给 launch的代码，这段代码叫【协程】。</p>
+<p>当你要切换线程或指定线程时。<strong>要在后台执行任务？</strong></p>
+<pre><code class="kotlin">launch(Dispatchers.IO) {
+    val image = getImage(imageId)
+}</code></pre>
+<p><strong>切换到前台刷新界面？</strong></p>
+<pre><code class="kotlin">coroutineScope.launch(Dispatchers.IO) {
+    val image = getImage(imageId)
+    launch(Dispatchers.Main) {
+        avatarIv.setImageBitmap(image)
+    }
+}</code></pre>
+<p>发生了嵌套的代码。</p>
+<h5 id="避免嵌套的样子使用协程"><a href="#避免嵌套的样子使用协程" class="headerlink" title="避免嵌套的样子使用协程"></a>避免嵌套的样子使用协程</h5><p>单单使用协程并不会比线程做更多的事情。使用更实用的函数：<strong>withContext</strong>。指定切换线程，并且在执行完内部逻辑后，自动线程切回执行。上述代码使用 withContext：</p>
+<pre><code class="kotlin">coroutineScope.launch(Dispatchers.Main) {      // 👈 在 UI 线程开始
+    val image = withContext(Dispatchers.IO) {  // 👈 切换到 IO 线程，并在执行完成后切回 UI 线程
+        getImage(imageId)                      // 👈 将会运行在 IO 线程
+    }
+    avatarIv.setImageBitmap(image)             // 👈 回到 UI 线程更新 UI
+} </code></pre>
+<h5 id="比较两种写法来体现-withContext的优势"><a href="#比较两种写法来体现-withContext的优势" class="headerlink" title="比较两种写法来体现 withContext的优势"></a>比较两种写法来体现 withContext的优势</h5><p>当要频繁切换线程时。通过下属代码对比：</p>
+<pre><code class="kotlin">// 第一种写法
+coroutineScope.launch(Dispatchers.IO) {
+    ...
+    launch(Dispatchers.Main){
+        ...
+        launch(Dispatchers.IO) {
+            ...
+            launch(Dispatchers.Main) {
+                ...
+            }
+        }
+    }
+}
+
+// 通过第二种写法来实现相同的逻辑
+coroutineScope.launch(Dispatchers.Main) {
+    ...
+    withContext(Dispatchers.IO) {
+        ...
+    }
+    ...
+    withContext(Dispatchers.IO) {
+        ...
+    }
+    ...
+}</code></pre>
+<p><strong>优势：</strong></p>
+<p>由于它可以“来回切回来”消除了并发代码在协作时的嵌套。消除了嵌套关系，还可以将 <strong>withContext</strong> 放在单独的函数里：</p>
+<pre><code class="kotlin">launch(Dispatchers.Main) {              // 👈 在 UI 线程开始
+    val image = getImage(imageId)
+    avatarIv.setImageBitmap(image)     // 👈 执行结束后，自动切换回 UI 线程
+}
+//                               👇
+fun getImage(imageId: Int) = withContext(Dispatchers.IO) {
+    ...
+}</code></pre>
+<p>实现了【同步的方式写异步的代码】。</p>
+<pre><code class="kotlin">launch(Dispatchers.Main) {              // 👈 在 UI 线程开始
+    val image = getImage(imageId)
+    avatarIv.setImageBitmap(image)     // 👈 执行结束后，自动切换回 UI 线程
+}
+//                               👇
+fun getImage(imageId: Int) = withContext(Dispatchers.IO) {
+    ...
+}</code></pre>
+<p><strong>withContext 单独放在函数中要注意那些</strong></p>
+<pre><code class="kotlin">fun getImage(imageId: Int) = withContext(Dispatchers.IO) {
+    // IDE 报错 Suspend function&#39;withContext&#39; should be called only from a coroutine or another suspend funcion
+}</code></pre>
+<p><strong>需要在 suspend函数中调用</strong>。（<strong>withContext</strong> 是<strong>一个 suspend</strong> 函数，所以需要在<strong>协程</strong>或者<strong>suspend函数</strong>中调用。）</p>
+<h2 id="什么是-suspend-函数"><a href="#什么是-suspend-函数" class="headerlink" title="什么是 suspend 函数"></a>什么是 suspend 函数</h2><p><strong>suspend</strong> 函数是<strong>kotlin协程</strong>最核心的关键字。中文意思为【暂停】、【可挂起】。</p>
+<p>解释：</p>
+<blockquote>
+<p>代码执行到 <strong>suspend 函数</strong>的时候会【<strong>挂起</strong>】，并且这个<strong>【挂起】</strong>是<strong>非阻塞式</strong>的，不会阻塞当前线程。</p>
+</blockquote>
+<p>修改上述代码让它可以执行：</p>
+<pre><code class="kotlin">//👇
+suspend fun getImage(imageId: Int) = withContext(Dispatchers.IO) {
+    ...
+}</code></pre>
+<p>到底什么是 suspend ，什么是 【非阻塞】，如何【挂起】。下篇。</p>
 <p><strong>引用：</strong></p>
 <p><a href="https://kaixue.io/kotlin-coroutines-1/" target="_blank" rel="noopener">Kotlin 的协程用力瞥一眼 - 学不会协程？很可能因为你看过的教程都是错的</a></p>
 
