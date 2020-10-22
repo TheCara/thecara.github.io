@@ -434,12 +434,12 @@
                                 <span class="chip bg-color">Android</span>
                             </a>
                         
-                            <a href="/tags/Kotlin/">
-                                <span class="chip bg-color">Kotlin</span>
-                            </a>
-                        
                             <a href="/tags/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B/">
                                 <span class="chip bg-color">软件工程</span>
+                            </a>
+                        
+                            <a href="/tags/Kotlin/">
+                                <span class="chip bg-color">Kotlin</span>
                             </a>
                         
                             <a href="/tags/koin/">
@@ -483,9 +483,7 @@
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h2 id="koin的使用"><a href="#koin的使用" class="headerlink" title="koin的使用"></a>koin的使用</h2><p><a href="https://www.youtube.com/watch?v=eH9UrAwKEcE&t=140s" target="_blank" rel="noopener">Dependency Injection with Koin - Android Kotlin tutorial</a></p>
-<p><a href="https://github.com/AndyJennifer/koin_doc_zh" target="_blank" rel="noopener">koin 中文 DOC</a></p>
-<h4 id="添加依赖库"><a href="#添加依赖库" class="headerlink" title="添加依赖库"></a>添加依赖库</h4><pre><code>    implementation &#39;org.koin:koin-androidx-viewmodel:2.0.1&#39;
+                <h2 id="koin的使用"><a href="#koin的使用" class="headerlink" title="koin的使用"></a>koin的使用</h2><h4 id="添加依赖库"><a href="#添加依赖库" class="headerlink" title="添加依赖库"></a>添加依赖库</h4><pre><code>    implementation &#39;org.koin:koin-androidx-viewmodel:2.0.1&#39;
     implementation &#39;org.koin:koin-android:2.0.1&#39;</code></pre><h4 id="需要创建依赖对象"><a href="#需要创建依赖对象" class="headerlink" title="需要创建依赖对象"></a>需要创建依赖对象</h4><p>这里创建三个类，Student，SchoolCourse，Friend。</p>
 <ul>
 <li>Student类</li>
@@ -674,6 +672,10 @@ val flammable:Flammable = get()</code></pre></li>
 <p>耦合性(Coupling)，也叫耦合度，是对模块间关联程度的度量。两个或多个功能模块之间的关联程度。</p>
 <p>什么是解耦</p>
 <p>解除类（模块）之间的直接关系，将直接关系转换成间接关系</p>
+<p><strong>引用：</strong></p>
+<p><a href="https://www.youtube.com/watch?v=eH9UrAwKEcE&t=140s" target="_blank" rel="noopener">Dependency Injection with Koin - Android Kotlin tutorial</a></p>
+<p><a href="https://github.com/AndyJennifer/koin_doc_zh" target="_blank" rel="noopener">koin 中文 DOC</a></p>
+<p><a href="https://juejin.im/post/6844904202586554382" target="_blank" rel="noopener">Koin in Android: 更简单的依赖注入</a></p>
 <p><img src="https://raw.githubusercontent.com/TheCara/RepoPicture/master/image/2020-8-3-1.gif" alt="如果有些方法没有详细说明你可以自行搜索查看"></p>
 
             </div>
@@ -742,12 +744,12 @@ val flammable:Flammable = get()</code></pre></li>
                                     <span class="chip bg-color">Android</span>
                                 </a>
                             
-                                <a href="/tags/Kotlin/">
-                                    <span class="chip bg-color">Kotlin</span>
-                                </a>
-                            
                                 <a href="/tags/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B/">
                                     <span class="chip bg-color">软件工程</span>
+                                </a>
+                            
+                                <a href="/tags/Kotlin/">
+                                    <span class="chip bg-color">Kotlin</span>
                                 </a>
                             
                                 <a href="/tags/koin/">
@@ -809,8 +811,9 @@ val flammable:Flammable = get()</code></pre></li>
                     <div class="summary block-with-text">
                         
                             什么是RxJava实现异步操作的库
-使用添加依赖    implementation &quot;io.reactivex.rxjava2:rxjava:2.2.6&quot;
-    implementation &quot;io.rea
+定义RxJava 是基于事件流的、实现异步操作的库
+作用实现异步操作
+使用添加依赖    implementation &quot;io.reactivex.rxjava2:rxjava:2.2.6&qu
                         
                     </div>
                     <div class="publish-info">
