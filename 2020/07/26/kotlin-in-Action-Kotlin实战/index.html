@@ -772,6 +772,7 @@ class PrivateUser(override val nickname: String) : User {
 <h1 id="5-Lambda-编程"><a href="#5-Lambda-编程" class="headerlink" title="5 Lambda 编程"></a>5 Lambda 编程</h1><h2 id="5-5-带接收者的lambda：“with”与“apply”"><a href="#5-5-带接收者的lambda：“with”与“apply”" class="headerlink" title="5.5 带接收者的lambda：“with”与“apply”"></a>5.5 带接收者的lambda：“with”与“apply”</h2><h5 id="什么是带接收者的-lambda？"><a href="#什么是带接收者的-lambda？" class="headerlink" title="什么是带接收者的 lambda？"></a>什么是带接收者的 lambda？</h5><blockquote>
 <p>Kotlin 中独特的 lambda 功能：在lambda函数体内可以调用一个不同的对象方法，而且无需借助任何额外的限定符。</p>
 </blockquote>
+<p><strong>接收者：</strong>调用者</p>
 <h3 id="5-5-1-“with”-函数"><a href="#5-5-1-“with”-函数" class="headerlink" title="5.5.1 “with” 函数"></a>5.5.1 “with” 函数</h3><h5 id="描述"><a href="#描述" class="headerlink" title="描述"></a>描述</h5><blockquote>
 <p>对同一个对象执行很多次操作，不需要反复把对象名称写出来。</p>
 </blockquote>
@@ -808,7 +809,30 @@ class PrivateUser(override val nickname: String) : User {
 <h5 id="在普通函数中与扩展函数中带接收者的-lambda-有那些不同"><a href="#在普通函数中与扩展函数中带接收者的-lambda-有那些不同" class="headerlink" title="在普通函数中与扩展函数中带接收者的 lambda 有那些不同"></a>在普通函数中与扩展函数中带接收者的 lambda 有那些不同</h5><blockquote>
 <p>在扩展函数体内部，this 指向了这个函数扩展的那个类型实例，而且也可以被省略掉，让你直接访问接收者的成员。</p>
 </blockquote>
-<h1 id="补充"><a href="#补充" class="headerlink" title="补充"></a>补充</h1><h3 id="字段和属性"><a href="#字段和属性" class="headerlink" title="字段和属性"></a>字段和属性</h3><p><a href="https://blog.csdn.net/chenchunlin526/article/details/71424844" target="_blank" rel="noopener">深入理解Java中的字段与属性的区别</a></p>
+<h3 id="5-5-2-“apply”-函数"><a href="#5-5-2-“apply”-函数" class="headerlink" title="5.5.2 “apply” 函数"></a>5.5.2 “apply” 函数</h3><h5 id="apply-和-with-的不同"><a href="#apply-和-with-的不同" class="headerlink" title="apply 和 with 的不同"></a>apply 和 with 的不同</h5><blockquote>
+<p>apply 函数同with 函数功能相同，区别在于 apply 始终会返回作为实参传递给它的对象。（返回本身作为实例）</p>
+</blockquote>
+<pre><code class="kotlin">fun alphabet() = StringBuilder().apply {
+    for (letter in &#39;A&#39;..&#39;Z&#39;) {
+        append(letter)
+    }
+    append(&quot;\n Now I know the alphbet!&quot;)
+}.toString()</code></pre>
+<p>apply 被声明成一个扩展函数。它的<strong>接收者</strong>变成了作为实参的 lambda 的接收者。执行 apply 的结果是StringBuilder,所以接下来里可以调用 toString 把它转换成 String。</p>
+<p><strong>使用apply初始化一个TextView</strong></p>
+<pre><code class="kotlin">fun createViewWithCustomAttributes(context : Context) = {
+    TextView(context).apply{
+        text = &quot;Sample Text&quot;
+        textSize = 20.0
+        setPadding(10,0,0,0)
+    }
+}</code></pre>
+<p><strong>apply函数允许里使用紧凑的表达式函数体风格</strong>。新的<strong>TextView</strong>实例<strong>创建</strong>之后立即被传给了<strong>apply</strong>。</p>
+<p><strong>那个是接收者?</strong></p>
+<p>TextView实例变成了 (lambda 的) 接收者，你可以调用它的属性和方法。</p>
+<p>with 函数和 apply 函数是最基本和最通用的使用带接收者的 lambda 的例子。更多的函数也可以使用这种模式。例如，使用<strong>标准库函数buildString进一步简化alphbet函数</strong>，它会负责<strong>创建StringBuilder</strong>并<strong>调用toString</strong>。<strong>building实际是带接收者的lambda</strong>，<strong>接收者</strong>就是<strong>StringBuilder</strong>。</p>
+<p><strong>使用buildString创建字母表</strong></p>
+<h2 id="5-6-小结"><a href="#5-6-小结" class="headerlink" title="5.6 小结"></a>5.6 小结</h2><h1 id="补充"><a href="#补充" class="headerlink" title="补充"></a>补充</h1><h3 id="字段和属性"><a href="#字段和属性" class="headerlink" title="字段和属性"></a>字段和属性</h3><p><a href="https://blog.csdn.net/chenchunlin526/article/details/71424844" target="_blank" rel="noopener">深入理解Java中的字段与属性的区别</a></p>
 <h4 id="属性和字段的区别"><a href="#属性和字段的区别" class="headerlink" title="属性和字段的区别"></a>属性和字段的区别</h4><p>属性（property），通常可以理解为get 和 set 方法。</p>
 <p>字段（field），通常叫做 <strong>类成员</strong>，或者 <strong>类变量</strong> ，有时也叫 域 ，理解为 数据成员，用来承担数据的。</p>
 <h4 id="属性和字段详解"><a href="#属性和字段详解" class="headerlink" title="属性和字段详解"></a>属性和字段详解</h4><p><strong>字段（field）</strong></p>
