@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="Kotlin 协程, TheCara">
+    <meta name="keywords" content="MVC、MVP、MVVM, TheCara">
     <meta name="description" content="">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>Kotlin 协程 | TheCara</title>
+    <title>MVC、MVP、MVVM | TheCara</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -308,12 +308,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/23.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('https://raw.githubusercontent.com/Draveness/analyze/master/contents/architecture/images/mvx/MVC-MVVM-MVP.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">Kotlin 协程</h1>
+                    <h1 class="description center-align post-title">MVC、MVP、MVVM</h1>
                 </div>
             </div>
         </div>
@@ -434,8 +434,8 @@
                                 <span class="chip bg-color">Android</span>
                             </a>
                         
-                            <a href="/tags/Kotlin/">
-                                <span class="chip bg-color">Kotlin</span>
+                            <a href="/tags/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B/">
+                                <span class="chip bg-color">软件工程</span>
                             </a>
                         
                     </div>
@@ -446,8 +446,8 @@
                     <div class="post-cate">
                         <i class="fas fa-bookmark fa-fw icon-category"></i>
                         
-                            <a href="/categories/Android/" class="post-category">
-                                Android
+                            <a href="/categories/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B/" class="post-category">
+                                软件工程
                             </a>
                         
                     </div>
@@ -459,7 +459,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2020-10-14
+                    2020-10-28
                 </div>
                 
 
@@ -475,281 +475,47 @@
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h1 id="什么是协程"><a href="#什么是协程" class="headerlink" title="什么是协程"></a>什么是协程</h1><blockquote>
-<p><strong>用同步的方式写异步的代码</strong></p>
-</blockquote>
-<p>【协程 Coroutines】 源于Simula 和 Modula-2语言，术语来自于 1958 年的 <strong>Melvin Edward Conway</strong> 发明并且拥有构建汇编程序，说明 <strong>协程是一种编程思想</strong>， 并不局限于特定的语言。</p>
-<h5 id="线程和协程的关系"><a href="#线程和协程的关系" class="headerlink" title="线程和协程的关系"></a>线程和协程的关系</h5><p>从 Android 开发者的角度去理解它们的关系：</p>
-<ul>
-<li>Android中我们所有的代码都跑在线程中的，<strong>而线程是跑在进程中的</strong>。</li>
-<li><strong>协程没有直接和操作系统关联</strong>，它也是<strong>跑在线程中的</strong>，可以是单线程，也可以是多线程。</li>
-<li>单线程中的协程总的<strong>执行时间</strong>并不会比不用协程少。</li>
-<li>Android总，如果在主线程中进行网络访问，会抛出 <strong>NetworkOnMainThreadException</strong>，对于在主线程上的协程也不例外，所以在这种使用场景中也是要切换线程的。</li>
-</ul>
-<h4 id="协程的应用场景之一-线程控制"><a href="#协程的应用场景之一-线程控制" class="headerlink" title="协程的应用场景之一 线程控制"></a>协程的应用场景之一 线程控制</h4><blockquote>
-<p>协程可以让我们在写<strong>代码时不用更多的关注多线程同时更方便的写出并发操作</strong>。</p>
-</blockquote>
-<p><strong>场景</strong></p>
-<p>在Java中实现并发操作通常需要开启 Thread：</p>
-<pre><code class="java">new Thread(new Runnable() {
-    @Override
-    public void run() {
-        ...
-    }
-}).start();</code></pre>
-<p>Kotlin中</p>
-<pre><code class="kotlin">Thread({
-    ...
-}).start()</code></pre>
-<p><strong>Kotlin和Java使用线程同样存在的问题：</strong></p>
-<ul>
-<li>线程什么时候执行结束</li>
-<li>线程间如何相互通信</li>
-<li>多线程的管理</li>
-</ul>
-<p>可以用Java控制线程 Executor线程池来进行<strong>线程管理</strong>：</p>
-<pre><code class="kotlin">val executor = Executors.newCachedThreadPool()
-executor.execute({
-    ...
-})</code></pre>
-<p>用Android的<strong>AsyncTask</strong>来<strong>解决线程之间的通讯</strong></p>
-<pre><code class="kotlin">object : AsyncTask&lt;T0, T1, T2&gt; { 
-    override fun doInBackground(vararg args: T0): String { ... }
-    override fun onProgressUpdate(vararg args: T1) { ... }
-    override fun onPostExecute(t3: T3) { ... }
-}</code></pre>
-<p>使用<strong>AsyncTask</strong>进行<strong>线程之间</strong>的<strong>通讯</strong>带来的<strong>缺点</strong>（<strong>AsyncTask</strong>是<strong>Android</strong>对<strong>线程池</strong>Executor的<strong>封装</strong>）：</p>
-<ul>
-<li>需要处理多个回调，容易陷入【回调地狱】。</li>
-<li>将业务强行拆分到前台、中间更新、后台三个函数。</li>
-</ul>
-<p>使用 RxJava和协程都可以很好的解决上述的问题。</p>
-<h5 id="例子-使用协程进行网络访问将请求到的数据显示到对应的控件上："><a href="#例子-使用协程进行网络访问将请求到的数据显示到对应的控件上：" class="headerlink" title="例子 使用协程进行网络访问将请求到的数据显示到对应的控件上："></a>例子 使用协程进行网络访问将请求到的数据显示到对应的控件上：</h5><pre><code class="kotlin">launch({
-    val user = api.getUser() // 👈 网络请求（IO 线程）
-    nameTv.text = user.name  // 👈 更新 UI（主线程）
-})</code></pre>
-<p>无需关心 <strong>launch</strong> 它<strong>不是</strong>一个<strong>顶层函数</strong>，只需要关系它的业务逻辑：</p>
-<p>launch <strong>函数</strong>加上实现在 {} 中的<strong>具体逻辑构成</strong>了<strong>协程</strong>。</p>
-<p>通常我们进行网络请求，会传一个callback，或者在IO线程里进行阻塞式的同步调用，而在这段代码中，上下两个语句分别工作在两个线程里，并且写法上和普通单线程代码是一样的。</p>
-<p>这里的 api.getUser是一个挂起函数，所以能够保证nameTv.text的正确赋值，这就涉及到了协程中最著名的【非阻塞式挂起】了。</p>
-<h1 id="协程好在哪里"><a href="#协程好在哪里" class="headerlink" title="协程好在哪里"></a>协程好在哪里</h1><h2 id="什么是闭包"><a href="#什么是闭包" class="headerlink" title="什么是闭包"></a>什么是闭包</h2><h4 id="起源"><a href="#起源" class="headerlink" title="起源"></a>起源</h4><p><strong>闭包</strong>并<strong>不</strong>是<strong>kotlin</strong>中提出的新概念，在Java8中就已经支持。</p>
-<p>以Thread为例，看看什么是闭包：</p>
-<pre><code class="kotlin">// 创建一个 Thread 的完整写法
-Thread(object : Runnable {
-    override fun run() {
-        ...
-    }
-})
-
-// 满足 SAM，先简化为
-Thread({
-    ...
-})
-
-// 使用闭包，再简化为
-Thread {
-    ...
-}</code></pre>
-<p>语法糖：当函数的最后一个参数是lambda表达式时，可以将<strong>lambda</strong>写在<strong>括号外</strong>。这就是它的<strong>闭包原则</strong>。</p>
-<h5 id="注释"><a href="#注释" class="headerlink" title="注释"></a>注释</h5><p>需要一个类型为 Runnable 的参数，而 Runnable 是一个接口，且只定义了一个函数 run，这种情况满足了 Kotlin 的SAM，可以转换成一个传递的 lambda表达式（第二段），以为闭包原则直接写成 Thread{…}（第三段）。</p>
-<p>通过<strong>闭包简化 launch 函数</strong></p>
-<pre><code class="kotlin">launch {
-    ...
-}</code></pre>
-<h2 id="基本使用协程"><a href="#基本使用协程" class="headerlink" title="基本使用协程"></a>基本使用协程</h2><p>说过<strong>launch函数不是顶层函数</strong> 并不能直接使用，我们通过下列方法来创建协程：</p>
-<pre><code class="kotlin">// 方法一，使用 runBlocking 顶层函数
-runBlocking {
-    getImage(imageId)
-}
-
-// 方法二，使用 GlobalScope 单例对象
-//            👇 可以直接调用 launch 开启协程
-GlobalScope.launch {
-    getImage(imageId)
-}
-
-// 方法三，自行通过 CoroutineContext 创建一个 CoroutineScope 对象
-//                                    👇 需要一个类型为 CoroutineContext 的参数
-val coroutineScope = CoroutineScope(context)
-coroutineScope.launch {
-    getImage(imageId)
-}</code></pre>
-<p>方法①，多用于单元测试，业务开发不会用到它，因为它是线程阻塞的。</p>
-<p>方法②，在Android中不推荐这种用法，因为它的生命周期会和app一直，且不能够取消。和使用runBlocking不同它不会阻塞线程。</p>
-<p>方法三，<strong>推荐用法</strong>，通过context参数去管理和控制协程的生命周期（这里的context和Android里的不是同一种东西，更像是一种概念，会有Android平台的封装配合使用）</p>
-<p>其中 <strong>GlobaScope</strong>与<strong>CoroutineScope</strong> 的更多内容后面的文章再说。</p>
-<p>协程<strong>最常用</strong>的<strong>功能</strong>是<strong>并发</strong>，而并发最常用的场景是多线程。可以使用<strong>Dispatchers</strong>.<strong>IO</strong>参数把<strong>任务切换到IO线程执行</strong>：</p>
-<pre><code class="kotlin">coroutineScope.launch(Dispatchers.IO) {
-    ...
-}</code></pre>
-<p>使用 <strong>DIspatchers.Main</strong> 参数切换到主线程：</p>
-<pre><code class="kotlin">coroutineScope.launch(Dispatchers.Main) {
-    ...
-}</code></pre>
-<p>所以【什么是协程】中说到的异步请求的完整例子是这样的：</p>
-<pre><code class="kotlin">coroutineScope.launch(Dispatchers.Main) {   // 在主线程开启协程
-    val user = api.getUser() // IO 线程执行网络请求
-    nameTv.text = user.name  // 主线程更新 UI
-}</code></pre>
-<p>在Java中回调式的写法是这样的：</p>
-<pre><code class="kotlin">api.getUser(new Callback&lt;User&gt;() {
-    @Override
-    public void success(User user) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                nameTv.setText(user.name);
-            }
-        })
-    }
-
-    @Override
-    public void failure(Exception e) {
-        ...
-    }
-});</code></pre>
-<h2 id="更为麻烦的并发场景"><a href="#更为麻烦的并发场景" class="headerlink" title="更为麻烦的并发场景"></a>更为麻烦的并发场景</h2><p>对于回调式的写法，如果并发场景再复杂一点，嵌套的可能够多。如果使用协程，多层网络请求。</p>
-<pre><code class="kotlin">coroutineScope.launch(Dispatchers.Main) {       // 开始协程：主线程
-    val token = api.getToken()                  // 网络请求：IO 线程
-    val user = api.getUser(token)               // 网络请求：IO 线程
-    nameTv.text = user.name                     // 更新 UI：主线程
-}</code></pre>
-<p>如果进行多个<strong>网络请求</strong>等待完成后<strong>再刷新UI</strong>。</p>
-<pre><code class="kotlin">api.getAvatar(user, callback)
-api.getCompanyLogo(user, callback)</code></pre>
-<p>如果使用回调式写法，我们可能会选择妥协，则使用先后请求代替同时请求。</p>
-<pre><code class="kotlin">api.getAvatar(user) { avatar -&gt;
-    api.getCompanyLogo(user) { logo -&gt;
-        show(merge(avatar, logo))
-    }
-}</code></pre>
-<p>使用窗帘方式去实现可能会导致等待时长了一倍，也相差了一倍的性能。</p>
-<h5 id="协程并行请求网络"><a href="#协程并行请求网络" class="headerlink" title="协程并行请求网络"></a>协程并行请求网络</h5><p>使用协程可以直接并行请求上下两行，最后把结果合并即可：</p>
-<pre><code class="kotlin">coroutineScope.launch(Dispatchers.Main) {
-    //            👇  async 函数之后再讲
-    val avatar = async { api.getAvatar(user) }    // 获取用户头像
-    val logo = async { api.getCompanyLogo(user) } // 获取用户所在公司的 logo
-    val merged = suspendingMerge(avatar, logo)    // 合并结果
-    //                  👆
-    show(merged) // 更新 UI
-}</code></pre>
-<p>即便是比较复杂的并行网络请求，也可以使用并行写出结构清晰的代码。<strong>suspendingMerge</strong> 并不是协程API提供的方法，而是自定义挂起的结果合并方法。</p>
-<h5 id="协程的优势"><a href="#协程的优势" class="headerlink" title="协程的优势"></a>协程的优势</h5><p>让复杂的并发代码，变得简单且清晰是协程的优势。</p>
-<h1 id="协程如何在项目中使用"><a href="#协程如何在项目中使用" class="headerlink" title="协程如何在项目中使用"></a>协程如何在项目中使用</h1><h2 id="在项目中配置对Kotlin协程的支持"><a href="#在项目中配置对Kotlin协程的支持" class="headerlink" title="在项目中配置对Kotlin协程的支持"></a>在项目中配置对Kotlin协程的支持</h2><p>使用协程前，需要在 build.gradle 文件中增加 Kotlin 协程的依赖：</p>
-<ul>
-<li>项目目录下</li>
-</ul>
-<pre><code class="kotlin">buildscript {
-    ...
-    // 👇
-    ext.kotlin_coroutines = &#39;1.3.1&#39;
-    ...
-}</code></pre>
-<ul>
-<li>Module 目录下：</li>
-</ul>
-<pre><code class="kotlin">dependencies {
-    ...
-    //                                       👇 依赖协程核心库
-    implementation &quot;org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlin_coroutines&quot;
-    //                                       👇 依赖当前平台所对应的平台库
-    implementation &quot;org.jetbrains.kotlinx:kotlinx-coroutines-android:$kotlin_coroutines&quot;
-    ...
-}</code></pre>
-<p>Kotlin 协程以官方扩展库的形式进行支持。其中【核心库】和【平台库】的版本应该保持一致。</p>
-<ul>
-<li><strong>核心库</strong>为协程的公共API部分。为拉在各个平台统一接口。</li>
-<li><strong>平台库</strong>主要为协程在具体平台的具体实现方式。原因：多线程在各个平台的实现方式不同。</li>
-</ul>
-<h2 id="开始使用协程"><a href="#开始使用协程" class="headerlink" title="开始使用协程"></a>开始使用协程</h2><p><strong>协程最简单的使用</strong>。通过<strong>launch</strong>函数实现线程切换的功能：</p>
-<pre><code class="kotlin">//               👇
-coroutineScope.launch(Dispatchers.IO) {
-    ...
-}</code></pre>
-<h5 id="代码中协程的表现。"><a href="#代码中协程的表现。" class="headerlink" title="代码中协程的表现。"></a><strong>代码中协程的表现。</strong></h5><p><strong>launch</strong> 函数：我要创建协程，并在指定的线程中运行它。被创建的【协程】是谁？ 就是你传给 launch的代码，这段代码叫【协程】。</p>
-<p>当你要切换线程或指定线程时。<strong>要在后台执行任务？</strong></p>
-<pre><code class="kotlin">launch(Dispatchers.IO) {
-    val image = getImage(imageId)
-}</code></pre>
-<p><strong>切换到前台刷新界面？</strong></p>
-<pre><code class="kotlin">coroutineScope.launch(Dispatchers.IO) {
-    val image = getImage(imageId)
-    launch(Dispatchers.Main) {
-        avatarIv.setImageBitmap(image)
-    }
-}</code></pre>
-<p>发生了嵌套的代码。</p>
-<h5 id="避免嵌套的样子使用协程"><a href="#避免嵌套的样子使用协程" class="headerlink" title="避免嵌套的样子使用协程"></a>避免嵌套的样子使用协程</h5><p>单单使用协程并不会比线程做更多的事情。使用更实用的函数：<strong>withContext</strong>。指定切换线程，并且在执行完内部逻辑后，自动线程切回执行。上述代码使用 withContext：</p>
-<pre><code class="kotlin">coroutineScope.launch(Dispatchers.Main) {      // 👈 在 UI 线程开始
-    val image = withContext(Dispatchers.IO) {  // 👈 切换到 IO 线程，并在执行完成后切回 UI 线程
-        getImage(imageId)                      // 👈 将会运行在 IO 线程
-    }
-    avatarIv.setImageBitmap(image)             // 👈 回到 UI 线程更新 UI
-} </code></pre>
-<h5 id="比较两种写法来体现-withContext的优势"><a href="#比较两种写法来体现-withContext的优势" class="headerlink" title="比较两种写法来体现 withContext的优势"></a>比较两种写法来体现 withContext的优势</h5><p>当要频繁切换线程时。通过下属代码对比：</p>
-<pre><code class="kotlin">// 第一种写法
-coroutineScope.launch(Dispatchers.IO) {
-    ...
-    launch(Dispatchers.Main){
-        ...
-        launch(Dispatchers.IO) {
-            ...
-            launch(Dispatchers.Main) {
-                ...
-            }
-        }
-    }
-}
-
-// 通过第二种写法来实现相同的逻辑
-coroutineScope.launch(Dispatchers.Main) {
-    ...
-    withContext(Dispatchers.IO) {
-        ...
-    }
-    ...
-    withContext(Dispatchers.IO) {
-        ...
-    }
-    ...
-}</code></pre>
-<p><strong>优势：</strong></p>
-<p>由于它可以“来回切回来”消除了并发代码在协作时的嵌套。消除了嵌套关系，还可以将 <strong>withContext</strong> 放在单独的函数里：</p>
-<pre><code class="kotlin">launch(Dispatchers.Main) {              // 👈 在 UI 线程开始
-    val image = getImage(imageId)
-    avatarIv.setImageBitmap(image)     // 👈 执行结束后，自动切换回 UI 线程
-}
-//                               👇
-fun getImage(imageId: Int) = withContext(Dispatchers.IO) {
-    ...
-}</code></pre>
-<p>实现了【同步的方式写异步的代码】。</p>
-<pre><code class="kotlin">launch(Dispatchers.Main) {              // 👈 在 UI 线程开始
-    val image = getImage(imageId)
-    avatarIv.setImageBitmap(image)     // 👈 执行结束后，自动切换回 UI 线程
-}
-//                               👇
-fun getImage(imageId: Int) = withContext(Dispatchers.IO) {
-    ...
-}</code></pre>
-<p><strong>withContext 单独放在函数中要注意那些</strong></p>
-<pre><code class="kotlin">fun getImage(imageId: Int) = withContext(Dispatchers.IO) {
-    // IDE 报错 Suspend function&#39;withContext&#39; should be called only from a coroutine or another suspend funcion
-}</code></pre>
-<p><strong>需要在 suspend函数中调用</strong>。（<strong>withContext</strong> 是<strong>一个 suspend</strong> 函数，所以需要在<strong>协程</strong>或者<strong>suspend函数</strong>中调用。）</p>
-<h2 id="什么是-suspend-函数"><a href="#什么是-suspend-函数" class="headerlink" title="什么是 suspend 函数"></a>什么是 suspend 函数</h2><p><strong>suspend</strong> 函数是<strong>kotlin协程</strong>最核心的关键字。中文意思为【暂停】、【可挂起】。</p>
-<p>解释：</p>
+                <h1 id="MVC-MVP-MVVM-图示"><a href="#MVC-MVP-MVVM-图示" class="headerlink" title="MVC MVP MVVM 图示"></a>MVC MVP MVVM 图示</h1><h2 id="MVC（Model、View、Controller）"><a href="#MVC（Model、View、Controller）" class="headerlink" title="MVC（Model、View、Controller）"></a>MVC（Model、View、Controller）</h2><p><img src="https://raw.githubusercontent.com/TheCara/RepoPicture/master/image/20201028113524.png" alt=""></p>
 <blockquote>
-<p>代码执行到 <strong>suspend 函数</strong>的时候会【<strong>挂起</strong>】，并且这个<strong>【挂起】</strong>是<strong>非阻塞式</strong>的，不会阻塞当前线程。</p>
+<ul>
+<li>视图（View）：用户界面</li>
+<li>控制器（Controller）：业务逻辑</li>
+<li>模型（Model）：数据保存</li>
+</ul>
 </blockquote>
-<p>修改上述代码让它可以执行：</p>
-<pre><code class="kotlin">//👇
-suspend fun getImage(imageId: Int) = withContext(Dispatchers.IO) {
-    ...
-}</code></pre>
-<p>到底什么是 suspend ，什么是 【非阻塞】，如何【挂起】。下篇。</p>
+<h5 id="通信方式"><a href="#通信方式" class="headerlink" title="通信方式"></a>通信方式</h5><p><img src="https://raw.githubusercontent.com/TheCara/RepoPicture/master/image/20201028113611.png" alt=""></p>
+<blockquote>
+<ol>
+<li>View 传送指令到 Controller</li>
+<li>Controller 完成业务逻辑后，要求 Model 改变状态</li>
+<li>Model 将新的数据发送到 View，用户得到反馈</li>
+</ol>
+</blockquote>
+<p><strong>通信都是单向的</strong></p>
+<h2 id="互动模式"><a href="#互动模式" class="headerlink" title="互动模式"></a>互动模式</h2><blockquote>
+<p><strong>互动模式</strong>（models of interaction），指使用<a href="https://zh.wikipedia.org/wiki/電腦" target="_blank" rel="noopener">电脑</a>时<a href="https://zh.wikipedia.org/wiki/人機互動" target="_blank" rel="noopener">人机互动</a>的界面。好的界面应该是能够有效地让互动顺利进行。互动系统是要让使用者可以在已存在的应用范围中完成他们的目的。系统使用的语言是核语言（core language），使用者使用的语言是任务语言（task language）。</p>
+<p>摘自<a href="https://zh.wikipedia.org/wiki/%E4%BA%92%E5%8B%95%E6%A8%A1%E5%BC%8F" target="_blank" rel="noopener">维基百科</a></p>
+</blockquote>
+<p>接受用户指令时，MVC可分为两种模式。<strong>一种是通过View接受指令</strong>，<strong>传递给Controller。</strong></p>
+<p><img src="https://raw.githubusercontent.com/TheCara/RepoPicture/master/image/20201028114024.png" alt=""></p>
+<p><strong>另一种是直接通过controller接受指令。</strong></p>
+<p><img src="https://raw.githubusercontent.com/TheCara/RepoPicture/master/image/20201028114109.png" alt=""></p>
+<h2 id="MVP（Model、View、Presenter）"><a href="#MVP（Model、View、Presenter）" class="headerlink" title="MVP（Model、View、Presenter）"></a>MVP（Model、View、Presenter）</h2><p>MVP 模式将 Controller 改名为 <strong>Presenter</strong>，<strong>同时改变了通信方向</strong>。</p>
+<p><img src="https://www.ruanyifeng.com/blogimg/asset/2015/bg2015020109.png" alt=""></p>
+<blockquote>
+<ol>
+<li><p>各部分之间的通信，是双向的。</p>
+</li>
+<li><p>View 与 Model 不发生联系，都通过 Presenter 传递。</p>
+</li>
+<li><p>View 非常薄，不部署任何业务逻辑，称为”被动视图”（Passive View），即没有任何主动性，而 Presenter非常厚，所有逻辑都部署在那里。</p>
+</li>
+</ol>
+</blockquote>
+<h2 id="MVVM（Model、View、ViewModel）"><a href="#MVVM（Model、View、ViewModel）" class="headerlink" title="MVVM（Model、View、ViewModel）"></a>MVVM（Model、View、ViewModel）</h2><p>MVVM 模式将 <strong>Presenter</strong> 改名为 <strong>ViewModel</strong>。</p>
+<p>唯一的区别是，它采用双向绑定（data-binding）：View的变动，自动反映在 ViewModel，反之亦然。</p>
 <p><strong>引用：</strong></p>
-<p><a href="https://kaixue.io/kotlin-coroutines-1/" target="_blank" rel="noopener">Kotlin 的协程用力瞥一眼 - 学不会协程？很可能因为你看过的教程都是错的</a></p>
+<p><a href="https://www.ruanyifeng.com/blog/2015/02/mvcmvp_mvvm.html" target="_blank" rel="noopener">MVC，MVP 和 MVVM 的图示</a></p>
 
             </div>
             <hr/>
@@ -775,7 +541,7 @@ suspend fun getImage(imageId: Int) = withContext(Dispatchers.IO) {
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://thecara.github.io/2020/10/14/Kotlin-%E5%8D%8F%E7%A8%8B/">https://thecara.github.io/2020/10/14/Kotlin-%E5%8D%8F%E7%A8%8B/</a>
+                    <a href="https://thecara.github.io/2020/10/28/MVC%E3%80%81MVP%E3%80%81MVVM/">https://thecara.github.io/2020/10/28/MVC%E3%80%81MVP%E3%80%81MVVM/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -817,8 +583,8 @@ suspend fun getImage(imageId: Int) = withContext(Dispatchers.IO) {
                                     <span class="chip bg-color">Android</span>
                                 </a>
                             
-                                <a href="/tags/Kotlin/">
-                                    <span class="chip bg-color">Kotlin</span>
+                                <a href="/tags/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B/">
+                                    <span class="chip bg-color">软件工程</span>
                                 </a>
                             
                         </div>
@@ -860,9 +626,10 @@ suspend fun getImage(imageId: Int) = withContext(Dispatchers.IO) {
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
             <div class="card">
                 <a href="/2020/10/28/MVC%E3%80%81MVP%E3%80%81MVVM/">
                     <div class="card-image">
@@ -890,9 +657,9 @@ View 传送指令到 Contro
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2020-10-28
-                        </span>
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-10-28
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
@@ -905,6 +672,7 @@ View 传送指令到 Contro
                         </span>
                     </div>
                 </div>
+
                 
                 <div class="card-action article-tags">
                     
@@ -927,24 +695,27 @@ View 传送指令到 Contro
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2020/10/11/Lifecycle/">
+                <a href="/2020/10/14/Kotlin-%E5%8D%8F%E7%A8%8B/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/1.jpg" class="responsive-img" alt="Lifecycle 讲解">
+                        <img src="/medias/featureimages/23.jpg" class="responsive-img" alt="Kotlin 协程">
                         
-                        <span class="card-title">Lifecycle 讲解</span>
+                        <span class="card-title">Kotlin 协程</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            Lifecycle使用详解Lifecycle可以做什么Lifecycle 是具有生命周期感知能力的组件，也就是说，在Activity或者Fragment的生命周期发生变动的是否得到通知。我们往往会在Activity的各种生命周期方法里执行特
+                            什么是协程
+用同步的方式写异步的代码
+
+【协程 Coroutines】 源于Simula 和 Modula-2语言，术语来自于 1958 年的 Melvin Edward Conway 发明并且拥有构建汇编程序，说明 协程是一种编程思想， 
                         
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2020-10-11
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-10-14
                             </span>
                         <span class="publish-author">
                             
@@ -952,10 +723,6 @@ View 传送指令到 Contro
                             
                             <a href="/categories/Android/" class="post-category">
                                     Android
-                                </a>
-                            
-                            <a href="/categories/Android/Lifecycle/" class="post-category">
-                                    Lifecycle
                                 </a>
                             
                             
@@ -967,6 +734,10 @@ View 传送指令到 Contro
                     
                     <a href="/tags/Android/">
                         <span class="chip bg-color">Android</span>
+                    </a>
+                    
+                    <a href="/tags/Kotlin/">
+                        <span class="chip bg-color">Kotlin</span>
                     </a>
                     
                 </div>
