@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="koin依赖注入框架, TheCara">
+    <meta name="keywords" content="EC, TheCara">
     <meta name="description" content="">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>koin依赖注入框架 | TheCara</title>
+    <title>EC | TheCara</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -308,7 +308,7 @@
 <script src="/libs/cryptojs/crypto-js.min.js"></script>
 <script>
     (function() {
-        let pwd = '';
+        let pwd = 'cbd689e4a7e4f5a1b5da70a0c722db1d874107a8eaf1b46776fbea1652dcda7a';
         if (pwd && pwd.length > 0) {
             if (pwd !== CryptoJS.SHA256(prompt('请输入访问本文章的密码')).toString(CryptoJS.enc.Hex)) {
                 alert('密码错误，将返回主页！');
@@ -321,12 +321,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/27.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('https://raw.githubusercontent.com/TheCara/RepoPicture/master/image/https___cn.hypebeast.com_files_2020_10_salomon-advanced-xt-4-relsase-info-21.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">koin依赖注入框架</h1>
+                    <h1 class="description center-align post-title">EC</h1>
                 </div>
             </div>
         </div>
@@ -443,20 +443,8 @@
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/Android/">
-                                <span class="chip bg-color">Android</span>
-                            </a>
-                        
-                            <a href="/tags/Kotlin/">
-                                <span class="chip bg-color">Kotlin</span>
-                            </a>
-                        
-                            <a href="/tags/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B/">
-                                <span class="chip bg-color">软件工程</span>
-                            </a>
-                        
-                            <a href="/tags/koin/">
-                                <span class="chip bg-color">koin</span>
+                            <a href="/tags/EC/">
+                                <span class="chip bg-color">EC</span>
                             </a>
                         
                     </div>
@@ -467,8 +455,8 @@
                     <div class="post-cate">
                         <i class="fas fa-bookmark fa-fw icon-category"></i>
                         
-                            <a href="/categories/Android/" class="post-category">
-                                Android
+                            <a href="/categories/EC/" class="post-category">
+                                EC
                             </a>
                         
                     </div>
@@ -480,7 +468,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2020-08-13
+                    2020-10-29
                 </div>
                 
 
@@ -496,200 +484,7 @@
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h2 id="koin的使用"><a href="#koin的使用" class="headerlink" title="koin的使用"></a>koin的使用</h2><h4 id="添加依赖库"><a href="#添加依赖库" class="headerlink" title="添加依赖库"></a>添加依赖库</h4><pre><code>    implementation &#39;org.koin:koin-androidx-viewmodel:2.0.1&#39;
-    implementation &#39;org.koin:koin-android:2.0.1&#39;</code></pre><h4 id="需要创建依赖对象"><a href="#需要创建依赖对象" class="headerlink" title="需要创建依赖对象"></a>需要创建依赖对象</h4><p>这里创建三个类，Student，SchoolCourse，Friend。</p>
-<ul>
-<li>Student类</li>
-</ul>
-<blockquote>
-<p>依赖于SchoolCourse，Friend类的方法。</p>
-</blockquote>
-<pre><code class="kotlin">class Student(val course: SchoolCourse,val friend: Friend) {
-    fun beSmart() {
-        course.study()
-        friend.hangout()
-    }
-}</code></pre>
-<ul>
-<li>SchoolCourse类</li>
-</ul>
-<blockquote>
-<p>提供方法 study 负责打印 “I am studying”</p>
-</blockquote>
-<pre><code>class SchoolCourse {
-    fun study() {
-        println(&quot;I am studying&quot;)
-    }
-}</code></pre><ul>
-<li>Friend 类</li>
-</ul>
-<blockquote>
-<p>提供方法 hangout 负责打印 “We’re hanging out”</p>
-</blockquote>
-<pre><code>class Friend {
-    fun hangout() {
-        println(&quot;We&#39;re hanging out&quot;)
-    }
-}</code></pre><h4 id="定义依赖集合"><a href="#定义依赖集合" class="headerlink" title="定义依赖集合"></a>定义依赖集合</h4><p>创建 Modeles 文件 </p>
-<ul>
-<li>需要使用 module 方法</li>
-</ul>
-<blockquote>
-<p>提供所需要的依赖</p>
-</blockquote>
-<ul>
-<li>需要 signle 方法</li>
-</ul>
-<blockquote>
-<p>使当前依赖为一个单例的对象</p>
-</blockquote>
-<ul>
-<li>需要 factory 方法</li>
-</ul>
-<blockquote>
-<p>定义一个工场每次调用创建一个新的实例</p>
-</blockquote>
-<ul>
-<li>需要 get() 方法</li>
-</ul>
-<blockquote>
-<p>get 用于最终实现注入</p>
-</blockquote>
-<pre><code>val appModule: Module = module {
-    single { SchoolCourse() }
-    factory { Friend() }
-    factory { Student(get(), get()) }
-}</code></pre><h4 id="启动-Koin"><a href="#启动-Koin" class="headerlink" title="启动 Koin"></a>启动 Koin</h4><ul>
-<li><p>需要系统在创建时第一个启动Application实例</p>
-<blockquote>
-<p>修改 application 中的 name 属性 使得应用第一个启动它</p>
-</blockquote>
-</li>
-</ul>
-<p><img src="https://raw.githubusercontent.com/TheCara/RepoPicture/master/image/20200813224142.png" alt=""></p>
-<ul>
-<li>需要创建 MyApp</li>
-</ul>
-<blockquote>
-<p>第一个启动的Application实例</p>
-</blockquote>
-<ul>
-<li>需要 startKoin</li>
-</ul>
-<blockquote>
-<p>用来启动Koin</p>
-</blockquote>
-<ul>
-<li>需要 modules</li>
-</ul>
-<blockquote>
-<p>注册声明的Module</p>
-</blockquote>
-<ul>
-<li>需要 androidContext</li>
-</ul>
-<blockquote>
-<p>向Koin中注入context</p>
-</blockquote>
-<pre><code>class MyApp : Application() {
-    override fun onCreate() {
-        super.onCreate()
-        startKoin {
-            androidContext(this@MyApp)
-            modules(listOf(appModule))
-        }
-    }
-}</code></pre><h4 id="使用-koin-实现注入"><a href="#使用-koin-实现注入" class="headerlink" title="使用 koin 实现注入"></a>使用 koin 实现注入</h4><p>在需要注入的地方使用</p>
-<ul>
-<li>需要使用 get()</li>
-</ul>
-<blockquote>
-<p>非 懒加载，注入实例</p>
-</blockquote>
-<p>通过 注入依赖完成后的实例调用beSmart()方法</p>
-<pre><code>        val student = get&lt;Student&gt;()
-        student.beSmart()
-        val student2 = get&lt;Student&gt;()
-        student2.beSmart()</code></pre><h4 id="完成注入"><a href="#完成注入" class="headerlink" title="完成注入"></a>完成注入</h4><p><img src="https://raw.githubusercontent.com/TheCara/RepoPicture/master/image/image-20200813233756977.png" alt=""></p>
-<h4 id="什么是-koin？"><a href="#什么是-koin？" class="headerlink" title="什么是 koin？"></a>什么是 koin？</h4><p>一个轻量级的依赖注入组件。</p>
-<h2 id="补充"><a href="#补充" class="headerlink" title="补充"></a>补充</h2><p><a href="https://zhuanlan.zhihu.com/p/188485918" target="_blank" rel="noopener">Koin in Android: 更简单的依赖注入</a></p>
-<h4 id="Get"><a href="#Get" class="headerlink" title="Get"></a>Get</h4><p>get()用于实现注入。</p>
-<p>当你所属类型不确定时，可以指定类型。get<Type>()</p>
-<h4 id="声明：绑定一个接口"><a href="#声明：绑定一个接口" class="headerlink" title="声明：绑定一个接口"></a>声明：绑定一个接口</h4><p>一个  single 或者 factory 声明将会使用其给定的 lambda 表达式类型。比如 single{T}，该声明所匹配的类型就是表达式所声明的类型 T 让我们以一个类及其实现的接口为例：</p>
-<pre><code class="java">// Service interface
-interface Service{
-
-    fun doSomething()
-}
-
-// Service Implementation
-class ServiceImp() : Service {
-
-    fun doSomething() { ... }
-}</code></pre>
-<p>在koin模块(module)，我们可以使用Kotiln下的 as 操作符。如下所示：</p>
-<pre><code class="java">val myModule = module {
-
-    // 只匹配 Service 类型
-    single { ServiceImp() }
-
-    // 只匹配 Service 类型
-    single { ServiceImp() as Service }
-
-}</code></pre>
-<p>你也可以使用推断类型表达式</p>
-<pre><code class="java">val myModule = module {
-
-    // 只匹配 Service 类型
-    single { ServiceImp() }
-
-    // 只匹配 Service 类型
-    single&lt;Service&gt; { ServiceImp() }
-
-}</code></pre>
-<p>第二种风格是首选的，在接下来的文档中，也会使用该方法。</p>
-<h4 id="Bind"><a href="#Bind" class="headerlink" title="Bind"></a>Bind</h4><ul>
-<li><p><code>bind()</code> - 为给定的对象声明添加要绑定的类型</p>
-<p>Bind 是一个中辍函数，可以用于把一个Service关联到多个类。例如现在有两个接口：Tool，Flammable，Stove实现了这两个接口。显然如果只定义1个Service是不能同时注入Stove和这两个接口的。</p>
-<p>这是就可以发挥Bind的作用了</p>
-<pre><code>val myModule = module{
-    factory { Stove() } bind Tool::class bind Flammable::class // &lt;- here!
-
-    factory { Chef(get()) }
-}</code></pre><p>这么一来，下面的三个注入都是合法的，并都会得到一个 Stove 实例：</p>
-<pre><code>val chef: Chef = get()
-val tool:Tool = get()
-val flammable:Flammable = get()</code></pre></li>
-</ul>
-<h4 id="named"><a href="#named" class="headerlink" title="named"></a>named</h4><p>限定符，用来区别同一个类的不同实例</p>
-<p>使用</p>
-<pre><code class="java"> single(named(&quot;dev&quot;)) { DataRepository() }
- single(named(&quot;test&quot;)) { DataRepository() }</code></pre>
-<h4 id="name-属性"><a href="#name-属性" class="headerlink" title="name 属性"></a>name 属性</h4><p>可通过name或者class检索到对应的实例</p>
-<p>使用</p>
-<pre><code class="kotlin">    factory(name = MAIN) {
-        AndroidSchedulers.mainThread()
-    }</code></pre>
-<h2 id="依赖注入和控制反转"><a href="#依赖注入和控制反转" class="headerlink" title="依赖注入和控制反转"></a>依赖注入和控制反转</h2><h3 id="依赖注入（Dependency-Injection，简称-DI）"><a href="#依赖注入（Dependency-Injection，简称-DI）" class="headerlink" title="依赖注入（Dependency  Injection，简称 DI）"></a>依赖注入（Dependency  Injection，简称 DI）</h3><p>什么是依赖注入？</p>
-<p>假设 A 是 耳机，B 是播放器。</p>
-<p>当 A 依赖 B 时（也就是耳机想要播放以音乐时），A 要想播放音乐就必须要有B的实例，也就是</p>
-<ol>
-<li>通过A的接口，把B传入；</li>
-<li>通过A的构造，把B传入；</li>
-<li>通过就该A的属性，把B传入；</li>
-</ol>
-<p>这些过程叫做<strong>依赖注入（DI）</strong></p>
-<h3 id="控制反转（Inversion-of-Control，简称-Ioc）"><a href="#控制反转（Inversion-of-Control，简称-Ioc）" class="headerlink" title="控制反转（Inversion of Control，简称 Ioc）"></a>控制反转（Inversion of Control，简称 Ioc）</h3><p>但是 A 并不能控制 B 何时播放(创建)或者关闭(销毁)，仅使用 B ，那么 B 的控制权交给 A 之外的事务处理，这些叫做 <strong>控制反转（Ioc）</strong></p>
-<h3 id="为什么需要依赖注入"><a href="#为什么需要依赖注入" class="headerlink" title="为什么需要依赖注入"></a>为什么需要依赖注入</h3><p>降低耦合</p>
-<p>什么是耦合</p>
-<p>耦合性(Coupling)，也叫耦合度，是对模块间关联程度的度量。两个或多个功能模块之间的关联程度。</p>
-<p>什么是解耦</p>
-<p>解除类（模块）之间的直接关系，将直接关系转换成间接关系</p>
-<p><strong>引用：</strong></p>
-<p><a href="https://www.youtube.com/watch?v=eH9UrAwKEcE&t=140s" target="_blank" rel="noopener">Dependency Injection with Koin - Android Kotlin tutorial</a></p>
-<p><a href="https://github.com/AndyJennifer/koin_doc_zh" target="_blank" rel="noopener">koin 中文 DOC</a></p>
-<p><a href="https://juejin.im/post/6844904202586554382" target="_blank" rel="noopener">Koin in Android: 更简单的依赖注入</a></p>
-<p><img src="https://raw.githubusercontent.com/TheCara/RepoPicture/master/image/2020-8-3-1.gif" alt="如果有些方法没有详细说明你可以自行搜索查看"></p>
+                <p>test</p>
 
             </div>
             <hr/>
@@ -715,7 +510,7 @@ val flammable:Flammable = get()</code></pre></li>
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://thecara.github.io/2020/08/13/%E4%BE%9D%E8%B5%96%E6%B3%A8%E5%85%A5-koin/">https://thecara.github.io/2020/08/13/%E4%BE%9D%E8%B5%96%E6%B3%A8%E5%85%A5-koin/</a>
+                    <a href="https://thecara.github.io/2020/10/29/EC/">https://thecara.github.io/2020/10/29/EC/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -753,20 +548,8 @@ val flammable:Flammable = get()</code></pre></li>
                     
                         <div class="article-tag">
                             
-                                <a href="/tags/Android/">
-                                    <span class="chip bg-color">Android</span>
-                                </a>
-                            
-                                <a href="/tags/Kotlin/">
-                                    <span class="chip bg-color">Kotlin</span>
-                                </a>
-                            
-                                <a href="/tags/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B/">
-                                    <span class="chip bg-color">软件工程</span>
-                                </a>
-                            
-                                <a href="/tags/koin/">
-                                    <span class="chip bg-color">koin</span>
+                                <a href="/tags/EC/">
+                                    <span class="chip bg-color">EC</span>
                                 </a>
                             
                         </div>
@@ -808,56 +591,48 @@ val flammable:Flammable = get()</code></pre></li>
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
             <div class="card">
-                <a href="/2020/08/21/Android-RxJava/">
+                <a href="/2020/10/29/EC/">
                     <div class="card-image">
                         
-                        <img src="https://raw.githubusercontent.com/TheCara/RepoPicture/master/image/20200824002512.png" class="responsive-img" alt="RxJava2 Android 中使用">
+                        <img src="https://raw.githubusercontent.com/TheCara/RepoPicture/master/image/https___cn.hypebeast.com_files_2020_10_salomon-advanced-xt-4-relsase-info-21.jpg" class="responsive-img" alt="EC">
                         
-                        <span class="card-title">RxJava2 Android 中使用</span>
+                        <span class="card-title">EC</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            什么是RxJava实现异步操作的库
-定义RxJava 是基于事件流的、实现异步操作的库
-作用实现异步操作
-使用添加依赖    implementation &quot;io.reactivex.rxjava2:rxjava:2.2.6&qu
+                            test
+
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2020-08-21
-                        </span>
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-10-29
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/Android/" class="post-category">
-                                    Android
+                            <a href="/categories/EC/" class="post-category">
+                                    EC
                                 </a>
                             
                             
                         </span>
                     </div>
                 </div>
+
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/Android/">
-                        <span class="chip bg-color">Android</span>
-                    </a>
-                    
-                    <a href="/tags/RxJava/">
-                        <span class="chip bg-color">RxJava</span>
-                    </a>
-                    
-                    <a href="/tags/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B/">
-                        <span class="chip bg-color">软件工程</span>
+                    <a href="/tags/EC/">
+                        <span class="chip bg-color">EC</span>
                     </a>
                     
                 </div>
@@ -871,29 +646,43 @@ val flammable:Flammable = get()</code></pre></li>
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2020/08/06/BottomSheets/">
+                <a href="/2020/10/28/MVC%E3%80%81MVP%E3%80%81MVVM/">
                     <div class="card-image">
                         
+                        <img src="https://raw.githubusercontent.com/Draveness/analyze/master/contents/architecture/images/mvx/MVC-MVVM-MVP.jpg" class="responsive-img" alt="MVC、MVP、MVVM">
                         
-                        <img src="/medias/featureimages/15.jpg" class="responsive-img" alt="BottomSheet、BottomShaeetDialog使用流程">
-                        
-                        <span class="card-title">BottomSheet、BottomShaeetDialog使用流程</span>
+                        <span class="card-title">MVC、MVP、MVVM</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            BottomSheetDemo 代码 https://medium.com/@droidbyme/android-bottom-sheet-7e9cfcec6427使用 BottomSheet、BottomSheetDialog、Botto
+                            MVC MVP MVVM 图示MVC（Model、View、Controller）
+
+
+视图（View）：用户界面
+控制器（Controller）：业务逻辑
+模型（Model）：数据保存
+
+
+通信方式
+
+
+View 传送指令到 Contro
                         
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2020-08-06
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-10-28
                             </span>
                         <span class="publish-author">
                             
-                            <i class="fas fa-user fa-fw"></i>
-                            TheCara
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B/" class="post-category">
+                                    软件工程
+                                </a>
+                            
                             
                         </span>
                     </div>
@@ -903,6 +692,10 @@ val flammable:Flammable = get()</code></pre></li>
                     
                     <a href="/tags/Android/">
                         <span class="chip bg-color">Android</span>
+                    </a>
+                    
+                    <a href="/tags/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B/">
+                        <span class="chip bg-color">软件工程</span>
                     </a>
                     
                 </div>
