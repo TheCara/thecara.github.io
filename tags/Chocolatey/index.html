@@ -338,7 +338,7 @@
 
 <script>
     // 每天切换 banner 图.  Switch banner image every day.
-    var bannerUrl = "/medias/banner/" + new Date().getDate()%11 + '.jpg';
+    var bannerUrl = "/medias/banner/" + new Date().getDate()%13 + '.jpg';
     $('.bg-cover').css('background-image', 'url(' + bannerUrl + ')');
 </script>
 
@@ -359,11 +359,20 @@
             <div class="tag-chips">
                 
                 
-                <a href="/tags/Android/" title="Android: 15">
+                <a href="/tags/Android/" title="Android: 16">
                     <span class="chip center-align waves-effect waves-light
                              chip-default "
                             data-tagname="Android" style="background-color: #F9EBEA;">Android
-                        <span class="tag-length">15</span>
+                        <span class="tag-length">16</span>
+                    </span>
+                </a>
+                
+                
+                <a href="/tags/EC/" title="EC: 1">
+                    <span class="chip center-align waves-effect waves-light
+                             chip-default "
+                            data-tagname="EC" style="background-color: #F5EEF8;">EC
+                        <span class="tag-length">1</span>
                     </span>
                 </a>
                 
@@ -371,7 +380,7 @@
                 <a href="/tags/RxJava/" title="RxJava: 1">
                     <span class="chip center-align waves-effect waves-light
                              chip-default "
-                            data-tagname="RxJava" style="background-color: #F5EEF8;">RxJava
+                            data-tagname="RxJava" style="background-color: #D5F5E3;">RxJava
                         <span class="tag-length">1</span>
                     </span>
                 </a>
@@ -380,16 +389,16 @@
                 <a href="/tags/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B/" title="软件工程: 3">
                     <span class="chip center-align waves-effect waves-light
                              chip-default "
-                            data-tagname="软件工程" style="background-color: #D5F5E3;">软件工程
+                            data-tagname="软件工程" style="background-color: #E8F8F5;">软件工程
                         <span class="tag-length">3</span>
                     </span>
                 </a>
                 
                 
-                <a href="/tags/EC/" title="EC: 1">
+                <a href="/tags/DataBinding/" title="DataBinding: 1">
                     <span class="chip center-align waves-effect waves-light
                              chip-default "
-                            data-tagname="EC" style="background-color: #E8F8F5;">EC
+                            data-tagname="DataBinding" style="background-color: #FEF9E7;">DataBinding
                         <span class="tag-length">1</span>
                     </span>
                 </a>
@@ -398,44 +407,8 @@
                 <a href="/tags/Kotlin/" title="Kotlin: 7">
                     <span class="chip center-align waves-effect waves-light
                              chip-default "
-                            data-tagname="Kotlin" style="background-color: #FEF9E7;">Kotlin
+                            data-tagname="Kotlin" style="background-color: #F8F9F9;">Kotlin
                         <span class="tag-length">7</span>
-                    </span>
-                </a>
-                
-                
-                <a href="/tags/DataBinding/" title="DataBinding: 1">
-                    <span class="chip center-align waves-effect waves-light
-                             chip-default "
-                            data-tagname="DataBinding" style="background-color: #F8F9F9;">DataBinding
-                        <span class="tag-length">1</span>
-                    </span>
-                </a>
-                
-                
-                <a href="/tags/LiveData/" title="LiveData: 1">
-                    <span class="chip center-align waves-effect waves-light
-                             chip-default "
-                            data-tagname="LiveData" style="background-color: #82E0AA;">LiveData
-                        <span class="tag-length">1</span>
-                    </span>
-                </a>
-                
-                
-                <a href="/tags/ViewModel/" title="ViewModel: 1">
-                    <span class="chip center-align waves-effect waves-light
-                             chip-default "
-                            data-tagname="ViewModel" style="background-color: #D7BDE2;">ViewModel
-                        <span class="tag-length">1</span>
-                    </span>
-                </a>
-                
-                
-                <a href="/tags/RecyclerView/" title="RecyclerView: 1">
-                    <span class="chip center-align waves-effect waves-light
-                             chip-default "
-                            data-tagname="RecyclerView" style="background-color: #A3E4D7;">RecyclerView
-                        <span class="tag-length">1</span>
                     </span>
                 </a>
                 
@@ -443,7 +416,7 @@
                 <a href="/tags/SQLite/" title="SQLite: 1">
                     <span class="chip center-align waves-effect waves-light
                              chip-default "
-                            data-tagname="SQLite" style="background-color: #85C1E9;">SQLite
+                            data-tagname="SQLite" style="background-color: #82E0AA;">SQLite
                         <span class="tag-length">1</span>
                     </span>
                 </a>
@@ -452,7 +425,25 @@
                 <a href="/tags/Cursor/" title="Cursor: 1">
                     <span class="chip center-align waves-effect waves-light
                              chip-default "
-                            data-tagname="Cursor" style="background-color: #F8C471;">Cursor
+                            data-tagname="Cursor" style="background-color: #D7BDE2;">Cursor
+                        <span class="tag-length">1</span>
+                    </span>
+                </a>
+                
+                
+                <a href="/tags/LiveData/" title="LiveData: 1">
+                    <span class="chip center-align waves-effect waves-light
+                             chip-default "
+                            data-tagname="LiveData" style="background-color: #A3E4D7;">LiveData
+                        <span class="tag-length">1</span>
+                    </span>
+                </a>
+                
+                
+                <a href="/tags/ViewModel/" title="ViewModel: 1">
+                    <span class="chip center-align waves-effect waves-light
+                             chip-default "
+                            data-tagname="ViewModel" style="background-color: #85C1E9;">ViewModel
                         <span class="tag-length">1</span>
                     </span>
                 </a>
@@ -461,8 +452,17 @@
                 <a href="/tags/Timber/" title="Timber: 1">
                     <span class="chip center-align waves-effect waves-light
                              chip-default "
-                            data-tagname="Timber" style="background-color: #F9E79F;">Timber
+                            data-tagname="Timber" style="background-color: #F8C471;">Timber
                         <span class="tag-length">1</span>
+                    </span>
+                </a>
+                
+                
+                <a href="/tags/git/" title="git: 2">
+                    <span class="chip center-align waves-effect waves-light
+                             chip-default "
+                            data-tagname="git" style="background-color: #F9E79F;">git
+                        <span class="tag-length">2</span>
                     </span>
                 </a>
                 
@@ -476,28 +476,19 @@
                 </a>
                 
                 
-                <a href="/tags/git/" title="git: 2">
+                <a href="/tags/RecyclerView/" title="RecyclerView: 1">
                     <span class="chip center-align waves-effect waves-light
                              chip-default "
-                            data-tagname="git" style="background-color: #F8F9F9;">git
-                        <span class="tag-length">2</span>
-                    </span>
-                </a>
-                
-                
-                <a href="/tags/hexo-theme/" title="hexo-theme: 1">
-                    <span class="chip center-align waves-effect waves-light
-                             chip-default "
-                            data-tagname="hexo-theme" style="background-color: #E8F8F5;">hexo-theme
+                            data-tagname="RecyclerView" style="background-color: #FFF;">RecyclerView
                         <span class="tag-length">1</span>
                     </span>
                 </a>
                 
                 
-                <a href="/tags/koin/" title="koin: 1">
+                <a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/" title="数据库: 1">
                     <span class="chip center-align waves-effect waves-light
                              chip-default "
-                            data-tagname="koin" style="background-color: #D5F5E3;">koin
+                            data-tagname="数据库" style="background-color: #F9E79F;">数据库
                         <span class="tag-length">1</span>
                     </span>
                 </a>
@@ -521,10 +512,19 @@
                 </a>
                 
                 
-                <a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/" title="数据库: 1">
+                <a href="/tags/hexo-theme/" title="hexo-theme: 1">
                     <span class="chip center-align waves-effect waves-light
                              chip-default "
-                            data-tagname="数据库" style="background-color: #F9E79F;">数据库
+                            data-tagname="hexo-theme" style="background-color: #E8F8F5;">hexo-theme
+                        <span class="tag-length">1</span>
+                    </span>
+                </a>
+                
+                
+                <a href="/tags/koin/" title="koin: 1">
+                    <span class="chip center-align waves-effect waves-light
+                             chip-default "
+                            data-tagname="koin" style="background-color: #D5F5E3;">koin
                         <span class="tag-length">1</span>
                     </span>
                 </a>
