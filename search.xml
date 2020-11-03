@@ -4,11 +4,36 @@
   
     
     <entry>
+      <title>克隆 Spotify 播放器</title>
+      <link href="/2020/11/02/SpotifyClone/"/>
+      <url>/2020/11/02/SpotifyClone/</url>
+      
+        <content type="html"><![CDATA[]]></content>
+      
+      
+      <categories>
+          
+          <category> Android </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Android </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>Firebase 讲解</title>
       <link href="/2020/10/29/Firebase-%E8%AE%B2%E8%A7%A3/"/>
       <url>/2020/10/29/Firebase-%E8%AE%B2%E8%A7%A3/</url>
       
-        <content type="html"><![CDATA[<h1 id="AndroidStudio-添加-Firebase-选项"><a href="#AndroidStudio-添加-Firebase-选项" class="headerlink" title="AndroidStudio 添加 Firebase 选项"></a>AndroidStudio 添加 Firebase 选项</h1><p><img src="https://raw.githubusercontent.com/TheCara/RepoPicture/master/image/20201029230255.png" alt="使用时可能会没有 firebase 选项"></p><p><img src="https://raw.githubusercontent.com/TheCara/RepoPicture/master/image/20201029230927.png" alt="settings 添加 plug-in"></p><p><img src="https://raw.githubusercontent.com/TheCara/RepoPicture/master/image/20201029231529.png" alt="选择添加 Firebase Services"></p>]]></content>
+        <content type="html"><![CDATA[<h1 id="AndroidStudio-添加-Firebase-选项"><a href="#AndroidStudio-添加-Firebase-选项" class="headerlink" title="AndroidStudio 添加 Firebase 选项"></a>AndroidStudio 添加 Firebase 选项</h1><p><img src="https://raw.githubusercontent.com/TheCara/RepoPicture/master/image/20201029230255.png" alt="使用时可能会没有 firebase 选项"></p><p><img src="https://raw.githubusercontent.com/TheCara/RepoPicture/master/image/20201029230927.png" alt="settings 添加 plug-in"></p><p><img src="https://raw.githubusercontent.com/TheCara/RepoPicture/master/image/20201029231529.png" alt="选择添加 Firebase Services"></p><h1 id="创建-Firebase-项目"><a href="#创建-Firebase-项目" class="headerlink" title="创建 Firebase 项目"></a>创建 Firebase 项目</h1><blockquote><p>准备好 google 账号</p></blockquote><p><strong>打开 Firebase</strong></p><p><img src="https://raw.githubusercontent.com/TheCara/RepoPicture/master/image/2020-11-2-0.gif" alt=""></p><p><strong>进入控制台</strong></p><p><img src="https://raw.githubusercontent.com/TheCara/RepoPicture/master/image/20201102004348.png" alt=""></p><p><strong>选择项目名称</strong></p><p><img src="https://raw.githubusercontent.com/TheCara/RepoPicture/master/image/20201102004431.png" alt="create a firebase"></p><p><strong>继续</strong></p><p><img src="https://raw.githubusercontent.com/TheCara/RepoPicture/master/image/20201102004513.png" alt=""></p><p><strong>选择默认账户或者创建</strong></p><p><img src="https://raw.githubusercontent.com/TheCara/RepoPicture/master/image/20201102004549.png" alt=""></p><p><strong>稍等片刻</strong></p><p><img src="https://raw.githubusercontent.com/TheCara/RepoPicture/master/image/20201102004649.png" alt=""></p><p><strong>完成</strong></p><p><img src="https://raw.githubusercontent.com/TheCara/RepoPicture/master/image/20201102004812.png" alt=""></p><h1 id="删除-Firebase-项目"><a href="#删除-Firebase-项目" class="headerlink" title="删除 Firebase 项目"></a>删除 Firebase 项目</h1><p><strong>点击设置</strong></p><p><img src="https://raw.githubusercontent.com/TheCara/RepoPicture/master/image/20201102004958.png" alt=""></p><p><strong>选择项目设置</strong></p><p><strong>翻到最底部</strong></p><p><img src="https://raw.githubusercontent.com/TheCara/RepoPicture/master/image/20201102005205.png" alt=""></p><p><strong>删除项目。</strong></p><p><img src="https://raw.githubusercontent.com/TheCara/RepoPicture/master/image/20201102005613.png" alt=""></p>]]></content>
       
       
       <categories>
