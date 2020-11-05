@@ -761,8 +761,119 @@ suspend fun getImage(imageId: Int) = withContext(Dispatchers.IO) {
     ...
 }</code></pre>
 <p>到底什么是 suspend ，什么是 【非阻塞】，如何【挂起】。下篇。</p>
+<h1 id="【挂起的本质】"><a href="#【挂起的本质】" class="headerlink" title="【挂起的本质】"></a>【挂起的本质】</h1><p>协程中挂起的对象是什么？     <strong>挂起的对象是协程。</strong></p>
+<p>协程是什么？</p>
+<blockquote>
+<p>启动一个协程可以使用 <strong>launch 或者 async 函数</strong>，协程就是<strong>这两个函数中闭包的代码块</strong>。<strong>launch，async 或者其他函数创建的协程，</strong>在执行到某个 suspend函数时，这个协程会被 【<strong>suspend</strong>】挂起。</p>
+</blockquote>
+<p>从哪里挂起？</p>
+<blockquote>
+<p>在当前线程挂起。就是说<strong>当前协程</strong>在执行的线程中脱离。注意 它只是脱离了，当前线程不再去管理这个协程要求做什么。</p>
+</blockquote>
+<p><strong>当线程执行到协程的suspend函数的时候，暂时不再执行协程中的代码了。</strong></p>
+<p>分开来看，互相脱离的线程和协程接下来将发生什么事情。</p>
+<h4 id="线程："><a href="#线程：" class="headerlink" title="线程："></a>线程：</h4><p>协程的代码块中，<strong>线程执行到了suspend函数这里的时候，就暂时不再执行剩余的协程代码，跳出协程的代码块。</strong></p>
+<p>那线程接下来会做什么？</p>
+<p>例如它是后台线程：</p>
+<ul>
+<li>无事可做，被系统回收</li>
+<li>继续执行别的后台任务</li>
+</ul>
+<p>同Java线程池用到线程在工作结束后的完全一样：回收或者再利用。</p>
+<p>如果是个Android的主线程，那么它会以一秒六十次的界面刷新任务。</p>
+<p>常见的场景是，获取图片，显示出来：</p>
+<pre><code class="kotlin">// 主线程中
+GlobalScope.launch(Dispatchers.Main) {
+  val image = suspendingGetImage(imageId)  // 获取图片
+  avatarIv.setImageBitmap(image)           // 显示出来
+}
+
+suspend fun suspendingGetImage(id: String) = withContext(Dispatchers.IO) {
+  ...
+}</code></pre>
+<p>在主线程的协程，<strong>它实质上会往你的主线程 post 一个 Runnable，这个 Runnable 就是你的协程代码：</strong></p>
+<pre><code class="kotlin">handler.post {
+  val image = suspendingGetImage(imageId)
+  avatarIv.setImageBitmap(image)
+}</code></pre>
+<p>协程被挂起时，<strong>主线程的 post 的Runnable 提前结束，然后继续执行它界面的刷新任务。</strong></p>
+<h4 id="协程："><a href="#协程：" class="headerlink" title="协程："></a>协程：</h4><p>线程的代码在到达 <strong>suspend</strong>函数时会被掐断，<strong>协程会从这个 suspend 函数开始继续往下执行，不过是在指定的线程</strong>。</p>
+<p>谁指定的？</p>
+<blockquote>
+<p>suspend 函数指定的， 比如我们这个例子中， 函数内部的withContext传入的Dispatchers.IO所指定的IO线程。</p>
+</blockquote>
+<p><strong>Dispatchers 调度器，限制协程在特定的线程执行，或者分派的一个线程池，或者让它不受限制的运行。</strong></p>
+<p>常用的 Dispatchers，共有那些：</p>
+<ul>
+<li><strong>Dispatchers.Main</strong>:Android的主线程</li>
+<li><strong>DIspatchers.IO</strong>:针对磁盘和网络IO进行了优化，适合IO密集型的任务，例如：读写文件，操作数据库以及网络请求</li>
+<li><strong>Dispatchers.Detault</strong>:适合GPU密集型任务，例如计算。</li>
+</ul>
+<p>协程从 <strong>suspend</strong> 函数开始脱离启动它的线程，继续执行在 <strong>Dispatchers</strong> 所指定的IO线程。</p>
+<p>在 suspend 函数执行完成之后，协程为我们：<strong>自动将线程切回来</strong></p>
+<p><strong>切回？什么意思？</strong></p>
+<p>协程原本是在 <strong>主线程中运动的</strong>，在代码执到 <strong>suspend</strong> 函数的时候，发生线程切换，根据 <strong>Dispatchers</strong> 切换到了IO线程；</p>
+<p>【<strong>切回</strong>】是协程会棒我再 post 一个 Runnable，让剩下的代码继续回到主线程去执行。</p>
+<h4 id="本质："><a href="#本质：" class="headerlink" title="本质："></a>本质：</h4><p>协程再执行到标记有suspend标记的函数时，会被suspend也就是挂起，而所谓的挂起，就是切线程；不同在于，<strong>挂起函数在执行完成之后，协程会重新切回它的线程。</strong> 再简单来说：<strong>kotlin 中挂起，就是一个稍后会被自动切回的线程调度操作。</strong></p>
+<blockquote>
+<p>【切回】动作，在kotlin里叫做 resume，</p>
+</blockquote>
+<p>函数挂起后是需要恢复的。</p>
+<p>而恢复这个功能是协程的，如果不在协程里调用，恢复这个功能是没法实现的，所以也就回答了这个问题：为什么挂起函数必须在协程或者另一个挂起函数中调用。</p>
+<h1 id="如何挂起的？"><a href="#如何挂起的？" class="headerlink" title="如何挂起的？"></a>如何挂起的？</h1><p>【<strong>挂起</strong>】是如何做到的。</p>
+<p>定义的任意函数：</p>
+<pre><code class="kotlin">suspend fun suspendingPrint() {
+  println(&quot;Thread: ${Thread.currentThread().name}&quot;)
+}
+
+I/System.out: Thread: main</code></pre>
+<p>输出结果还是为主线程。</p>
+<p>为何没有切换线程了？因为它并不知道往哪里切，需要我们告诉它。</p>
+<p>对比之前例子中的 suspendingGetImage函数代码：</p>
+<pre><code class="kotlin">//                                               👇
+suspend fun suspendingGetImage(id: String) = withContext(Dispatchers.IO) {
+  ...
+}</code></pre>
+<p>不同之处在于 <strong>withContext</strong> 函数</p>
+<p><strong>withContext</strong>源码可知，<strong>它本身就是一个挂起函数，它接受一个Dispatcher 函数，依赖这个Dispatcher 函数的指示，你的协程被挂起，然后切换到别的线程。</strong></p>
+<p>所以suspend，并不能起到挂起函数的作用。</p>
+<p>而真正挂起协程的，kotlin协程框架帮助我们做的。</p>
+<p>加上 suspend 关键词是不行的，还需要直接或者间接的调用到 kotlin 协程框架自带的 <strong>suspend</strong> 函数才行。</p>
+<h1 id="suspend-的意义？"><a href="#suspend-的意义？" class="headerlink" title="suspend 的意义？"></a>suspend 的意义？</h1><p>这个关键词最重要的作用就是<strong>提醒</strong>。</p>
+<p>提醒你这个函数是一个挂起操作，<strong>提醒它是个耗时函数，请在协程你调用它。</strong></p>
+<pre><code class="kotlin">// 👇 redundant suspend modifier
+suspend fun suspendingPrint() {
+  println(&quot;Thread: ${Thread.currentThread().name}&quot;)
+}</code></pre>
+<p>如果你创建使用 <strong>suspend</strong> 函数但是它内部并没有包含真正的挂起逻辑时，<strong>编译器会给你提示</strong>：<strong>redundant suspend modigier</strong>，这个 <strong>suspend</strong> 关键词是多余的。</p>
+<p>因为这个函数并没有发生真正的挂起，此时 suspend 关键词只有一个效果：<strong>限制这个函数只能在协程里被调用，在非协程的代码中是无法调用的。</strong></p>
+<p>创建suspend函数，要在它内部直接或者间接的调用 kotlin 自带的suspend 函数，这是你的 suspend才有意义。</p>
+<h1 id="如何自定义-suspend-函数？"><a href="#如何自定义-suspend-函数？" class="headerlink" title="如何自定义 suspend 函数？"></a>如何自定义 suspend 函数？</h1><p>先分为两个问题:</p>
+<ul>
+<li>什么时候需要自定义 suspend 函数？</li>
+<li>具体应该怎么写?</li>
+</ul>
+<h4 id="什么时候需要自定义-suspend-函数？"><a href="#什么时候需要自定义-suspend-函数？" class="headerlink" title="什么时候需要自定义 suspend 函数？"></a><strong>什么时候需要自定义 suspend 函数？</strong></h4><p>某个函数需要耗时操作时，那就可以把它写成 suspend 函数。这是原则。</p>
+<p>耗时操作共分为两类：IO操作和CPU计算工作，比如文件的读写、网络交付、图片的模糊处理，都是耗时的。</p>
+<h4 id="具体操作："><a href="#具体操作：" class="headerlink" title="具体操作："></a>具体操作：</h4><p>给函数加上 <strong>suspend</strong> 关键字，然后 <strong>withContext</strong> 把函数的内容包住就可以了。</p>
+<p>使用 <strong>withContext</strong> 是因为它在挂起函数中功能最简单直接：把线程自动切走或者切回。</p>
+<p>当然并不是只有 <strong>withContext</strong> 这个函数来辅助我们自定义<strong>suspend</strong> 函数，比如挂起函数 <strong>delay</strong>，它的作用是等待指定时间再往下执行代码。</p>
+<p><strong>使用delay执行等待耗时操作</strong></p>
+<pre><code class="kotlin">suspend fun suspendUntilDone() {
+  while (!done) {
+    delay(5)
+  }
+}</code></pre>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>什么是挂起？</p>
+<blockquote>
+<p>挂起，就是一个稍后会被指定切回来的线程调度操作。</p>
+</blockquote>
+<p>疑惑：</p>
+<p>协程中的非阻塞式是什么</p>
+<p>协程和RxJava在切换线程方面功能是一样的，都能写出避免嵌套回调的复杂并发代码，协程相比有什么优势，或者让开发者使用的理由？</p>
 <p><strong>引用：</strong></p>
 <p><a href="https://kaixue.io/kotlin-coroutines-1/" target="_blank" rel="noopener">Kotlin 的协程用力瞥一眼 - 学不会协程？很可能因为你看过的教程都是错的</a></p>
+<p><a href="https://kaixue.io/kotlin-coroutines-2/" target="_blank" rel="noopener">Kotlin 协程的挂起好神奇好难懂？今天我把它的皮给扒了</a></p>
 
             </div>
             <hr/>

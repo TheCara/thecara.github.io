@@ -484,7 +484,67 @@
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                
+                <h1 id="创建项目-SpotigyClone"><a href="#创建项目-SpotigyClone" class="headerlink" title="创建项目 SpotigyClone"></a>创建项目 SpotigyClone</h1><h5 id="创建-Song-类"><a href="#创建-Song-类" class="headerlink" title="创建 Song 类"></a><strong>创建 Song 类</strong></h5><pre><code class="kotlin">/**
+ *   by:Thecara home
+ *   date:2020/11/3
+ *   存放 歌曲
+ *   这里的变量名字要与接口中的相同
+ */
+data class Song(
+    val mediaId: String = &quot;&quot;,
+    val title: String = &quot;&quot;,
+    val subtitle: String = &quot;&quot;,
+    val songUrl: String = &quot;&quot;,
+    val imageUrl: String = &quot;&quot;
+)</code></pre>
+<blockquote>
+<p>类位置 “data.entities”</p>
+</blockquote>
+<h5 id="添加依赖"><a href="#添加依赖" class="headerlink" title="添加依赖"></a><strong>添加依赖</strong></h5><pre><code class="groovy">// Firebase Firestore
+implementation &#39;com.google.firebase:firebase-firestore:21.6.0&#39;
+implementation &#39;com.google.firebase:firebase-core:17.0.0&#39;
+// Firebase Storage KTX 您可以上传和共享用户生成的内容（如图片和视频）用于使用 firebase 中的storage
+implementation &#39;com.google.firebase:firebase-storage-ktx:19.2.0&#39;
+// Firebase Coroutines 通过 Firebase Coroutines 使Firebase 对协程支持
+implementation &#39;org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.1.1&#39;</code></pre>
+<h5 id="添加依赖-1"><a href="#添加依赖-1" class="headerlink" title="添加依赖"></a><strong>添加依赖</strong></h5><blockquote>
+<p>根目录下的 build.gradle</p>
+</blockquote>
+<pre><code class="groovy">classpath &#39;com.google.gms:google-services:4.3.4&#39;</code></pre>
+<h5 id="创建-MusicDatabse-类"><a href="#创建-MusicDatabse-类" class="headerlink" title="创建 MusicDatabse 类"></a>创建 MusicDatabse 类</h5><blockquote>
+<p>“data.remote” 下创建</p>
+</blockquote>
+<pre><code class="kotlin">/**
+ *   by:Thecara home
+ *   date:2020/11/3
+ *   获得firestore storage 中的数据
+ */
+class MusicDatabase {
+    // 获得firestore的控制
+    private val firestore = FirebaseFirestore.getInstance()
+
+    // 获得元数据
+    private val songCollection = firestore.collection(SONG_COLLECTION)
+
+    // 为异步操作 创建挂起方法
+    suspend fun getALLSongs(): List&lt;Song&gt; {
+        // 从 FireStore 中获得歌曲
+        return try {
+            // 获得所有文档数据（song1，song2等）
+            songCollection.get().await().toObjects(Song::class.java)
+        } catch (e: Exception) {
+            emptyList()
+        }
+    }
+}</code></pre>
+<h5 id="创建-Constants-存放常量"><a href="#创建-Constants-存放常量" class="headerlink" title="创建 Constants 存放常量"></a>创建 Constants 存放常量</h5><pre><code class="kotlin">/**
+ *   by:Thecara home
+ *   date:2020/11/3
+ */
+object Constants {
+    const val SONG_COLLECTION = &quot;songs&quot;
+}</code></pre>
+
             </div>
             <hr/>
 
@@ -606,7 +666,13 @@
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            
+                            创建项目 SpotigyClone创建 Song 类/**
+ *   by:Thecara home
+ *   date:2020/11/3
+ *   存放 歌曲
+ *   这里的变量名字要与接口中的相同
+ */
+data class So
                         
                     </div>
                     <div class="publish-info">
