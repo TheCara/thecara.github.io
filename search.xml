@@ -4,6 +4,33 @@
   
     
     <entry>
+      <title>如何让Firebase使用Kotlin协程</title>
+      <link href="/2020/11/08/%E5%A6%82%E4%BD%95%E8%AE%A9Firebase%E4%BD%BF%E7%94%A8Kotlin%E5%8D%8F%E7%A8%8B/"/>
+      <url>/2020/11/08/%E5%A6%82%E4%BD%95%E8%AE%A9Firebase%E4%BD%BF%E7%94%A8Kotlin%E5%8D%8F%E7%A8%8B/</url>
+      
+        <content type="html"><![CDATA[<p><strong>引用：</strong></p><p>​    <a href="https://medium.com/better-programming/how-to-use-kotlin-coroutines-with-firebase-6f8577a3e00f" target="_blank" rel="noopener">How to Use Kotlin Coroutines With Firebase</a></p>]]></content>
+      
+      
+      <categories>
+          
+          <category> Android </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Android </tag>
+            
+            <tag> Kotlin </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>克隆 Spotify 播放器</title>
       <link href="/2020/11/02/SpotifyClone/"/>
       <url>/2020/11/02/SpotifyClone/</url>

@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="克隆 Spotify 播放器, TheCara">
+    <meta name="keywords" content="如何让Firebase使用Kotlin协程, TheCara">
     <meta name="description" content="">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>克隆 Spotify 播放器 | TheCara</title>
+    <title>如何让Firebase使用Kotlin协程 | TheCara</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -321,12 +321,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('https://hicomm.bg//uploads/articles/201801/55382/mainimage-ukrasete-s-vizualni-efekti-vashite-spotify-podkastove-i-pleilisti-s-novata-funkciya-spotlight.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/27.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">克隆 Spotify 播放器</h1>
+                    <h1 class="description center-align post-title">如何让Firebase使用Kotlin协程</h1>
                 </div>
             </div>
         </div>
@@ -447,6 +447,10 @@
                                 <span class="chip bg-color">Android</span>
                             </a>
                         
+                            <a href="/tags/Kotlin/">
+                                <span class="chip bg-color">Kotlin</span>
+                            </a>
+                        
                     </div>
                     
                 </div>
@@ -468,7 +472,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2020-11-02
+                    2020-11-08
                 </div>
                 
 
@@ -484,66 +488,8 @@
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h1 id="创建项目-SpotigyClone"><a href="#创建项目-SpotigyClone" class="headerlink" title="创建项目 SpotigyClone"></a>创建项目 SpotigyClone</h1><h5 id="创建-Song-类"><a href="#创建-Song-类" class="headerlink" title="创建 Song 类"></a><strong>创建 Song 类</strong></h5><pre><code class="kotlin">/**
- *   by:Thecara home
- *   date:2020/11/3
- *   存放 歌曲
- *   这里的变量名字要与接口中的相同
- */
-data class Song(
-    val mediaId: String = &quot;&quot;,
-    val title: String = &quot;&quot;,
-    val subtitle: String = &quot;&quot;,
-    val songUrl: String = &quot;&quot;,
-    val imageUrl: String = &quot;&quot;
-)</code></pre>
-<blockquote>
-<p>类位置 “data.entities”</p>
-</blockquote>
-<h5 id="添加依赖"><a href="#添加依赖" class="headerlink" title="添加依赖"></a><strong>添加依赖</strong></h5><pre><code class="groovy">// Firebase Firestore
-implementation &#39;com.google.firebase:firebase-firestore:21.6.0&#39;
-implementation &#39;com.google.firebase:firebase-core:17.0.0&#39;
-// Firebase Storage KTX 您可以上传和共享用户生成的内容（如图片和视频）用于使用 firebase 中的storage
-implementation &#39;com.google.firebase:firebase-storage-ktx:19.2.0&#39;
-// Firebase Coroutines 通过 Firebase Coroutines 使Firebase 对协程支持
-implementation &#39;org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.1.1&#39;</code></pre>
-<h5 id="添加依赖-1"><a href="#添加依赖-1" class="headerlink" title="添加依赖"></a><strong>添加依赖</strong></h5><blockquote>
-<p>根目录下的 build.gradle</p>
-</blockquote>
-<pre><code class="groovy">classpath &#39;com.google.gms:google-services:4.3.4&#39;</code></pre>
-<h5 id="创建-MusicDatabse-类"><a href="#创建-MusicDatabse-类" class="headerlink" title="创建 MusicDatabse 类"></a>创建 MusicDatabse 类</h5><blockquote>
-<p>“data.remote” 下创建</p>
-</blockquote>
-<pre><code class="kotlin">/**
- *   by:Thecara home
- *   date:2020/11/3
- *   获得firestore storage 中的数据
- */
-class MusicDatabase {
-    // 获得firestore的控制
-    private val firestore = FirebaseFirestore.getInstance()
-
-    // 获得元数据
-    private val songCollection = firestore.collection(SONG_COLLECTION)
-
-    // 为异步操作 创建挂起方法
-    suspend fun getALLSongs(): List&lt;Song&gt; {
-        // 从 FireStore 中获得歌曲
-        return try {
-            // 获得所有文档数据（song1，song2等）
-            songCollection.get().await().toObjects(Song::class.java)
-        } catch (e: Exception) {
-            emptyList()
-        }
-    }
-}</code></pre>
-<h5 id="创建-Constants-存放常量"><a href="#创建-Constants-存放常量" class="headerlink" title="创建 Constants 存放常量"></a>创建 Constants 存放常量</h5><pre><code class="kotlin">/**
- *   by:Thecara home
- *   date:2020/11/3
- */
-object Constants {
-    const val SONG_COLLECTION = &quot;songs&quot;
-}</code></pre>
+                <p><strong>引用：</strong></p>
+<p>​    <a href="https://medium.com/better-programming/how-to-use-kotlin-coroutines-with-firebase-6f8577a3e00f" target="_blank" rel="noopener">How to Use Kotlin Coroutines With Firebase</a></p>
 
             </div>
             <hr/>
@@ -569,7 +515,7 @@ object Constants {
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://thecara.github.io/2020/11/02/SpotifyClone/">https://thecara.github.io/2020/11/02/SpotifyClone/</a>
+                    <a href="https://thecara.github.io/2020/11/08/%E5%A6%82%E4%BD%95%E8%AE%A9Firebase%E4%BD%BF%E7%94%A8Kotlin%E5%8D%8F%E7%A8%8B/">https://thecara.github.io/2020/11/08/%E5%A6%82%E4%BD%95%E8%AE%A9Firebase%E4%BD%BF%E7%94%A8Kotlin%E5%8D%8F%E7%A8%8B/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -611,6 +557,10 @@ object Constants {
                                     <span class="chip bg-color">Android</span>
                                 </a>
                             
+                                <a href="/tags/Kotlin/">
+                                    <span class="chip bg-color">Kotlin</span>
+                                </a>
+                            
                         </div>
                     
                 </div>
@@ -650,9 +600,10 @@ object Constants {
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
             <div class="card">
                 <a href="/2020/11/08/%E5%A6%82%E4%BD%95%E8%AE%A9Firebase%E4%BD%BF%E7%94%A8Kotlin%E5%8D%8F%E7%A8%8B/">
                     <div class="card-image">
@@ -672,9 +623,9 @@ object Constants {
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2020-11-08
-                        </span>
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-11-08
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
@@ -687,6 +638,7 @@ object Constants {
                         </span>
                     </div>
                 </div>
+
                 
                 <div class="card-action article-tags">
                     
@@ -709,43 +661,29 @@ object Constants {
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2020/10/29/Firebase-%E8%AE%B2%E8%A7%A3/">
+                <a href="/2020/11/02/SpotifyClone/">
                     <div class="card-image">
                         
-                        <img src="https://firebase.google.com/images/social.png" class="responsive-img" alt="Firebase 讲解">
+                        <img src="https://hicomm.bg//uploads/articles/201801/55382/mainimage-ukrasete-s-vizualni-efekti-vashite-spotify-podkastove-i-pleilisti-s-novata-funkciya-spotlight.jpg" class="responsive-img" alt="克隆 Spotify 播放器">
                         
-                        <span class="card-title">Firebase 讲解</span>
+                        <span class="card-title">克隆 Spotify 播放器</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            AndroidStudio 添加 Firebase 选项
-
-
-创建 Firebase 项目
-准备好 google 账号
-
-打开 Firebase
-
-进入控制台
-
-选择项目名称
-
-继续
-
-选择默认账户或者创建
-
-稍等片刻
-
-完成
-
-删除 Fi
+                            创建项目 SpotigyClone创建 Song 类/**
+ *   by:Thecara home
+ *   date:2020/11/3
+ *   存放 歌曲
+ *   这里的变量名字要与接口中的相同
+ */
+data class So
                         
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2020-10-29
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-11-02
                             </span>
                         <span class="publish-author">
                             
