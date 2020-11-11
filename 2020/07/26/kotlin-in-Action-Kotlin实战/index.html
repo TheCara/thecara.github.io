@@ -845,7 +845,43 @@ class PrivateUser(override val nickname: String) : User {
 <p>TextView实例变成了 (lambda 的) 接收者，你可以调用它的属性和方法。</p>
 <p>with 函数和 apply 函数是最基本和最通用的使用带接收者的 lambda 的例子。更多的函数也可以使用这种模式。例如，使用<strong>标准库函数buildString进一步简化alphbet函数</strong>，它会负责<strong>创建StringBuilder</strong>并<strong>调用toString</strong>。<strong>building实际是带接收者的lambda</strong>，<strong>接收者</strong>就是<strong>StringBuilder</strong>。</p>
 <p><strong>使用buildString创建字母表</strong></p>
-<h2 id="5-6-小结"><a href="#5-6-小结" class="headerlink" title="5.6 小结"></a>5.6 小结</h2><h1 id="补充"><a href="#补充" class="headerlink" title="补充"></a>补充</h1><h3 id="字段和属性"><a href="#字段和属性" class="headerlink" title="字段和属性"></a>字段和属性</h3><p><a href="https://blog.csdn.net/chenchunlin526/article/details/71424844" target="_blank" rel="noopener">深入理解Java中的字段与属性的区别</a></p>
+<h2 id="5-6-小结"><a href="#5-6-小结" class="headerlink" title="5.6 小结"></a>5.6 小结</h2><h1 id="6-Kotlin的类型系统"><a href="#6-Kotlin的类型系统" class="headerlink" title="6  Kotlin的类型系统"></a>6  Kotlin的类型系统</h1><h2 id="6-1-可空性"><a href="#6-1-可空性" class="headerlink" title="6.1 可空性"></a>6.1 可空性</h2><h3 id="6-18-延迟初始化的属性"><a href="#6-18-延迟初始化的属性" class="headerlink" title="6.18 延迟初始化的属性"></a>6.18 延迟初始化的属性</h3><h4 id="使用-延迟初始化属性的原因"><a href="#使用-延迟初始化属性的原因" class="headerlink" title="使用 延迟初始化属性的原因"></a>使用 延迟初始化属性的原因</h4><blockquote>
+<p>Kotlin 通常要求你在构造方法中初始化所有属性，如果某个属性是可空类型，你就必须提供一个非空的初始化值。否则，你就必须使用可空类型。如果你这样做，该属性的每一次访问都需要null检查或者！！运算符</p>
+</blockquote>
+<p><strong>使用非空断言访问可控属性</strong></p>
+<pre><code class="kotlin">class MyService{
+    fun performAction():String = &quot;foo&quot;
+}
+class MyText{
+    private var myService : MyService ?= null    // 声明了一个可空类型初始化为 null
+    @Before fun setUp(){    // 在 setUp方法中提供真正的初始化器
+        myService = MyService()
+    }
+    @Test fun testAction(){
+        Assert.assertEquals(&quot;foo&quot;,myService!!.performAction())    // 必须注意可空性：要么用&quot;!!&quot;，要么用&quot;?.&quot;
+    }
+}</code></pre>
+<p><strong>使用延迟初始化</strong></p>
+<pre><code class="kotlin">class MyService{
+    fun performAction():String = &quot;foo&quot;
+}
+class MyText{
+    private lateinit var myService : MyService    // 声明了一个不需要初始化器的非空类型属性
+    @Before fun setUp(){    // 在 setUp 方法中初始化 myService
+        myService = MyService()
+    }
+    @Test fun testAction(){
+        Assert.assertEquals(&quot;foo&quot;,myService.performAction())    // 不需要 null 检查直接访问属性
+    }
+}</code></pre>
+<p>注意</p>
+<blockquote>
+<p>初始化的属性必须为var，因为需要在构造方法外修改它的值，使用val属性被编译时必须在构造方法中初始化final片段。</p>
+<p>尽管 myService 属性是非空的，你不需要在构造方法中初始化它。在属性没有被初始化之前调用会得到异常 “lateinit property myService has not been initialized”。</p>
+<p>lateinit 属性常见的一种用法是在依赖注入。在某种情况下，lateinit 属性的值是被依赖注入框架从外部设置的。为了保证和各种依赖注入框架的兼容性</p>
+<p>，Kotlin 会自动生成一个和 lateinit 属性具有相同可见性的字段。如果属性的可见性是public，生成的字段意思public</p>
+</blockquote>
+<h1 id="补充"><a href="#补充" class="headerlink" title="补充"></a>补充</h1><h3 id="字段和属性"><a href="#字段和属性" class="headerlink" title="字段和属性"></a>字段和属性</h3><p><a href="https://blog.csdn.net/chenchunlin526/article/details/71424844" target="_blank" rel="noopener">深入理解Java中的字段与属性的区别</a></p>
 <h4 id="属性和字段的区别"><a href="#属性和字段的区别" class="headerlink" title="属性和字段的区别"></a>属性和字段的区别</h4><p>属性（property），通常可以理解为get 和 set 方法。</p>
 <p>字段（field），通常叫做 <strong>类成员</strong>，或者 <strong>类变量</strong> ，有时也叫 域 ，理解为 数据成员，用来承担数据的。</p>
 <h4 id="属性和字段详解"><a href="#属性和字段详解" class="headerlink" title="属性和字段详解"></a>属性和字段详解</h4><p><strong>字段（field）</strong></p>

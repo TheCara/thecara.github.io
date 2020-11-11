@@ -676,7 +676,7 @@ val flammable:Flammable = get()</code></pre></li>
 <ol>
 <li>通过A的接口，把B传入；</li>
 <li>通过A的构造，把B传入；</li>
-<li>通过就该A的属性，把B传入；</li>
+<li>通过A的属性，把B传入；</li>
 </ol>
 <p>这些过程叫做<strong>依赖注入（DI）</strong></p>
 <h3 id="控制反转（Inversion-of-Control，简称-Ioc）"><a href="#控制反转（Inversion-of-Control，简称-Ioc）" class="headerlink" title="控制反转（Inversion of Control，简称 Ioc）"></a>控制反转（Inversion of Control，简称 Ioc）</h3><p>但是 A 并不能控制 B 何时播放(创建)或者关闭(销毁)，仅使用 B ，那么 B 的控制权交给 A 之外的事务处理，这些叫做 <strong>控制反转（Ioc）</strong></p>
