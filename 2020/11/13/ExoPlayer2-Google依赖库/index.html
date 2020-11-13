@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="Glide Android图片加载库, TheCara">
+    <meta name="keywords" content="ExoPlayer2 Google依赖库, TheCara">
     <meta name="description" content="">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>Glide Android图片加载库 | TheCara</title>
+    <title>ExoPlayer2 Google依赖库 | TheCara</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -321,12 +321,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('https://raw.githubusercontent.com/bumptech/glide/master/static/glide_logo.png')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/28.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">Glide Android图片加载库</h1>
+                    <h1 class="description center-align post-title">ExoPlayer2 Google依赖库</h1>
                 </div>
             </div>
         </div>
@@ -447,8 +447,8 @@
                                 <span class="chip bg-color">Android</span>
                             </a>
                         
-                            <a href="/tags/Glide/">
-                                <span class="chip bg-color">Glide</span>
+                            <a href="/tags/ExoPlayer/">
+                                <span class="chip bg-color">ExoPlayer</span>
                             </a>
                         
                     </div>
@@ -472,7 +472,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2020-11-12
+                    2020-11-13
                 </div>
                 
 
@@ -488,87 +488,57 @@
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h1 id="下载-添加依赖"><a href="#下载-添加依赖" class="headerlink" title="下载 添加依赖"></a>下载 添加依赖</h1><p><strong>添加依赖</strong></p>
+                <h1 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h1><p><strong>1.添加依赖</strong></p>
+<p>在项目的根目录下 打开 build.gradle 中添加Google和JCenter库。</p>
 <blockquote>
-<p>在 app 目录下打开 build.gradle</p>
+<p>创建android 项目时 AndroidStudio 会自动添加，在这里提一下。</p>
 </blockquote>
-<pre><code class="kotlin">   // Glide
-    implementation &#39;com.github.bumptech.glide:glide:4.11.0&#39;
-    kapt &#39;com.github.bumptech.glide:compiler:4.11.0&#39;</code></pre>
-<h1 id="基本用法"><a href="#基本用法" class="headerlink" title="基本用法"></a>基本用法</h1><pre><code class="kotlin">Glide.with(context)
-    .load(url)
-    .into(imageView);</code></pre>
-<blockquote>
-<ul>
-<li>with(context:Context) 需要上下文。</li>
-<li>load(url:String) 字符串性质的网络图片Url。</li>
-<li>into(imageView :ImageView) 你需要显示的图片的控件</li>
-</ul>
-</blockquote>
-<p><strong>取消加载</strong></p>
-<pre><code class="kotlin">Glide.with(context).clear(imageView);</code></pre>
-<blockquote>
-<p>Glide.with()中传入Activity或者Fragment时会跟随它们创建和销毁，所有手动取消是非必要的。</p>
-</blockquote>
-<h1 id="补充"><a href="#补充" class="headerlink" title="补充"></a>补充</h1><blockquote>
-<ul>
-<li>setDefaultRequestOptions(RequestOptions requestOptions)</li>
-</ul>
-<p>用于配置加载图片时的默认选项，编码模式包含在其中，默认配置是RGB_565</p>
-<p>参数：</p>
-<ol>
-<li>requestOptions:设置 RequestOptions 到加载的应用中。</li>
+<pre><code class="groovy">repositories {
+    google()
+    jcenter()
+}</code></pre>
+<ol start="2">
+<li>在 app module <strong>中添加依赖项</strong>。</li>
 </ol>
-</blockquote>
-<h4 id="RequestOptions类"><a href="#RequestOptions类" class="headerlink" title="RequestOptions类"></a>RequestOptions类</h4><blockquote>
-<p>提供选项来给 Glide 自定义加载。</p>
+<pre><code class="groovy">implementation &#39;com.google.android.exoplayer:exoplayer:2.X.X&#39;</code></pre>
+<p><strong>2.x.x</strong>替换为首选的最新版本(<a href="https://github.com/google/ExoPlayer/blob/release-v2/RELEASENOTES.md" target="_blank" rel="noopener">ExoPlayer</a>)</p>
+<p>作为完整库的代替方案，可以根据实际需要的库模块。例如，以下内容对Core,DASH和UI库模块的依赖关系，这可能时播放DASH内容的应用程序所需要的。</p>
+<pre><code class="groovy">implementation &#39;com.google.android.exoplayer:exoplayer-core:2.X.X&#39;
+implementation &#39;com.google.android.exoplayer:exoplayer-dash:2.X.X&#39;
+implementation &#39;com.google.android.exoplayer:exoplayer-ui:2.X.X&#39;</code></pre>
+<p>可用的库模块在下列出。</p>
+<ul>
+<li><strong>exoplayer-core</strong>：核心功能（必须）。</li>
+<li><strong>exoplayer-dash</strong>：支持DASH内容。</li>
+<li><strong>exoplayer-hls</strong>：支持HLS内容。</li>
+<li><strong>exoplayer-smoothstraming</strong>：支持SmoothStreaming内容。</li>
+<li><strong>exoplayer-ui</strong>：与ExoPlayer一起使用的UI组件和资源。</li>
+</ul>
+<p><a href="https://github.com/google/ExoPlayer/tree/release-v2/extensions/" target="_blank" rel="noopener">更多的扩展模块</a>。</p>
+<p><strong>3.Java8</strong></p>
+<p>在 app 目录下添加 一下内容供所有文件支持Java8</p>
+<pre><code class="groovy">compileOptions {
+  targetCompatibility JavaVersion.VERSION_1_8
+}</code></pre>
+<h1 id="DOC"><a href="#DOC" class="headerlink" title="DOC"></a>DOC</h1><h4 id="AudioAttributes-Builder-类"><a href="#AudioAttributes-Builder-类" class="headerlink" title="AudioAttributes.Builder() 类"></a><strong>AudioAttributes.Builder() 类</strong></h4><blockquote>
+<p>用于音频回放的属性，用于配置平台下的AudioTrack。</p>
+<p>如果你要设置音频属性，需要创建一个 AudioAttributes实例。</p>
 </blockquote>
 <ul>
-<li><strong>placeholder(Drawable drawable)</strong></li>
+<li>setContentText(int contentType)</li>
 </ul>
 <blockquote>
-<p>设置加载时的默认图片。</p>
-<p>参数：</p>
-<ol>
-<li>drawable，显示图片的占位符</li>
-</ol>
+<p>设置描述音频信号内容类型的属性。如语言或音乐。</p>
 </blockquote>
-<ul>
-<li><strong>onError(Drawable drawable)</strong></li>
-</ul>
+<h4 id="C-类"><a href="#C-类" class="headerlink" title="C 类"></a>C 类</h4><blockquote>
+<p>用来描述音频的内容是什么，等等。</p>
+</blockquote>
+<p><strong>C.CONTENT_TYPE_MUSIC</strong></p>
 <blockquote>
-<p>设置图片加载错误时的图片。</p>
-<p>参数：</p>
-<ol>
-<li>drawable，显示图片的占位符</li>
-</ol>
+<p>C 类的常量用于</p>
+<p>在你使用内容类型为音乐时使用的内容类型值。</p>
 </blockquote>
-<ul>
-<li><strong>diskCacheStrategy(DiskCacheStrategy diskCacheStrategy)</strong></li>
-</ul>
-<blockquote>
-<p>将 DiskCacheStrategy 类型应用到单独请求中。允许你加载过程中使用或者写入磁盘缓存，选择性的仅支持无修改的原声数据，或者变换过的缩略图，或者兼而有之。</p>
-<p>参数：</p>
-<ol>
-<li>diskCacheStrategy：使用DiskCacheStrategy类的常量作为缓存策略。</li>
-</ol>
-</blockquote>
-<h4 id="DiskCacheStrategy-类"><a href="#DiskCacheStrategy-类" class="headerlink" title="DiskCacheStrategy  类"></a>DiskCacheStrategy  类</h4><blockquote>
-<p>缓存策略（Disk 、Cache 、Strategy）</p>
-<p>允许你加载过程中使用或者写入磁盘缓存，选择性的仅支持无修改的原声数据，或者变换过的缩略图，或者兼而有之。</p>
-<p>默认是<strong>AUTOMATIC</strong>，会尝试对本地和远程图片使用最佳策略。当你加载远程数据时，<strong>AUTOMATIC</strong>策略会存储维被你加载过程修改过的原始数据(例如，变换，裁剪)，因为下载远程数据相比调整磁盘上已经存在的数据要昂贵的多。对于本都数据，<strong>AUTOMATIC</strong> 策略会存储变换过的缩略图，因为即使你再次生成另一个尺寸或者类型的图片，取回原始数据也是很容易的。</p>
-</blockquote>
-<p><strong>类型介绍</strong></p>
-<blockquote>
-<p>DiskCacheStrategy.NONE: 表示不缓存任何内容。</p>
-<p>DiskCacheStrategy.DATA: 只缓存原始图片。</p>
-<p>DiskCacheStrategy.RESOURCE：表示只缓存转换过后的图片。</p>
-<p>DiskCacheStrategy.ALL:表示既缓存原始图片，也缓存转换过后的图片。</p>
-<p>DiskCacheStrategy.AUTOMATIC: 表示让Gilde根据图片资源智能的选择一种缓存策略（默认）。</p>
-</blockquote>
-<p><strong>引用</strong></p>
-<p><a href="https://muyangmin.github.io/glide-docs-cn/doc/getting-started.html" target="_blank" rel="noopener">Glide</a></p>
-<p><a href="https://www.jianshu.com/p/4f457a124d67" target="_blank" rel="noopener">Android图片加载框架——Glide（Glide v4）</a></p>
+<h4 id="引用："><a href="#引用：" class="headerlink" title="引用："></a>引用：</h4><p><a href="https://juejin.im/post/6854573203994443789" target="_blank" rel="noopener">深入解读ExoPlayer 之 开发者指南全译-02 开始使用</a></p>
 
             </div>
             <hr/>
@@ -594,7 +564,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://thecara.github.io/2020/11/12/Glide-Android%E5%9B%BE%E7%89%87%E5%8A%A0%E8%BD%BD%E5%BA%93/">https://thecara.github.io/2020/11/12/Glide-Android%E5%9B%BE%E7%89%87%E5%8A%A0%E8%BD%BD%E5%BA%93/</a>
+                    <a href="https://thecara.github.io/2020/11/13/ExoPlayer2-Google%E4%BE%9D%E8%B5%96%E5%BA%93/">https://thecara.github.io/2020/11/13/ExoPlayer2-Google%E4%BE%9D%E8%B5%96%E5%BA%93/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -636,8 +606,8 @@
                                     <span class="chip bg-color">Android</span>
                                 </a>
                             
-                                <a href="/tags/Glide/">
-                                    <span class="chip bg-color">Glide</span>
+                                <a href="/tags/ExoPlayer/">
+                                    <span class="chip bg-color">ExoPlayer</span>
                                 </a>
                             
                         </div>
@@ -679,9 +649,10 @@
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
             <div class="card">
                 <a href="/2020/11/13/ExoPlayer2-Google%E4%BE%9D%E8%B5%96%E5%BA%93/">
                     <div class="card-image">
@@ -705,9 +676,9 @@ repositories {
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2020-11-13
-                        </span>
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-11-13
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
@@ -720,6 +691,7 @@ repositories {
                         </span>
                     </div>
                 </div>
+
                 
                 <div class="card-action article-tags">
                     
@@ -742,24 +714,29 @@ repositories {
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2020/11/11/Dagger-Hilt-Android%E7%9A%84%E4%BE%9D%E8%B5%96%E6%B3%A8%E5%85%A5%E6%A1%86%E6%9E%B6/">
+                <a href="/2020/11/12/Glide-Android%E5%9B%BE%E7%89%87%E5%8A%A0%E8%BD%BD%E5%BA%93/">
                     <div class="card-image">
                         
-                        <img src="https://www.techyourchance.com/wp-content/uploads/2020/06/dagger_hilt.jpeg" class="responsive-img" alt="Dagger-Hilt Android的依赖注入框架">
+                        <img src="https://raw.githubusercontent.com/bumptech/glide/master/static/glide_logo.png" class="responsive-img" alt="Glide Android图片加载库">
                         
-                        <span class="card-title">Dagger-Hilt Android的依赖注入框架</span>
+                        <span class="card-title">Glide Android图片加载库</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            Hilt 是干什么的？它是 Google 为Android开发提供的场景化依赖库，皆在减少项目中进行的手动依赖注入。
-Hilt 为项目中的每个 Android 类提供容器并自动管理它们的生命周期，为应用程序提供了 DI的标准方法。它是从 D
+                            下载 添加依赖添加依赖
+
+在 app 目录下打开 build.gradle
+
+   // Glide
+    implementation &#39;com.github.bumptech.glide:glide:4.11.0&#39;
+ 
                         
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2020-11-11
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-11-12
                             </span>
                         <span class="publish-author">
                             
@@ -780,8 +757,8 @@ Hilt 为项目中的每个 Android 类提供容器并自动管理它们的生命
                         <span class="chip bg-color">Android</span>
                     </a>
                     
-                    <a href="/tags/Dagger/">
-                        <span class="chip bg-color">Dagger</span>
+                    <a href="/tags/Glide/">
+                        <span class="chip bg-color">Glide</span>
                     </a>
                     
                 </div>

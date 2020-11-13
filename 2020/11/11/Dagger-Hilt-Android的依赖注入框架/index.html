@@ -690,6 +690,23 @@ object NetworkModule {
 <td>Service#onDestroy()</td>
 </tr>
 </tbody></table>
+<h4 id="Provides"><a href="#Provides" class="headerlink" title="@Provides"></a>@Provides</h4><p>常用于被 @Module 注解标记类的内部方法，并提供依赖项对象。</p>
+<pre><code class="kotlin">@Module
+@InstallIn(ApplicationComponent::class)
+// 这里使用了 ApplicationComponent，因此 NetworkModule 绑定到 Application 的生命周期。
+object NetworkModule {
+
+    /**
+     * @Provides 常用于被 @Module 注解标记类的内部的方法，并提供依赖项对象。
+     * @Singleton 提供单例
+     */
+    @Provides
+    @Singleton
+    fun provideOkHttpClient(): OkHttpClient {
+        return OkHttpClient.Builder()
+            .build()
+    }
+}</code></pre>
 <h1 id="Hilt-同-第三方组件一起使用"><a href="#Hilt-同-第三方组件一起使用" class="headerlink" title="Hilt 同 第三方组件一起使用"></a>Hilt 同 第三方组件一起使用</h1><p>如果你要在项目中添加第三方依赖，需要使用@Module注解，使用@Module注解的普通类，在其中创建第三方依赖的对象。</p>
 <pre><code class="kotlin">@Module
 @InstallIn(ApplicationComponent::class)
@@ -729,9 +746,16 @@ object NetworkModule {
 <li>使用 @Module注入的类，需要使用@InstallIn注解指定module的范围，会绑定到Android类对应的生命周期上。</li>
 <li>@Provides 常用于标记类的内部方法，并提供依赖项对象。</li>
 </ul>
-<p><strong>引用</strong>：</p>
-<p><a href="https://juejin.im/post/6844904198803292173?utm_source=gold_browser_extension#heading-13" target="_blank" rel="noopener">Jetpack 新成员 Hilt 实践（一）启程过坑记</a></p>
+<h1 id="当需要上下文是使用的注解（预定义限定符）"><a href="#当需要上下文是使用的注解（预定义限定符）" class="headerlink" title="当需要上下文是使用的注解（预定义限定符）"></a>当需要上下文是使用的注解（预定义限定符）</h1><p>​    HIlt提供了预定义限定符。例如，当你需要使用应用或者Activity的Context类时，Hilt提供了<strong>@ApplicationContext</strong>和<strong>@ActivityContext</strong>限定符。</p>
+<p>假如,当前这个类需要Activity的上下文。</p>
+<pre><code class="kotlin">class Test @Inject constructor(
+    @ActivityContext private val context: Context,
+    private val service: AnalyticsService
+) { ... }</code></pre>
+<h5 id="引用："><a href="#引用：" class="headerlink" title="引用："></a><strong>引用</strong>：</h5><p><a href="https://juejin.im/post/6844904198803292173?utm_source=gold_browser_extension#heading-13" target="_blank" rel="noopener">Jetpack 新成员 Hilt 实践（一）启程过坑记</a></p>
 <p><a href="https://juejin.im/post/6845166890562617352" target="_blank" rel="noopener">Jetpack 新成员 Hilt 与 Dagger 大不同（三）落地篇</a></p>
+<p><a href="https://developer.android.com/training/dependency-injection/hilt-android?hl=zh-cn" target="_blank" rel="noopener">Hilt 中的预定义限定符</a></p>
+<p><a href="https://muyangmin.github.io/glide-docs-cn/javadocs/400/index-all.html" target="_blank" rel="noopener">JavaDoc-Glide</a></p>
 
             </div>
             <hr/>
