@@ -525,20 +525,51 @@ implementation &#39;com.google.android.exoplayer:exoplayer-ui:2.X.X&#39;</code><
 <p>如果你要设置音频属性，需要创建一个 AudioAttributes实例。</p>
 </blockquote>
 <ul>
-<li>setContentText(int contentType)</li>
+<li><strong>setContentText(int contentType)</strong></li>
 </ul>
 <blockquote>
 <p>设置描述音频信号内容类型的属性。如语言或音乐。</p>
 </blockquote>
-<h4 id="C-类"><a href="#C-类" class="headerlink" title="C 类"></a>C 类</h4><blockquote>
-<p>用来描述音频的内容是什么，等等。</p>
+<ul>
+<li><strong>setUsage(int contentType)</strong></li>
+</ul>
+<blockquote>
+<p>设置描述音频信号用途的属性，例如报警或者铃声。</p>
 </blockquote>
-<p><strong>C.CONTENT_TYPE_MUSIC</strong></p>
+<ul>
+<li><strong>build()方法</strong></li>
+</ul>
+<blockquote>
+<p>构建器创建一个 AudioAttributes 实例。</p>
+</blockquote>
+<h4 id="C-类"><a href="#C-类" class="headerlink" title="C 类"></a>C 类</h4><blockquote>
+<p>定义标准库的常量</p>
+</blockquote>
+<ul>
+<li><strong>C.CONTENT_TYPE_MUSIC</strong></li>
+</ul>
 <blockquote>
 <p>C 类的常量用于</p>
 <p>在你使用内容类型为音乐时使用的内容类型值。</p>
 </blockquote>
+<ul>
+<li><strong>C.USAGE_MEDIA</strong></li>
+</ul>
+<blockquote>
+<p>当使用媒体是使用这个值(如音乐或者电影原声带)</p>
+</blockquote>
+<h4 id="SimpleExoPlayer-类"><a href="#SimpleExoPlayer-类" class="headerlink" title="SimpleExoPlayer 类"></a>SimpleExoPlayer 类</h4><blockquote>
+<p>实现组件的外部播放。</p>
+<p>用SimpleExoPlayer.Build(context:Context)来实现</p>
+</blockquote>
+<ul>
+<li><strong>build()方法</strong></li>
+</ul>
+<blockquote>
+<p>构建器创建一个 SimpleExoPlayer实例。</p>
+</blockquote>
 <h4 id="引用："><a href="#引用：" class="headerlink" title="引用："></a>引用：</h4><p><a href="https://juejin.im/post/6854573203994443789" target="_blank" rel="noopener">深入解读ExoPlayer 之 开发者指南全译-02 开始使用</a></p>
+<p><a href="https://exoplayer.dev/doc/reference/overview-summary.html" target="_blank" rel="noopener">DOC</a></p>
 
             </div>
             <hr/>
