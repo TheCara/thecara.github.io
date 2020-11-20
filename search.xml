@@ -4,6 +4,33 @@
   
     
     <entry>
+      <title>Android Jetpack架构组件 Navigation 导航库</title>
+      <link href="/2020/11/20/Navigation-%E5%AF%BC%E8%88%AA%E5%BA%93/"/>
+      <url>/2020/11/20/Navigation-%E5%AF%BC%E8%88%AA%E5%BA%93/</url>
+      
+        <content type="html"><![CDATA[]]></content>
+      
+      
+      <categories>
+          
+          <category> Android </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Android </tag>
+            
+            <tag> Jetpack架构 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>ExoPlayer2 Google依赖库</title>
       <link href="/2020/11/13/ExoPlayer2-Google%E4%BE%9D%E8%B5%96%E5%BA%93/"/>
       <url>/2020/11/13/ExoPlayer2-Google%E4%BE%9D%E8%B5%96%E5%BA%93/</url>
@@ -396,9 +423,9 @@
             
             <tag> Android </tag>
             
-            <tag> Kotlin </tag>
-            
             <tag> 软件工程 </tag>
+            
+            <tag> Kotlin </tag>
             
             <tag> koin </tag>
             
