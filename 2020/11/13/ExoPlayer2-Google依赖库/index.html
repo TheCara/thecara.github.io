@@ -568,6 +568,53 @@ implementation &#39;com.google.android.exoplayer:exoplayer-ui:2.X.X&#39;</code><
 <blockquote>
 <p>构建器创建一个 SimpleExoPlayer实例。</p>
 </blockquote>
+<ul>
+<li><strong>setAudioAttributes()</strong></li>
+</ul>
+<blockquote>
+<p>设置音轨使用的音频回放属性。如果没有设置，将使用默认的属性。它们一般设置为媒体播放。设置回放音频属性期间可能回在输出中引入一个短间隙，因为音频轨道被重新创建。还生成一个新的音频会话id。如果音轨是由音轨选择器启用的，指定的音频属性将被忽视，但是当它播放时没有音轨那么指定属性将会被使用。</p>
+<p>If the device is running a build before platform API version 21, audio attributes cannot be set directly on the underlying audio track. In this case, the usage will be mapped onto an equivalent stream type using Util.getStreamTypeForAudioUsage(int).</p>
+<p>If audio focus should be handled, the AudioAttributes.usage must be C.USAGE_MEDIA or C.USAGE_GAME. Other usages will throw an IllegalArgumentException.</p>
+<p><strong>Parameters:</strong></p>
+<p><code>audioAttributes</code> - The attributes to use for audio playback. 用于音频回放的属性</p>
+<p><code>handleAudioFocus</code> - True if the player should handle audio focus, false other wise.    用户处理音轨焦点时选择 true。</p>
+</blockquote>
+<ul>
+<li><strong>setHandleAudioBecomingNoisy(boolean handleAudioBecomingNoisy)</strong></li>
+</ul>
+<blockquote>
+<p>设置当前的音频从耳机重新定向到扬声器事，播放器是否应该暂停。</p>
+<p>默认不启用。false</p>
+<p>Sets whether the player should pause automatically when audio is rerouted from a headset to device speakers.</p>
+<p><strong>Parameters:</strong></p>
+<p><code>handleAudioBecomingNoisy</code> - Whether the player should pause automatically when audio is rerouted from a headset to device speakers.</p>
+</blockquote>
+<h4 id="DefaultDataSourceFactory-类"><a href="#DefaultDataSourceFactory-类" class="headerlink" title="DefaultDataSourceFactory  类"></a>DefaultDataSourceFactory  类</h4><blockquote>
+<p>创建工厂，将非文件的数据委托到 DetaultHttpDataSources。</p>
+<p>Factory that produces DefaultDataSource instances that delegate to DefaultHttpDataSources for non-file/asset/content URIs.</p>
+</blockquote>
+<ul>
+<li><strong>DefaultDataSourceFactory(Context context,String userAgent)</strong></li>
+</ul>
+<blockquote>
+<p>创建 DetaultDataSourceFactory 类实例</p>
+<p><strong>Parameters:</strong></p>
+<p><code>context</code> - A context.</p>
+<p><code>userAgent</code> - The User-Agent string that should be used. 使用用户代理</p>
+</blockquote>
+<ul>
+<li><strong>Util.getUserAgent(Context context,String applicationName)</strong></li>
+</ul>
+<blockquote>
+<p>根据给定的应用程序名词和库版本返回用户代理的字符串。</p>
+<p>Returns a user agent string based on the given application name and the library version.</p>
+<ul>
+<li><p><strong>Parameters:</strong></p>
+<p><code>context</code> - A valid context of the calling application. 当前 app 上下文</p>
+<p><code>applicationName</code> - String that will be prefix’ed to the generated user agent.</p>
+</li>
+</ul>
+</blockquote>
 <h4 id="引用："><a href="#引用：" class="headerlink" title="引用："></a>引用：</h4><p><a href="https://juejin.im/post/6854573203994443789" target="_blank" rel="noopener">深入解读ExoPlayer 之 开发者指南全译-02 开始使用</a></p>
 <p><a href="https://exoplayer.dev/doc/reference/overview-summary.html" target="_blank" rel="noopener">DOC</a></p>
 
