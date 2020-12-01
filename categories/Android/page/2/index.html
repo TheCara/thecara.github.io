@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="分类: gradle, TheCara">
+    <meta name="keywords" content="分类: Android, TheCara">
     <meta name="description" content="">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>分类: gradle | TheCara</title>
+    <title>分类: Android | TheCara</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -362,7 +362,7 @@
                 
                 <a href="/categories/Android/" title="Android: 20">
                     <span class="chip center-align waves-effect waves-light
-                             chip-default "
+                             chip-active "
                             style="background-color: #F9EBEA;">Android
                         <span class="tag-length">20</span>
                     </span>
@@ -434,7 +434,7 @@
                 
                 <a href="/categories/gradle/" title="gradle: 1">
                     <span class="chip center-align waves-effect waves-light
-                             chip-active "
+                             chip-default "
                             style="background-color: #A3E4D7;">gradle
                         <span class="tag-length">1</span>
                     </span>
@@ -463,37 +463,35 @@
             
             <div class="article tag-post col s12 m6 l4" data-aos="zoom-in">
                 <div class="card">
-                    <a href="/2020/09/09/%E4%BD%BF%E7%94%A8gradle/">
+                    <a href="/2020/07/24/DataBinding%E7%9A%84%E4%BD%BF%E7%94%A8/">
                         <div class="card-image tag-image">
                             
-                            <img src="https://raw.githubusercontent.com/TheCara/RepoPicture/master/image/20200909002115.png" class="responsive-img" alt="使用gradle">
                             
-                            <span class="card-title">使用gradle</span>
+                            <img src="/medias/featureimages/16.jpg" class="responsive-img" alt="DataBinding的使用">
+                            
+                            <span class="card-title">DataBinding的使用</span>
                         </div>
                     </a>
                     <div class="card-content article-content">
                         <div class="summary block-with-text">
                             
-                                创建 Gradle 项目
-👆 联网状态打开 IDEA
-项目结构介绍
-src/main/java 正式代码目录
-src/main/resources 正式配置文件目录
+                                DataBinding 配合 LiveData 和 ViewModel 使用
+需要创建MyViewModel类,继承ViewModel
+需要添加DataBinding的gradle(app)配置信息
 
-src/test/java 放置单元测试代码目录
-src/test/r
+添加配置信息 在gradle(app)
                             
                         </div>
                         <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2020-09-09
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-07-24
                             </span>
                             <span class="publish-author">
                                 
                                 <i class="fas fa-bookmark fa-fw icon-category"></i>
                                 
-                                <a href="/categories/gradle/" class="post-category">
-                                    gradle
+                                <a href="/categories/Android/" class="post-category">
+                                    Android
                                 </a>
                                 
                                 
@@ -508,12 +506,73 @@ src/test/r
                             <span class="chip bg-color">Android</span>
                         </a>
                         
-                        <a href="/tags/gradle/">
-                            <span class="chip bg-color">gradle</span>
+                        <a href="/tags/DataBinding/">
+                            <span class="chip bg-color">DataBinding</span>
                         </a>
                         
-                        <a href="/tags/groovy/">
-                            <span class="chip bg-color">groovy</span>
+                        <a href="/tags/Kotlin/">
+                            <span class="chip bg-color">Kotlin</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+            
+            <div class="article tag-post col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2020/07/20/LiveData/">
+                        <div class="card-image tag-image">
+                            
+                            
+                            <img src="/medias/featureimages/8.jpg" class="responsive-img" alt="LiveData与ViewModel">
+                            
+                            <span class="card-title">LiveData与ViewModel</span>
+                        </div>
+                    </a>
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                单独使用LiveData
+创建LiveData实例。持有特定的数据类型，例如 int ,String。
+创建一个Observer对象,并且实现onChanged()方法。在onChanged()方法类可以进行UI的刷新等。
+使用LiveDa
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-07-20
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-bookmark fa-fw icon-category"></i>
+                                
+                                <a href="/categories/Android/" class="post-category">
+                                    Android
+                                </a>
+                                
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/Android/">
+                            <span class="chip bg-color">Android</span>
+                        </a>
+                        
+                        <a href="/tags/Kotlin/">
+                            <span class="chip bg-color">Kotlin</span>
+                        </a>
+                        
+                        <a href="/tags/LiveData/">
+                            <span class="chip bg-color">LiveData</span>
+                        </a>
+                        
+                        <a href="/tags/ViewModel/">
+                            <span class="chip bg-color">ViewModel</span>
                         </a>
                         
                     </div>
@@ -524,6 +583,30 @@ src/test/r
         </div>
     </article>
 </main>
+
+
+<div class="container paging">
+    <div class="row">
+        <div class="col s6 m4 l4">
+            
+            <a href="/categories/Android/"
+               class="left btn-floating btn-large waves-effect waves-light bg-color">
+                <i class="fas fa-angle-left"></i>
+            </a>
+            
+        </div>
+        <div class="page-info col m4 l4 hide-on-small-only">
+            <div class="center-align b-text-gray">2 / 2</div>
+        </div>
+        <div class="col s6 m4 l4">
+            
+            <a class="right btn-floating btn-large disabled">
+                <i class="fas fa-angle-right"></i>
+            </a>
+            
+        </div>
+    </div>
+</div>
 
 
 
