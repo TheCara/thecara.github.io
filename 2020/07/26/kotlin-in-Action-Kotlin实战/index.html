@@ -845,7 +845,19 @@ class PrivateUser(override val nickname: String) : User {
 <p>TextView实例变成了 (lambda 的) 接收者，你可以调用它的属性和方法。</p>
 <p>with 函数和 apply 函数是最基本和最通用的使用带接收者的 lambda 的例子。更多的函数也可以使用这种模式。例如，使用<strong>标准库函数buildString进一步简化alphbet函数</strong>，它会负责<strong>创建StringBuilder</strong>并<strong>调用toString</strong>。<strong>building实际是带接收者的lambda</strong>，<strong>接收者</strong>就是<strong>StringBuilder</strong>。</p>
 <p><strong>使用buildString创建字母表</strong></p>
-<h2 id="5-6-小结"><a href="#5-6-小结" class="headerlink" title="5.6 小结"></a>5.6 小结</h2><h1 id="6-Kotlin的类型系统"><a href="#6-Kotlin的类型系统" class="headerlink" title="6  Kotlin的类型系统"></a>6  Kotlin的类型系统</h1><h2 id="6-1-可空性"><a href="#6-1-可空性" class="headerlink" title="6.1 可空性"></a>6.1 可空性</h2><h3 id="6-18-延迟初始化的属性"><a href="#6-18-延迟初始化的属性" class="headerlink" title="6.18 延迟初始化的属性"></a>6.18 延迟初始化的属性</h3><h4 id="使用-延迟初始化属性的原因"><a href="#使用-延迟初始化属性的原因" class="headerlink" title="使用 延迟初始化属性的原因"></a>使用 延迟初始化属性的原因</h4><blockquote>
+<h2 id="5-6-小结"><a href="#5-6-小结" class="headerlink" title="5.6 小结"></a>5.6 小结</h2><h1 id="6-Kotlin的类型系统"><a href="#6-Kotlin的类型系统" class="headerlink" title="6  Kotlin的类型系统"></a>6  Kotlin的类型系统</h1><h2 id="6-1-可空性"><a href="#6-1-可空性" class="headerlink" title="6.1 可空性"></a>6.1 可空性</h2><h3 id="6-17-“let”-函数"><a href="#6-17-“let”-函数" class="headerlink" title="6.17 “let” 函数"></a>6.17 “let” 函数</h3><p>用来处理可空表达式。和安全调用运算符一起使用，允许你对表达式求值，检查求值结果是否null，并把结果保存为一个变量。</p>
+<pre><code class="kotlin">fun sendEmailTo(email : String){
+    println(&quot;Sending emaill to $emaill&quot;)
+}
+
+&gt;&gt;&gt; var email:String ? = &quot;yole@example.com&quot;
+&gt;&gt;&gt; email?.let{sendEmailTo(it)}
+&gt;&gt;&gt; emaill = null
+&gt;&gt;&gt; emaill?.let{    sendEmailTo(it)        }</code></pre>
+<blockquote>
+<p>所以说只有这段表达式不为空时才会执行代码块里的代码</p>
+</blockquote>
+<h3 id="6-18-延迟初始化的属性"><a href="#6-18-延迟初始化的属性" class="headerlink" title="6.18 延迟初始化的属性"></a>6.18 延迟初始化的属性</h3><h4 id="使用-延迟初始化属性的原因"><a href="#使用-延迟初始化属性的原因" class="headerlink" title="使用 延迟初始化属性的原因"></a>使用 延迟初始化属性的原因</h4><blockquote>
 <p>Kotlin 通常要求你在构造方法中初始化所有属性，如果某个属性是可空类型，你就必须提供一个非空的初始化值。否则，你就必须使用可空类型。如果你这样做，该属性的每一次访问都需要null检查或者！！运算符</p>
 </blockquote>
 <p><strong>使用非空断言访问可控属性</strong></p>
@@ -895,6 +907,16 @@ class MyText{
 <p><img src="https://raw.githubusercontent.com/TheCara/RepoPicture/master/image/20200909220317.png" alt=""></p>
 <p>这是一个属性，一个字段。</p>
 <p>总结：属性是对字段的封装，供外部访问。通常<strong>属性</strong>将对应的<strong>私有字段</strong>通过封装成公共属性，以便于外界访问和修改。</p>
+<h3 id="表达式"><a href="#表达式" class="headerlink" title="表达式"></a>表达式</h3><p>是指可以被求值的代码。</p>
+<p>例如</p>
+<pre><code class="c">int result = add(x + 1,y)</code></pre>
+<blockquote>
+<p>x + 1 作为表达式传递了数值</p>
+</blockquote>
+<pre><code class="c">int result = add（if(x==1),y）</code></pre>
+<blockquote>
+<p>这段语句在 c 中是没有办法作为表达式的。</p>
+</blockquote>
 <h3 id="Kotlin-this表达式"><a href="#Kotlin-this表达式" class="headerlink" title="Kotlin this表达式"></a>Kotlin this表达式</h3><p>为了表示当前的 <strong>接收者</strong> 使用 this{:.keyword} 表达式：</p>
 <ul>
 <li>在类的成员中，this{:.keyword}指的是当前对象</li>

@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="Firebase 讲解, TheCara">
+    <meta name="keywords" content="媒体浏览器服务 MediaBrowserService, TheCara">
     <meta name="description" content="">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>Firebase 讲解 | TheCara</title>
+    <title>媒体浏览器服务 MediaBrowserService | TheCara</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -321,12 +321,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('https://firebase.google.com/images/social.png')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/19.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">Firebase 讲解</h1>
+                    <h1 class="description center-align post-title">媒体浏览器服务 MediaBrowserService</h1>
                 </div>
             </div>
         </div>
@@ -468,7 +468,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2020-10-29
+                    2020-12-02
                 </div>
                 
 
@@ -484,41 +484,37 @@
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h1 id="AndroidStudio-添加-Firebase-选项"><a href="#AndroidStudio-添加-Firebase-选项" class="headerlink" title="AndroidStudio 添加 Firebase 选项"></a>AndroidStudio 添加 Firebase 选项</h1><p><img src="https://raw.githubusercontent.com/TheCara/RepoPicture/master/image/20201029230255.png" alt="使用时可能会没有 firebase 选项"></p>
-<p><img src="https://raw.githubusercontent.com/TheCara/RepoPicture/master/image/20201029230927.png" alt="settings 添加 plug-in"></p>
-<p><img src="https://raw.githubusercontent.com/TheCara/RepoPicture/master/image/20201029231529.png" alt="选择添加 Firebase Services"></p>
-<h1 id="创建-Firebase-项目"><a href="#创建-Firebase-项目" class="headerlink" title="创建 Firebase 项目"></a>创建 Firebase 项目</h1><blockquote>
-<p>准备好 google 账号</p>
+                <h1 id="媒体浏览器服务-MediaBrowserService"><a href="#媒体浏览器服务-MediaBrowserService" class="headerlink" title="媒体浏览器服务 MediaBrowserService"></a>媒体浏览器服务 MediaBrowserService</h1><h4 id="关键类型"><a href="#关键类型" class="headerlink" title="关键类型"></a>关键类型</h4><ol>
+<li>MediaBrowserServiceCompat 媒体浏览器服务</li>
+<li>MediaBrowserCompat 媒体浏览器</li>
+<li>MediaControllerCompat 媒体控制器</li>
+<li>MediaSessionCompat 媒体会话</li>
+</ol>
+<h4 id="MediaBrowserServiceCompat"><a href="#MediaBrowserServiceCompat" class="headerlink" title="MediaBrowserServiceCompat"></a>MediaBrowserServiceCompat</h4><blockquote>
+<p>作用</p>
+<p>音乐播放后台服务。</p>
+<p>客户端中获取音乐数据的服务，所有的音乐数据都通过该服务与服务端进行交互获取。</p>
 </blockquote>
-<p><strong>打开 Firebase</strong></p>
-<p><img src="https://raw.githubusercontent.com/TheCara/RepoPicture/master/image/2020-11-2-0.gif" alt=""></p>
-<p><strong>进入控制台</strong></p>
-<p><img src="https://raw.githubusercontent.com/TheCara/RepoPicture/master/image/20201102004348.png" alt=""></p>
-<p><strong>选择项目名称</strong></p>
-<p><img src="https://raw.githubusercontent.com/TheCara/RepoPicture/master/image/20201102004431.png" alt="create a firebase"></p>
-<p><strong>继续</strong></p>
-<p><img src="https://raw.githubusercontent.com/TheCara/RepoPicture/master/image/20201102004513.png" alt=""></p>
-<p><strong>选择默认账户或者创建</strong></p>
-<p><img src="https://raw.githubusercontent.com/TheCara/RepoPicture/master/image/20201102004549.png" alt=""></p>
-<p><strong>稍等片刻</strong></p>
-<p><img src="https://raw.githubusercontent.com/TheCara/RepoPicture/master/image/20201102004649.png" alt=""></p>
-<p><strong>完成</strong></p>
-<p><img src="https://raw.githubusercontent.com/TheCara/RepoPicture/master/image/20201102004812.png" alt=""></p>
-<h1 id="删除-Firebase-项目"><a href="#删除-Firebase-项目" class="headerlink" title="删除 Firebase 项目"></a>删除 Firebase 项目</h1><p><strong>点击设置</strong></p>
-<p><img src="https://raw.githubusercontent.com/TheCara/RepoPicture/master/image/20201102004958.png" alt=""></p>
-<p><strong>选择项目设置</strong></p>
-<p><strong>翻到最底部</strong></p>
-<p><img src="https://raw.githubusercontent.com/TheCara/RepoPicture/master/image/20201102005205.png" alt=""></p>
-<p><strong>删除项目。</strong></p>
-<p><img src="https://raw.githubusercontent.com/TheCara/RepoPicture/master/image/20201102005613.png" alt=""></p>
-<h1 id="在-CloudFireStore中添加-元数据"><a href="#在-CloudFireStore中添加-元数据" class="headerlink" title="在 CloudFireStore中添加 元数据"></a>在 CloudFireStore中添加 元数据</h1><p><img src="https://raw.githubusercontent.com/TheCara/RepoPicture/master/image/20201104131055.png" alt="选择Cloud Firestore"></p>
-<p><img src="https://raw.githubusercontent.com/TheCara/RepoPicture/master/image/20201104131130.png" alt="点击 “开始收集”"></p>
-<p><img src="https://raw.githubusercontent.com/TheCara/RepoPicture/master/image/20201104131210.png" alt="添加 集合名字"></p>
-<p><img src="https://raw.githubusercontent.com/TheCara/RepoPicture/master/image/20201104131719.png" alt="添加 文档称呼"></p>
-<p><img src="https://raw.githubusercontent.com/TheCara/RepoPicture/master/image/20201104131546.png" alt="点击添加字段 直接添加字段即可"></p>
-<h1 id="将-Storage中的数据链接添加到元数据中"><a href="#将-Storage中的数据链接添加到元数据中" class="headerlink" title="将 Storage中的数据链接添加到元数据中"></a>将 Storage中的数据链接添加到元数据中</h1><p><img src="https://raw.githubusercontent.com/TheCara/RepoPicture/master/image/20201104131958.png" alt="点击上传文件"></p>
-<p><img src="https://raw.githubusercontent.com/TheCara/RepoPicture/master/image/2020-11-4-2.gif" alt="选择要添加的元数据连接"></p>
-<p><img src="https://raw.githubusercontent.com/TheCara/RepoPicture/master/image/20201104152013.png" alt="粘贴即可"></p>
+<p>该类是Service类的子类，可以作为一个后台服务来使用，它实现后台服务并不能通过自身直接实现，而是通过MediaSessionCompat媒体会话来实现的。在使用过程中会话会与该服务关联起来，所有的播放操作都要给MediaSessionCompat实现。</p>
+<p>获得数据时，通过 <strong>MediaBrowserServiceCompat</strong> 的两个方法来实现控制</p>
+<pre><code class="kotlin">@Nullable abstract fun onGetRoot(
+    @NonNull clientPackageName: String, 
+    clientUid: Int, 
+    @Nullable rootHints: Bundle?
+): MediaBrowserServiceCompat.BrowserRoot?</code></pre>
+<blockquote>
+<p>此方法自在服务连接时调用，如果返回一个 rootId为空的BrowserRoot则表示客户端可以连接服务，也可以连接其媒体资源</p>
+<p>如果返回null则表示客户端不能流量媒体资源</p>
+</blockquote>
+<pre><code class="kotlin">abstract fun onLoadChildren(
+    @NonNull parentId: String, 
+    @NonNull result: MediaBrowserServiceCompat.Result&lt;MutableList&lt;MediaBrowserCompat.MediaItem!&gt;!&gt;
+): Unit</code></pre>
+<blockquote>
+<p>此方法中的 parentId 与上面的方法 onGetRoot 中返回的RootId没有关系，客户端连接后，它可以通过重复调用MediaBrowserCompat.subscribe()方法来发起数据请求。而每次调用subscribe()方法都会返回onLoadChildren()回调到该service中，然后返回MediaBrowser.MediaItem()对象列表</p>
+<p>每个MediaItem都有唯一的Id字符串，它其实是一个隐式的token。当客户想打开子菜单或者播放item时，它就将ID传入。</p>
+</blockquote>
+<h4 id="引用："><a href="#引用：" class="headerlink" title="引用："></a>引用：</h4><p><a href="">关于媒体浏览器服务(MediaBrowserService)</a></p>
 
             </div>
             <hr/>
@@ -544,7 +540,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://thecara.github.io/2020/10/29/Firebase-%E8%AE%B2%E8%A7%A3/">https://thecara.github.io/2020/10/29/Firebase-%E8%AE%B2%E8%A7%A3/</a>
+                    <a href="https://thecara.github.io/2020/12/02/%E5%AA%92%E4%BD%93%E6%B5%8F%E8%A7%88%E5%99%A8%E6%9C%8D%E5%8A%A1-MediaBrowserService/">https://thecara.github.io/2020/12/02/%E5%AA%92%E4%BD%93%E6%B5%8F%E8%A7%88%E5%99%A8%E6%9C%8D%E5%8A%A1-MediaBrowserService/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -625,28 +621,34 @@
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
             <div class="card">
-                <a href="/2020/11/02/SpotifyClone/">
+                <a href="/2020/12/02/%E5%AA%92%E4%BD%93%E6%B5%8F%E8%A7%88%E5%99%A8%E6%9C%8D%E5%8A%A1-MediaBrowserService/">
                     <div class="card-image">
                         
-                        <img src="https://hicomm.bg//uploads/articles/201801/55382/mainimage-ukrasete-s-vizualni-efekti-vashite-spotify-podkastove-i-pleilisti-s-novata-funkciya-spotlight.jpg" class="responsive-img" alt="克隆 Spotify 播放器">
                         
-                        <span class="card-title">克隆 Spotify 播放器</span>
+                        <img src="/medias/featureimages/19.jpg" class="responsive-img" alt="媒体浏览器服务 MediaBrowserService">
+                        
+                        <span class="card-title">媒体浏览器服务 MediaBrowserService</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            SpotigyClone
+                            媒体浏览器服务 MediaBrowserService关键类型
+MediaBrowserServiceCompat 媒体浏览器服务
+MediaBrowserCompat 媒体浏览器
+MediaControllerCompat 媒体控制器
+M
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2020-11-02
-                        </span>
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-12-02
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
@@ -659,6 +661,7 @@
                         </span>
                     </div>
                 </div>
+
                 
                 <div class="card-action article-tags">
                     
@@ -677,30 +680,54 @@
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2020/10/29/EC/">
+                <a href="/2020/12/01/Android-%E5%9B%BE%E7%89%87%E9%80%82%E9%85%8D/">
                     <div class="card-image">
                         
-                        <img src="https://raw.githubusercontent.com/TheCara/RepoPicture/master/image/https___cn.hypebeast.com_files_2020_10_salomon-advanced-xt-4-relsase-info-21.jpg" class="responsive-img" alt="EC">
                         
-                        <span class="card-title">EC</span>
+                        <img src="/medias/featureimages/3.jpg" class="responsive-img" alt="Android 图片适配">
+                        
+                        <span class="card-title">Android 图片适配</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            EC
+                            Android图片适配
+android的drawable文件共有：
+
+
+
+中文
+文件夹名称
+
+
+
+低密度
+drawable-ldpi
+
+
+中等密度
+drawable-mdpi
+
+
+高密度
+drawable-hdpi
+
+
+超高密度
+drawa
                         
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2020-10-29
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-12-01
                             </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/EC/" class="post-category">
-                                    EC
+                            <a href="/categories/Android/" class="post-category">
+                                    Android
                                 </a>
                             
                             
@@ -710,8 +737,8 @@
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/EC/">
-                        <span class="chip bg-color">EC</span>
+                    <a href="/tags/Android/">
+                        <span class="chip bg-color">Android</span>
                     </a>
                     
                 </div>

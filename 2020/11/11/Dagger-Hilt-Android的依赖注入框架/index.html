@@ -597,7 +597,7 @@ class HiltApplication : Application() {
 <pre><code class="groovy">Activities annotated with @AndroidEntryPoint must be a subclass of androidx.activity.ComponentActivity. (e.g. FragmentActivity, AppCompatActivity, etc.)</code></pre>
 <p>使用@AndroidEntryPoint注解时，必须在它的依赖的Android类添加同样的注解，<strong>例如Fragment中添加@AndroidEntryPoint注解，必须在Fragment依赖的Activity上也添加@AndroidEntryPoint注解，否则会抛出一样。</strong></p>
 <pre><code class="kotlin">java.lang.IllegalStateException: Hilt Fragments must be attached to an @AndroidEntryPoint Activity. Found: class com.hi.dhl.hilt.MainActivity</code></pre>
-<h4 id="Module"><a href="#Module" class="headerlink" title="@Module"></a>@Module</h4><p>尝用于创建依赖类的对象（例如第三方库 OkHttp、Retrofit等等），使用@Module注解的类，需要使用@InstallIn注解指定范围module。</p>
+<h4 id="Module"><a href="#Module" class="headerlink" title="@Module"></a>@Module</h4><p>常用于创建依赖类的对象（例如第三方库 OkHttp、Retrofit等等），使用@Module注解的类，需要使用@InstallIn注解指定范围module。</p>
 <pre><code class="kotlin">@Module
 @InstallIn(ApplicationComponent::class)
 // 这里使用了 ApplicationComponent，因此 NetworkModule 绑定到 Application 的生命周期。
@@ -610,35 +610,43 @@ object NetworkModule {
 <tr>
 <th align="center">Hilt 提供组件</th>
 <th align="center">对应的Android类活动范围</th>
+<th align="center">作用域</th>
 </tr>
 </thead>
 <tbody><tr>
 <td align="center">ApplicationComponent</td>
 <td align="center">Application</td>
+<td align="center">@Singleton</td>
 </tr>
 <tr>
 <td align="center">ActivityRetainedComponent</td>
 <td align="center">ViewModel</td>
+<td align="center">@ActivityRetainedScope</td>
 </tr>
 <tr>
 <td align="center">ActivityComponent</td>
 <td align="center">Activity</td>
+<td align="center">@ActivityScoped</td>
 </tr>
 <tr>
 <td align="center">FragmentComponent</td>
 <td align="center">Fragment</td>
+<td align="center">@FragmentScoped</td>
 </tr>
 <tr>
 <td align="center">ViewComponent</td>
 <td align="center">View</td>
+<td align="center">@ViewScoped</td>
 </tr>
 <tr>
 <td align="center">ViewWithFragmentComponent</td>
 <td align="center">View annotated with @WithFragmentBindings</td>
+<td align="center">@ViewScoped</td>
 </tr>
 <tr>
 <td align="center">ServiceComponent</td>
 <td align="center">Service</td>
+<td align="center">@ServiceScoped</td>
 </tr>
 </tbody></table>
 <blockquote>
@@ -752,7 +760,7 @@ object NetworkModule {
     @ActivityContext private val context: Context,
     private val service: AnalyticsService
 ) { ... }</code></pre>
-<h5 id="引用："><a href="#引用：" class="headerlink" title="引用："></a><strong>引用</strong>：</h5><p><a href="https://juejin.im/post/6844904198803292173?utm_source=gold_browser_extension#heading-13" target="_blank" rel="noopener">Jetpack 新成员 Hilt 实践（一）启程过坑记</a></p>
+<h4 id="引用："><a href="#引用：" class="headerlink" title="引用："></a><strong>引用</strong>：</h4><p><a href="https://juejin.im/post/6844904198803292173?utm_source=gold_browser_extension#heading-13" target="_blank" rel="noopener">Jetpack 新成员 Hilt 实践（一）启程过坑记</a></p>
 <p><a href="https://juejin.im/post/6845166890562617352" target="_blank" rel="noopener">Jetpack 新成员 Hilt 与 Dagger 大不同（三）落地篇</a></p>
 <p><a href="https://developer.android.com/training/dependency-injection/hilt-android?hl=zh-cn" target="_blank" rel="noopener">Hilt 中的预定义限定符</a></p>
 <p><a href="https://muyangmin.github.io/glide-docs-cn/javadocs/400/index-all.html" target="_blank" rel="noopener">JavaDoc-Glide</a></p>

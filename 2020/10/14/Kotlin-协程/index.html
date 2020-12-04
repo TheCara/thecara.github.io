@@ -871,9 +871,35 @@ suspend fun suspendingPrint() {
 <p>疑惑：</p>
 <p>协程中的非阻塞式是什么</p>
 <p>协程和RxJava在切换线程方面功能是一样的，都能写出避免嵌套回调的复杂并发代码，协程相比有什么优势，或者让开发者使用的理由？</p>
+<h1 id="协程-Job"><a href="#协程-Job" class="headerlink" title="协程 Job"></a>协程 Job</h1><p>Job 是标准库中启动协程后返回的对象，代表着协程本次作业。我们可以判断协程是否接受，是否取消，是否完成并且额可以取消当前协程以及嵌套子协程。</p>
+<p>基本上每启动一个协程就会产生对应的Job。</p>
+<pre><code class="kotlin">coroutineScope.launch(Dispatchers.IO) {
+    ...
+}</code></pre>
+<p>launch 返回的就是一个Job，它可以用来管理协程，一个Job中可以关联多个子Job，同时它也提供了通过外部传入parent的实现。</p>
+<p>Job 管理协程，那么它提供了六种状态表示协程的运行状态。</p>
+<ol>
+<li><strong>New</strong>：创建</li>
+<li><strong>Active</strong>：运行</li>
+<li><strong>Completing</strong>：已经完成等待自身的子协程</li>
+<li><strong>Completed</strong>：完成</li>
+<li><strong>Cancelling</strong>：正在进行取消或者失败</li>
+<li><strong>Cancelled</strong>：取消或失败</li>
+</ol>
+<p>这六种状态 <strong>Job</strong>对外暴露了三种状态，它们可以随时通过Job来获取</p>
+<pre><code class="java">public val isActive: Boolean
+public val isCompleted: Boolean
+public val isCancelled: Boolean</code></pre>
+<p>在你需要手动管理协程时，通过下面的方法来判断当前协程是否在运行。</p>
+<pre><code class="kotlin">while (job.isActive) {
+// 协程运行中            
+}</code></pre>
+<p>一般协程创建的时候就处在 <strong>Active</strong>状态，但是也有特殊情况。</p>
 <p><strong>引用：</strong></p>
 <p><a href="https://kaixue.io/kotlin-coroutines-1/" target="_blank" rel="noopener">Kotlin 的协程用力瞥一眼 - 学不会协程？很可能因为你看过的教程都是错的</a></p>
 <p><a href="https://kaixue.io/kotlin-coroutines-2/" target="_blank" rel="noopener">Kotlin 协程的挂起好神奇好难懂？今天我把它的皮给扒了</a></p>
+<p><a href="https://blog.csdn.net/qfanmingyiq/article/details/105547092" target="_blank" rel="noopener">Kotlin协程核心库分析-2 Job简述</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/297543508" target="_blank" rel="noopener">Kotlin协程实现原理:CoroutineScope&amp;Job</a></p>
 
             </div>
             <hr/>
