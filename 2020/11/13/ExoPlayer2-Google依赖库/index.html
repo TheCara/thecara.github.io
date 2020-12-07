@@ -618,8 +618,31 @@ implementation &#39;com.google.android.exoplayer:exoplayer-ui:2.X.X&#39;</code><
 <h4 id="MediaSessionConnector-类"><a href="#MediaSessionConnector-类" class="headerlink" title="MediaSessionConnector 类"></a>MediaSessionConnector 类</h4><p><img src="https://raw.githubusercontent.com/TheCara/RepoPicture/master/image/20201204220725.png" alt="继承关系"></p>
 <blockquote>
 <p>介绍</p>
-<p>Connects a <a href="https://developer.android.com/reference/android/support.v4.media.session.MediaSessionCompat.html" target="_blank" rel="noopener"><code>MediaSessionCompat</code></a> to a <a href="https://exoplayer.dev/doc/reference/com/google/android/exoplayer2/Player.html" target="_blank" rel="noopener"><code>Player</code></a>.</p>
+<p>Connects a MediaSessionCompat to a <a href="https://exoplayer.dev/doc/reference/com/google/android/exoplayer2/Player.html" target="_blank" rel="noopener"><code>Player</code></a>.</p>
 <p>负责连接到 MediaSessionCompat 类</p>
+</blockquote>
+<h4 id="MediaSessionCompat-类"><a href="#MediaSessionCompat-类" class="headerlink" title="MediaSessionCompat 类"></a>MediaSessionCompat 类</h4><blockquote>
+<p>Allows interaction with media controllers, volume keys, media buttons, and transport controls.</p>
+<p>用来对媒体控制前、音量键、媒体按钮和传输控件进行交互。</p>
+</blockquote>
+<p><strong>构造方法</strong></p>
+<p><strong>MediaSessionCompat</strong></p>
+<pre><code class="kotlin">MediaSessionCompat(@NonNull context: Context, @NonNull tag: String)</code></pre>
+<blockquote>
+<p>Creates a new session. You must call <code>release()</code> when finished with the session.</p>
+<p>创建对象。在完成时要调用release()释放。</p>
+<p>参数1：创建Session的上下文</p>
+<p>参数2：调试时所用的 tag。</p>
+</blockquote>
+<p><strong>MediaSessionCompat</strong></p>
+<pre><code class="kotlin">MediaSessionCompat(@NonNull context: Context, @NonNull tag: String, @Nullable mbrComponent: ComponentName?, @Nullable mbrIntent: PendingIntent?)</code></pre>
+<blockquote>
+<p>Creates a new session with a specified media button receiver (a component name and/or a pending intent). You must call <code>release()</code> when finished with the session.</p>
+<p>指定一个媒体接收器来创建对象。在完成时要调用release()释放。</p>
+<p>参数1：创建Session的上下文</p>
+<p>参数2：调试时所用的 tag。</p>
+<p>参数3：指定媒体接收器的名称</p>
+<p>参数4：处理媒体按钮事件的接收器组件。可选选项。</p>
 </blockquote>
 <h4 id="引用："><a href="#引用：" class="headerlink" title="引用："></a>引用：</h4><p><a href="https://juejin.im/post/6854573203994443789" target="_blank" rel="noopener">深入解读ExoPlayer 之 开发者指南全译-02 开始使用</a></p>
 <p><a href="https://exoplayer.dev/doc/reference/overview-summary.html" target="_blank" rel="noopener">DOC</a></p>

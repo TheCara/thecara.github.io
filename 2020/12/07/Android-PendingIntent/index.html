@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="Android 图片适配, TheCara">
+    <meta name="keywords" content="Android PendingIntent, TheCara">
     <meta name="description" content="">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>Android 图片适配 | TheCara</title>
+    <title>Android PendingIntent | TheCara</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -321,12 +321,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/3.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/22.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">Android 图片适配</h1>
+                    <h1 class="description center-align post-title">Android PendingIntent</h1>
                 </div>
             </div>
         </div>
@@ -468,7 +468,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2020-12-01
+                    2020-12-07
                 </div>
                 
 
@@ -484,52 +484,60 @@
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <p>Android图片适配</p>
-<p>android的drawable文件共有：</p>
-<table>
-<thead>
-<tr>
-<th>中文</th>
-<th>文件夹名称</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>低密度</td>
-<td>drawable-ldpi</td>
-</tr>
-<tr>
-<td>中等密度</td>
-<td>drawable-mdpi</td>
-</tr>
-<tr>
-<td>高密度</td>
-<td>drawable-hdpi</td>
-</tr>
-<tr>
-<td>超高密度</td>
-<td>drawable-xhdpi</td>
-</tr>
-<tr>
-<td>超超高密度</td>
-<td>drawable-xxhdpi</td>
-</tr>
-<tr>
-<td>超超超高密度</td>
-<td>drawable-xxxhdpi</td>
-</tr>
-<tr>
-<td>无缩放</td>
-<td>drawable-nohdpi</td>
-</tr>
-<tr>
-<td>默认</td>
-<td>drawable</td>
-</tr>
-</tbody></table>
-<p>Android 系统会按照设备dpi 范围从合适密度往上适配。</p>
-<p>如果在中等分辨率的手机上，Android 就会现在 drawable-mdpi 文件夹下的图片。如果这里没有那么 drawable-hdpi 上查找以此类推最终会从默认的 drawable 文件夹下查找。</p>
-<p>drawable-nodpi 文件夹，在这里存放的图片系统不会对它进行缩放操作，原图片有多大就会展示多大，匹配原则当匹配更高密度的图片时无法找到的话就会匹配这个文件夹的图片。</p>
-<p>优缺点：放大图片会占用更多内存，缩小时内存减少但是影响打包效果。</p>
+                <h1 id="PendingIntent"><a href="#PendingIntent" class="headerlink" title="PendingIntent"></a>PendingIntent</h1><blockquote>
+<p>描述</p>
+<p>A description of an Intent and target action to perform with it. Instances of this class are created with <code>getActivity</code>, <code>getActivities</code>, <code>getBroadcast</code>, and <code>getService</code>; the returned object can be handed to other applications so that they can perform the action you described on your behalf at a later time.</p>
+<p>它由getActivity，getService，getBroadcast来创建对象。</p>
+<p>用于一种特殊的异步处理机制。可归结为 “异步激发”，这种异步激发常常是要跨进程执行的。比如说 A进程作为发起段，它可以从系统获得一个PendingIntent，然后A进程可以将PendingIntent对象通过binder机制“传递“给B进程，再通过B进程在未来的某个合适时机，”回调“PendingIntent对象的send()动作，完成激发。</p>
+<p>PendingIntent的生命周期不与主进程相关。外部程序只能调用上述三个组件。</p>
+</blockquote>
+<h4 id="getActivity"><a href="#getActivity" class="headerlink" title="getActivity"></a>getActivity</h4><pre><code class="kotlin">static fun getActivity(
+    context: Context!, 
+    requestCode: Int, 
+    intent: Intent!, 
+    flags: Int
+): PendingIntent!</code></pre>
+<blockquote>
+<p>Retrieve a PendingIntent that will start a new activity, like calling <code>Context#startActivity(Intent)</code>. Note that the activity will be started outside of the context of an existing activity, so you must use the <code>Intent#FLAG_ACTIVITY_NEW_TASK</code> launch flag in the Intent.</p>
+<p>获得一个用于启动特定Activity的PendingIntent。</p>
+</blockquote>
+<h4 id="三个返回需要用到的参数"><a href="#三个返回需要用到的参数" class="headerlink" title="三个返回需要用到的参数"></a>三个返回需要用到的参数</h4><ul>
+<li>context：上下文对象</li>
+<li>requstCode：请求码，发件人的私人请求代码（当前未使用）</li>
+<li>intent：请求意图。用于要指明要启动的类以及数据的传递</li>
+<li>flags：这是一个关键的标志位</li>
+</ul>
+<h4 id="flags常量"><a href="#flags常量" class="headerlink" title="flags常量"></a>flags常量</h4><p>FLAG_CANCEL_CURRENT</p>
+<pre><code class="kotlin">static val FLAG_CANCEL_CURRENT: Int</code></pre>
+<blockquote>
+<p>Flag indicating that if the described PendingIntent already exists, the current one should be canceled before generating a new one. For use with <code>getActivity</code>, <code>getBroadcast</code>, and <code>getService</code>.</p>
+<p>如果新请求的 PendingIntent 发现已经存在时，取消已存在的，用新的 PendingInent 替换</p>
+</blockquote>
+<p>FLAG_IMMUTABLE</p>
+<pre><code class="kotlin">static val FLAG_IMMUTABLE: Int</code></pre>
+<blockquote>
+<p>Flag indicating that the created PendingIntent should be immutable. This means that the additional intent argument passed to the send methods to fill in unpopulated properties of this intent will be ignored.</p>
+<p>表示这是一个不可变的 PendingIntent。</p>
+</blockquote>
+<p>FLAG_NO_CREATE</p>
+<pre><code>static val FLAG_NO_CREATE: Int</code></pre><blockquote>
+<p>Flag indicating that if the described PendingIntent does not already exist, then simply return null instead of creating it. For use with <code>getActivity</code>, <code>getBroadcast</code>, and <code>getService</code>.</p>
+<p>如果新请求的 PendingIntent 发现已经存在时，忽视新请求的，继续使用已经存在的请求。较少使用。</p>
+</blockquote>
+<p>FLAG_ONE_SHOT</p>
+<pre><code class="kotlin">static val FLAG_ONE_SHOT: Int</code></pre>
+<blockquote>
+<p>Flag indicating that this PendingIntent can be used only once. For use with <code>getActivity</code>, <code>getBroadcast</code>, and <code>getService</code>.</p>
+<p>表示 PendingIntent 只能使用一次，如果已经使用过，那么 getxxx方法时会返回为NULL，也就是说同类通知只能使用一次，后续的通知单独后无法打开。</p>
+</blockquote>
+<p>FLAG_UPDATE_CURRENT</p>
+<pre><code>static val FLAG_UPDATE_CURRENT: Int</code></pre><blockquote>
+<p>Flag indicating that if the described PendingIntent already exists, then keep it but replace its extra data with what is in this new Intent. For use with <code>getActivity</code>, <code>getBroadcast</code>, and <code>getService</code>.</p>
+<p>如果新的请求的PendingIntent 发现已经存在时，如果 Intent 有字段改变了，则更新已存在的 PendingIntent</p>
+</blockquote>
+<h4 id="引用"><a href="#引用" class="headerlink" title="引用:"></a>引用:</h4><p><a href="https://developer.android.com/reference/kotlin/android/app/PendingIntent" target="_blank" rel="noopener">PendingIntent</a></p>
+<p><a href="https://www.jianshu.com/p/a37f0ce2da2e" target="_blank" rel="noopener">PendingIntent的基本理解</a></p>
+<p><a href="https://www.jianshu.com/p/4a8fc0b78094" target="_blank" rel="noopener">Android PendingIntent</a></p>
 
             </div>
             <hr/>
@@ -555,7 +563,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://thecara.github.io/2020/12/01/Android-%E5%9B%BE%E7%89%87%E9%80%82%E9%85%8D/">https://thecara.github.io/2020/12/01/Android-%E5%9B%BE%E7%89%87%E9%80%82%E9%85%8D/</a>
+                    <a href="https://thecara.github.io/2020/12/07/Android-PendingIntent/">https://thecara.github.io/2020/12/07/Android-PendingIntent/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -636,33 +644,32 @@
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
             <div class="card">
-                <a href="/2020/12/02/%E5%AA%92%E4%BD%93%E6%B5%8F%E8%A7%88%E5%99%A8%E6%9C%8D%E5%8A%A1-MediaBrowserService/">
+                <a href="/2020/12/07/Android-PendingIntent/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/19.jpg" class="responsive-img" alt="媒体浏览器服务 MediaBrowserService">
+                        <img src="/medias/featureimages/22.jpg" class="responsive-img" alt="Android PendingIntent">
                         
-                        <span class="card-title">媒体浏览器服务 MediaBrowserService</span>
+                        <span class="card-title">Android PendingIntent</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            媒体浏览器服务 MediaBrowserService关键类型
-MediaBrowserServiceCompat 媒体浏览器服务
-MediaBrowserCompat 媒体浏览器
-MediaControllerCompat 媒体控制器
-M
+                            PendingIntent
+描述
+A description of an Intent and target action to perform with it. Instances of this class are created wi
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2020-12-02
-                        </span>
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-12-07
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
@@ -675,15 +682,12 @@ M
                         </span>
                     </div>
                 </div>
+
                 
                 <div class="card-action article-tags">
                     
                     <a href="/tags/Android/">
                         <span class="chip bg-color">Android</span>
-                    </a>
-                    
-                    <a href="/tags/ExoPlayer/">
-                        <span class="chip bg-color">ExoPlayer</span>
                     </a>
                     
                 </div>
@@ -697,25 +701,26 @@ M
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2020/11/29/Android%E6%8E%A7%E4%BB%B6/">
+                <a href="/2020/12/07/PendingIntent/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/24.jpg" class="responsive-img" alt="Android控件">
+                        <img src="/medias/featureimages/22.jpg" class="responsive-img" alt="Android PendingIntent">
                         
-                        <span class="card-title">Android控件</span>
+                        <span class="card-title">Android PendingIntent</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            SeekBar(拖动条)它是 ProgressBar的子类，这样ProgressBar的属性它都可以用！同时它还有自己的属性 android:thumb,允许我们自定义滑块。
-
+                            PendingIntent
+描述
+A description of an Intent and target action to perform with it. Instances of this class are created wi
                         
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2020-11-29
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-12-07
                             </span>
                         <span class="publish-author">
                             
