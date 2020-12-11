@@ -621,6 +621,17 @@ implementation &#39;com.google.android.exoplayer:exoplayer-ui:2.X.X&#39;</code><
 <p>Connects a MediaSessionCompat to a <a href="https://exoplayer.dev/doc/reference/com/google/android/exoplayer2/Player.html" target="_blank" rel="noopener"><code>Player</code></a>.</p>
 <p>负责连接到 MediaSessionCompat 类</p>
 </blockquote>
+<pre><code class="java">public MediaSessionConnector(android.support.v4.media.session.MediaSessionCompat mediaSession)</code></pre>
+<blockquote>
+<p><code>mediaSession</code> - The <a href="https://developer.android.com/reference/android/support.v4.media.session.MediaSessionCompat.html" target="_blank" rel="noopener"><code>MediaSessionCompat</code></a> to connect to.</p>
+<p>用来连接到 MediaSessionCompat</p>
+</blockquote>
+<p><strong>setPlayer</strong></p>
+<pre><code class="java"> public void setPlayer(@Nullable Player player)</code></pre>
+<blockquote>
+<p>Sets the player to be connected to the media session. Must be called on the same thread that is used to access the player.</p>
+<p>将播放器连接到媒体。主要只能在一条线程上。</p>
+</blockquote>
 <h4 id="MediaSessionCompat-类"><a href="#MediaSessionCompat-类" class="headerlink" title="MediaSessionCompat 类"></a>MediaSessionCompat 类</h4><blockquote>
 <p>Allows interaction with media controllers, volume keys, media buttons, and transport controls.</p>
 <p>用来对媒体控制前、音量键、媒体按钮和传输控件进行交互。</p>
@@ -644,8 +655,23 @@ implementation &#39;com.google.android.exoplayer:exoplayer-ui:2.X.X&#39;</code><
 <p>参数3：指定媒体接收器的名称</p>
 <p>参数4：处理媒体按钮事件的接收器组件。可选选项。</p>
 </blockquote>
+<p><strong>setSessionToken</strong></p>
+<pre><code class="kotlin">open fun setSessionToken(token: MediaSessionCompat.Token!): Unit</code></pre>
+<blockquote>
+<p>Call to set the media session.</p>
+<p>This should be called as soon as possible during the service’s startup. It may only be called once.</p>
+<p>呼叫设置媒体会话。</p>
+<p>这应该在服务启动期间尽快调用。 它只能被调用一次。</p>
+</blockquote>
+<p><strong>getSessionToken</strong></p>
+<pre><code class="kotlin">@Nullable open fun getSessionToken(): MediaSessionCompat.Token?</code></pre>
+<blockquote>
+<p>Gets the session token, or null if it has not yet been created or if it has been destroyed.</p>
+<p>获取会话标记，如果尚未创建或已销毁它，则为null。</p>
+</blockquote>
 <h4 id="引用："><a href="#引用：" class="headerlink" title="引用："></a>引用：</h4><p><a href="https://juejin.im/post/6854573203994443789" target="_blank" rel="noopener">深入解读ExoPlayer 之 开发者指南全译-02 开始使用</a></p>
 <p><a href="https://exoplayer.dev/doc/reference/overview-summary.html" target="_blank" rel="noopener">DOC</a></p>
+<p><a href="https://www.apiref.com/android-zh/index.html" target="_blank" rel="noopener">Android API</a></p>
 
             </div>
             <hr/>
