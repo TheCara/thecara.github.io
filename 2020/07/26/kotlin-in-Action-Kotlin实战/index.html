@@ -499,7 +499,13 @@
 <p>自身不可变(只可以执行一次,初始化一次)</p>
 <p>注意,尽管val引用自身是不可变的,但是它指向的对象<strong>`可能</strong>`是可变的。列如</p>
 <pre><code>val languages = arrayListOf(&quot;Java&quot;)
-lenguages.add(&quot;Kotlin&quot;)</code></pre><h3 id="2-3-表示和处理选择：枚举和“when”"><a href="#2-3-表示和处理选择：枚举和“when”" class="headerlink" title="2.3 表示和处理选择：枚举和“when”"></a>2.3 表示和处理选择：枚举和“when”</h3><h4 id="2-3-5-智能转换：合并类型检查和转换"><a href="#2-3-5-智能转换：合并类型检查和转换" class="headerlink" title="2.3.5 智能转换：合并类型检查和转换"></a>2.3.5 智能转换：合并类型检查和转换</h4><h5 id="kotlin智能转换的案例"><a href="#kotlin智能转换的案例" class="headerlink" title="kotlin智能转换的案例"></a>kotlin智能转换的案例</h5><h6 id="表达式类型层次"><a href="#表达式类型层次" class="headerlink" title="表达式类型层次"></a>表达式类型层次</h6><pre><code class="kotlin">interface Expr
+lenguages.add(&quot;Kotlin&quot;)</code></pre><h3 id="2-3-表示和处理选择：枚举和“when”"><a href="#2-3-表示和处理选择：枚举和“when”" class="headerlink" title="2.3 表示和处理选择：枚举和“when”"></a>2.3 表示和处理选择：枚举和“when”</h3><h4 id="2-3-1-声明枚举类"><a href="#2-3-1-声明枚举类" class="headerlink" title="2.3.1 声明枚举类"></a>2.3.1 声明枚举类</h4><p><strong>什么是枚举</strong></p>
+<p>为了让编译器能够自动检查某个值在枚举的集合中，并且，不同用途的枚举需要不同的类型来标记，不能混用，我们可以使用 <strong>enum</strong> 来定义枚举类。</p>
+<pre><code class="kotlin">enum class Color{
+    RED,ORANGE,YELLOW,GREEN,BLUE,INDIGO,VIOLET
+}</code></pre>
+<p>kotlin 中 enum 是一个所谓的软关键词：只有当它出现在class前面时才会有特殊的意义，在其他地方可以把它当作普通的名称使用。</p>
+<h4 id="2-3-5-智能转换：合并类型检查和转换"><a href="#2-3-5-智能转换：合并类型检查和转换" class="headerlink" title="2.3.5 智能转换：合并类型检查和转换"></a>2.3.5 智能转换：合并类型检查和转换</h4><h5 id="kotlin智能转换的案例"><a href="#kotlin智能转换的案例" class="headerlink" title="kotlin智能转换的案例"></a>kotlin智能转换的案例</h5><h6 id="表达式类型层次"><a href="#表达式类型层次" class="headerlink" title="表达式类型层次"></a>表达式类型层次</h6><pre><code class="kotlin">interface Expr
 class Num(val value: Int) : Expr    // 简单的值对象类，只有一个属性value，实现了Expr接口
 class Sum(val left: Expr, val right: Expr) : Expr   // Sum运算的实参可以是任何Expr:Num 或者 Sum</code></pre>
 <h6 id="对表达式求值"><a href="#对表达式求值" class="headerlink" title="对表达式求值"></a>对表达式求值</h6><pre><code class="kotlin">fun eval(e: Expr): Int {
@@ -893,6 +899,12 @@ class MyText{
 <p>lateinit 属性常见的一种用法是在依赖注入。在某种情况下，lateinit 属性的值是被依赖注入框架从外部设置的。为了保证和各种依赖注入框架的兼容性</p>
 <p>，Kotlin 会自动生成一个和 lateinit 属性具有相同可见性的字段。如果属性的可见性是public，生成的字段意思public</p>
 </blockquote>
+<h1 id="8-高阶函数：Lambda作为形参和返回值"><a href="#8-高阶函数：Lambda作为形参和返回值" class="headerlink" title="8 高阶函数：Lambda作为形参和返回值"></a>8 高阶函数：Lambda作为形参和返回值</h1><p><strong>内联函数作用</strong></p>
+<p>能够消除lambda带来的性能开销，还能够使lambda内的控制流更加灵活。</p>
+<h2 id="8-1-声明高阶函数"><a href="#8-1-声明高阶函数" class="headerlink" title="8.1 声明高阶函数"></a>8.1 声明高阶函数</h2><p>定义</p>
+<blockquote>
+<p>高阶函数就是以另一个函数作为参数或者返回值的函数。</p>
+</blockquote>
 <h1 id="补充"><a href="#补充" class="headerlink" title="补充"></a>补充</h1><h3 id="字段和属性"><a href="#字段和属性" class="headerlink" title="字段和属性"></a>字段和属性</h3><p><a href="https://blog.csdn.net/chenchunlin526/article/details/71424844" target="_blank" rel="noopener">深入理解Java中的字段与属性的区别</a></p>
 <h4 id="属性和字段的区别"><a href="#属性和字段的区别" class="headerlink" title="属性和字段的区别"></a>属性和字段的区别</h4><p>属性（property），通常可以理解为get 和 set 方法。</p>
 <p>字段（field），通常叫做 <strong>类成员</strong>，或者 <strong>类变量</strong> ，有时也叫 域 ，理解为 数据成员，用来承担数据的。</p>
@@ -922,9 +934,27 @@ class MyText{
 <li>在类的成员中，this{:.keyword}指的是当前对象</li>
 <li>在扩展函数或者带接受者的函数字面值中，this{:.keyword}表示在点左侧的接收者参数。</li>
 </ul>
+<h3 id="函数引用"><a href="#函数引用" class="headerlink" title="函数引用"></a>函数引用</h3><p>函数引用 是kotlin引入的一个功能。使用(::)表示对函数的引用</p>
+<p>代码</p>
+<pre><code class="kotlin">val sum:(Int,Int) -&gt; Int = {x,y -&gt; x +y}</code></pre>
+<blockquote>
+<p>sum 是一个函数类型的变量，lambda表达式执行了相加的操作。</p>
+</blockquote>
+<pre><code class="kotlin">fun applyOp(x: Int, y: Int, op: (Int, Int) -&gt; Int): Int = op(x, y)</code></pre>
+<p>applyOp 是一个接受三个参数的函数，第三个参数是lambda类型。可以用下面的返回调用这个函数：</p>
+<pre><code class="kotlin">applyOp(2,3,sum)</code></pre>
+<p>即高阶函数可以作为一个类型赋值给变量，也可以作为另一个函数的参数。</p>
+<h4 id="函数引用：函数可以是一个-lambda"><a href="#函数引用：函数可以是一个-lambda" class="headerlink" title="函数引用：函数可以是一个 lambda"></a>函数引用：函数可以是一个 lambda</h4><p>上述的lambda表达式，可以用纯函数的形式：</p>
+<pre><code class="kotlin">fun sum(x: Int, y: Int) = x + y</code></pre>
+<p>实现效果是一样的，区别在于不再需要使用变量来保持对函数的引用，但是这样需要对applOp函数要做一些修改，原来的</p>
+<p><strong>applOp(2,3,sum)</strong>写法会报类型不匹配的语法错误。需要修改为使用<strong>函数引用</strong>代码如下：</p>
+<pre><code class="kotlin">applOp(2,3,::sum)</code></pre>
+<p>这些算是 函数引用 的大致概念。同时<strong>函数引用</strong>也是可以赋值给变量的。</p>
+<pre><code class="kotlin">val sumLambda: (Int, Int) -&gt; Int = ::sum
+applyOp(2, 3, sumLambda)</code></pre>
 <p><strong>引用：</strong></p>
 <p><a href="https://www.web3.xin/code/2606.html" target="_blank" rel="noopener">Kotlin this表达式</a></p>
-<p>​    </p>
+<p><a href="https://www.jianshu.com/p/10358883455c" target="_blank" rel="noopener">kotlin中的函数引用详解</a>    </p>
 <p><img src="https://raw.githubusercontent.com/TheCara/RepoPicture/master/image/2020-8-3-1.gif" alt="如果有些方法没有详细说明你可以自行搜索查看"></p>
 
             </div>

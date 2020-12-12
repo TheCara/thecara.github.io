@@ -662,6 +662,15 @@ hexo d</code></pre>
 <p>如果出现 “ERROR Plugin load failed: hexo-prism-plugin”错误 直接删除”node_modules\hexo-prism-plugin”下的文件夹。</p>
 <p>安装 nove.js 自动安装choco<a href="https://thecara.github.io/2020/07/26/choco%E7%9A%84%E9%85%8D%E7%BD%AE%E4%B8%8E%E5%BA%94%E7%94%A8%E7%9A%84%E5%AE%89%E8%A3%85/">可能会报错使用</a></p>
 <p>引用:<a href="https://github.com/blinkfox/hexo-theme-matery/blob/develop/README_CN.md" target="_blank" rel="noopener">https://github.com/blinkfox/hexo-theme-matery/blob/develop/README_CN.md</a></p>
+<h2 id="Hexo-让文章按照最新的提交时间进行排序"><a href="#Hexo-让文章按照最新的提交时间进行排序" class="headerlink" title="Hexo 让文章按照最新的提交时间进行排序"></a>Hexo 让文章按照最新的提交时间进行排序</h2><p>让我们最新提交或者更新的文章在界面的首个位置。</p>
+<p>在主配置文件 <strong>_config.ym</strong>l, 查找 <strong>index_generator</strong> 标签 <strong>order_by</strong> 属性修改为 <strong>-updated</strong> 即可。</p>
+<pre><code class="yaml">index_generator:
+  path: &#39;&#39;
+  per_page: 18
+  order_by: -updated </code></pre>
+<p><img src="https://raw.githubusercontent.com/TheCara/RepoPicture/master/image/20201212171501.png" alt=""></p>
+<p>之后 </p>
+<pre><code>hexo g</code></pre><p>完成。</p>
 <h2 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h2><p>在使用 目录导航时不建议 “标题” 配合 “无序列表” 使用</p>
 <p><img src="https://raw.githubusercontent.com/TheCara/RepoPicture/master/image/2020-8-19-0.gif" alt=""></p>
 <p>会出现无法跳转到指定目录。</p>
