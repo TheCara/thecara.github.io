@@ -903,7 +903,70 @@ class MyText{
 <p>能够消除lambda带来的性能开销，还能够使lambda内的控制流更加灵活。</p>
 <h2 id="8-1-声明高阶函数"><a href="#8-1-声明高阶函数" class="headerlink" title="8.1 声明高阶函数"></a>8.1 声明高阶函数</h2><p>定义</p>
 <blockquote>
-<p>高阶函数就是以另一个函数作为参数或者返回值的函数。</p>
+<p>高阶函数就是以另一个函数作为参数或者返回值的函数。在kotlin中，函数可以用lambda或者函数引用来表示。因此，任何以lambda或者<strong>函数引用</strong>作为参数的函数，或者返回值为lambda或函数引用的函数，或者两者都有满足的函数都是高阶函数。</p>
+</blockquote>
+<p>标准库中的filter函数将一个判断式函数作为参数，因此它是一个高阶函数：</p>
+<pre><code class="kotlin">list.filter{x&gt;0}</code></pre>
+<h3 id="8-1-1-函数类型"><a href="#8-1-1-函数类型" class="headerlink" title="8.1.1 函数类型"></a>8.1.1 函数类型</h3><p>在变量中我们有<strong>Int类型</strong>，<strong>String类型</strong>等那么也有属于函数的<strong>函数类型</strong>。</p>
+<p>声明一个lambda作为实参的函数，你需要知道如何声明对应形参的类型。在那之前，看接下来的例子，把 lambda 表达式保存在局部变量中。在不声明类型的情况下，这些就依赖于Kotlin的类型推导。</p>
+<pre><code class="kotlin">val sum = {x:Int,y:Int -&gt; x+y}
+val action = {println(42)}</code></pre>
+<p>编译器推导出sum和action两个变量具有<strong>函数类型</strong>。</p>
+<p>显式声明<strong>函数类型的变量</strong></p>
+<pre><code class="kotlin">val sum:(Int ,Int) -&gt; Int = {x,y-&gt;x+y}    // 有两个Int类型参数和Int类型返回值
+val action:() - &gt; Unit = { println(42) }    //没用参数和返回值</code></pre>
+<p>声明函数类型，需要将函数参数类型放在括号中，紧接着是一个箭头和函数的返回值类型。</p>
+<pre><code class="kotlin">(Int,String) -&gt; Unit
+// ↑参数类型    ↑返回类型</code></pre>
+<p>在声明函数类型时Unit是不能省略的，其他情况下可以。</p>
+<p>函数类型的返回值标记为可空类型：</p>
+<pre><code class="kotlin">val canReturnNull: (Int,Int) -&gt; Int?={null}</code></pre>
+<p>定义函数类型的可空变量。</p>
+<blockquote>
+<p>为了明确表示是变量本身可空，而不是函数类型的返回类型可空，你需要将整个函数类型的定义包含在括号内并在括号后添加问号。</p>
+<pre><code class="kotlin">val funOrNull:((Int,Int) -&gt; Int) ?= null</code></pre>
+</blockquote>
+<h3 id="8-1-2-调用作为参数的函数"><a href="#8-1-2-调用作为参数的函数" class="headerlink" title="8.1.2 调用作为参数的函数"></a>8.1.2 调用作为参数的函数</h3><p>实现一个高阶函数。</p>
+<p>实现2，3两个数字的任意操作。</p>
+<blockquote>
+<p>函数类型作为参数，形参和实参更像是接口，形参是接口实参则用来具体的实现。</p>
+</blockquote>
+<p>定义一个简单的高阶函数</p>
+<pre><code class="kotlin">//    定义一个函数类型的参数
+fun twoAndThree(operation: (Int,Int) -&gt; Int){
+    val result = opration(2,3)    // 调用参数（函数类型）
+    println(&quot;The result is $result&quot;)
+}
+&gt;&gt;&gt; twoAndThree{a,b -&gt; a+b}
+The result is 5
+&gt;&gt;&gt; twoAndThree(a,b -&gt; a*b)
+The result is 6</code></pre>
+<p>实现最常用的标准库函数：filter函数。为了更让事情更简单一些，将实现基于String类型的filter函数，但和作用于泛型的版本原理是显示的。</p>
+<pre><code class="kotlin">/* &quot;String&quot;:接收者类型。
+    “predicate”：参数类型
+    “(Char) -&gt; Boolean”：函数类型参数
+    “Char”:函数类型参数的参数类型
+    “Boolean”：函数类型的参数返回类型
+    */
+fun String.filter(predicate:(Char) -&gt; Boolean):String</code></pre>
+<blockquote>
+<p>filter 函数的声明，以一个判断式作为参数</p>
+</blockquote>
+<p>判断式的类型是一个函数，以字符作为参数并返回boolean类型的值。如果要让传递给判断式的字符出现在最终返回的字符串中，判断式需要返回ture，反之false。</p>
+<pre><code class="kotlin">//    实现一个简单版本的filer函数
+fun String.filter(predicate: (Char) -&gt; Boolean):String{
+    val sb = StringBuilder()
+    for (index in 0 until length){
+        val element = get(index)
+        if (predicate(element)) sb.append(element)    // 调用引用的String类型参数给predicate函数进行判断
+    }
+    return sb.toString()
+}
+
+&gt;&gt;&gt; println(&quot;ab1c&quot;.filter{it in &#39;a&#39;..&#39;z&#39;})    //传递 lambda 作为 &#39;predicate&#39;参数
+abc</code></pre>
+<blockquote>
+<p>filter 函数的实现非常简单明了。它检查每个字符时候满足判断式，如果满足就将字符添加到包含结果的StringBuilder中。</p>
 </blockquote>
 <h1 id="补充"><a href="#补充" class="headerlink" title="补充"></a>补充</h1><h3 id="字段和属性"><a href="#字段和属性" class="headerlink" title="字段和属性"></a>字段和属性</h3><p><a href="https://blog.csdn.net/chenchunlin526/article/details/71424844" target="_blank" rel="noopener">深入理解Java中的字段与属性的区别</a></p>
 <h4 id="属性和字段的区别"><a href="#属性和字段的区别" class="headerlink" title="属性和字段的区别"></a>属性和字段的区别</h4><p>属性（property），通常可以理解为get 和 set 方法。</p>
