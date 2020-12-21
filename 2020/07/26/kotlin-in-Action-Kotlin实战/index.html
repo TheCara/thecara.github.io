@@ -968,6 +968,46 @@ abc</code></pre>
 <blockquote>
 <p>filter 函数的实现非常简单明了。它检查每个字符时候满足判断式，如果满足就将字符添加到包含结果的StringBuilder中。</p>
 </blockquote>
+<h3 id="8-1-3-在Java中使用函数类"><a href="#8-1-3-在Java中使用函数类" class="headerlink" title="8.1.3 在Java中使用函数类"></a>8.1.3 在Java中使用函数类</h3><p><strong>原理</strong></p>
+<blockquote>
+<p>函数类型被声明为普通的接口：一个函数类型的变量是<strong>FunctionN接口的实现</strong>。</p>
+<p>Kotlin 标准库定义了一系列的接口，这些接口对应于不同的参数数量的函数：<strong>Function0<R>(没有参数的函数)、Function&lt;P1,R&gt;(一个参数的函数)</strong>。</p>
+<p>每个接口定义了一个 invoke 方法，调用这个方法就会执行函数。</p>
+<p>一个函数类型的变量就是实现了对应的Function接口的实现类的实力，实现类的invoke方法包含了lambda函数体。</p>
+</blockquote>
+<p><strong>在 Java 中调用使用了函数类型的 Kotlin 函数。</strong></p>
+<pre><code class="kotlin">/*    kotlin声明    */
+fun processTheAnswer(f:(Int) -&gt;){
+    println(f(42))
+}</code></pre>
+<pre><code class="kotlin">/*    Java    */
+&gt;&gt;&gt; processTheAnswe(number -&gt; number+1);
+43</code></pre>
+<p>在旧版 Java 中，可以传递一个实现了函数接口中 invoke 方法的匿名类的实例：</p>
+<pre><code class="java">/*    Java    */
+&gt;&gt;&gt; processTheAnswer(
+...        new Function1&lt;Integer,Integer&gt;(){    // 在Java 8 以前使用函数类型
+...            @Override
+...            public Integer invoke(Integer number){
+...                System.out.println(number);
+...                return number+1;
+...                }
+...        });
+43</code></pre>
+<p>在 Java 中使用函数类型必须显示地传递一个接收者对象作为第一个参数。</p>
+<p>在Java中可以很容易地使用 Kotlin 标准库中以lambda作为参数的扩展函数。</p>
+<pre><code class="java">/*    Java    */
+&gt;&gt;&gt; List&lt;String&gt; strings = new ArrayList()；
+&gt;&gt;&gt; strings.add(&quot;42&quot;)
+&gt;&gt;&gt; CollectionKt.forEach(strings, s -&gt;{    //可以在Java中使用Kotlin标准库中的函数
+...        System.out.println(a);
+...        return unit.INSTANCE;    // 必须显示的返回一个Unit类型的值。
+...})</code></pre>
+<blockquote>
+<p>在 Java 中 ，函数或许lambda可以返回Unit。因为在 Kotlin 中 Unit 类型是有值的，所以需要显示的返回它。</p>
+<p>一个返回 void 的lambda 不能作为返回 Unit 的函数类型的实参，就像之前的例子中的(String) -&gt;Unit.</p>
+</blockquote>
+<h3 id="8-1-4-函数类型的参数默认值和null值"><a href="#8-1-4-函数类型的参数默认值和null值" class="headerlink" title="8.1.4 函数类型的参数默认值和null值"></a>8.1.4 函数类型的参数默认值和null值</h3><p>声明函数类型的参数时可以指定参数的默认值。</p>
 <h1 id="补充"><a href="#补充" class="headerlink" title="补充"></a>补充</h1><h3 id="字段和属性"><a href="#字段和属性" class="headerlink" title="字段和属性"></a>字段和属性</h3><p><a href="https://blog.csdn.net/chenchunlin526/article/details/71424844" target="_blank" rel="noopener">深入理解Java中的字段与属性的区别</a></p>
 <h4 id="属性和字段的区别"><a href="#属性和字段的区别" class="headerlink" title="属性和字段的区别"></a>属性和字段的区别</h4><p>属性（property），通常可以理解为get 和 set 方法。</p>
 <p>字段（field），通常叫做 <strong>类成员</strong>，或者 <strong>类变量</strong> ，有时也叫 域 ，理解为 数据成员，用来承担数据的。</p>
