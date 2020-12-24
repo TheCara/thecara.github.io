@@ -1008,6 +1008,64 @@ fun processTheAnswer(f:(Int) -&gt;){
 <p>一个返回 void 的lambda 不能作为返回 Unit 的函数类型的实参，就像之前的例子中的(String) -&gt;Unit.</p>
 </blockquote>
 <h3 id="8-1-4-函数类型的参数默认值和null值"><a href="#8-1-4-函数类型的参数默认值和null值" class="headerlink" title="8.1.4 函数类型的参数默认值和null值"></a>8.1.4 函数类型的参数默认值和null值</h3><p>声明函数类型的参数时可以指定参数的默认值。</p>
+<p><strong>用来理解参数默认值的关键作用</strong></p>
+<pre><code class="kotlin">/*    使用了硬编码toString转换的joinToString函数    */
+fun &lt;T&gt; Collection&lt;T&gt;.joinToString(
+        separator: String = &quot;,&quot;,
+        prefix: String = &quot;&quot;,
+        postfix: String = &quot;&quot;
+): String{
+        val result = StringBuilder(prefix)
+        for ((index,element) in this.withIndex()){
+            if(index &gt;0) result.append(separator)
+            result.append(element)    // 使用默认toString方法将对象转换成字符串
+        }
+        result.append(postfix)
+        return result.toString()
+}</code></pre>
+<blockquote>
+<p>这里的实现很灵活但是并没有让你控制转换的关键点： 集合中的原始是如何转换成字符串的。</p>
+</blockquote>
+<blockquote>
+<p>这里使用 StringBuilder.append(o:Any?) (result.append(element)),他总是使用toString方法将对象转换成字符串。在大多数情况下这样是可以的，但是不总是这样。</p>
+</blockquote>
+<blockquote>
+<p>现在可以传递一个lambda去指定如何将对象转换成字符串。</p>
+</blockquote>
+<blockquote>
+<p>但是要求所有调用者都传递lambda是比较烦人的，因为大部分调用者使用默认的行为就可以了。为了解决这个问题，可以定义一个函数类型的参数并用一个lambda作为它的默认值。</p>
+</blockquote>
+<pre><code class="kotlin">/*    给函数类型的参数指定默认值    */
+fun &lt;T&gt; Collection&lt;T&gt;.joinToString(
+        separator: String = &quot;,&quot;,
+        prefix: String = &quot;&quot;,
+        postfix: String = &quot;&quot;,
+        transform: (T) -&gt; String = {it.toString()}    //声明一个lambda为默认值的函数类型的参数
+): String {
+        val result = StringBuilder(prefix)
+        for ((index,element) in this.withIndex()){
+            if(index &gt; 0 ) result.append(separator)
+            result.append(transform(element))    // 调用作为实参的element传递给 “transform”形参的函数
+        }
+        result.append(postfix)
+        return result.toString()
+}
+
+
+&gt;&gt;&gt; val letters = listOf(&quot;Alpha&quot;,&quot;Beta&quot;)
+&gt;&gt;&gt;  println(letters.joinToString())    // 使用默认的转换函数
+Alpha, Beta
+&gt;&gt;&gt; println(letters.joinToString{it.toLowerCase()})    // 传递一个 lambda 作为参数
+alpha,beta
+&gt;&gt;&gt; println(letters.joinToString(separator = &quot;!&quot;,postifx = &quot;!&quot;, transform = {it.ToUpperCase()}))    // 使用命名参数参数语法几个参数，包括lambda。
+ALPHA,BETA</code></pre>
+<blockquote>
+<p>这个带默认值的函数类型是一个泛型参数T表示集合中的元素类型。 Lambda transform 将接收这个类型的参数。</p>
+</blockquote>
+<blockquote>
+<p>声明函数类型的默认值并不需要特殊的语法，只需要把 lambda 作为值放在 = 号后。上述例子展示了多种方式调用函数类型。</p>
+</blockquote>
+<p><strong>声明可空类型参数的函数类型</strong></p>
 <h1 id="补充"><a href="#补充" class="headerlink" title="补充"></a>补充</h1><h3 id="字段和属性"><a href="#字段和属性" class="headerlink" title="字段和属性"></a>字段和属性</h3><p><a href="https://blog.csdn.net/chenchunlin526/article/details/71424844" target="_blank" rel="noopener">深入理解Java中的字段与属性的区别</a></p>
 <h4 id="属性和字段的区别"><a href="#属性和字段的区别" class="headerlink" title="属性和字段的区别"></a>属性和字段的区别</h4><p>属性（property），通常可以理解为get 和 set 方法。</p>
 <p>字段（field），通常叫做 <strong>类成员</strong>，或者 <strong>类变量</strong> ，有时也叫 域 ，理解为 数据成员，用来承担数据的。</p>
