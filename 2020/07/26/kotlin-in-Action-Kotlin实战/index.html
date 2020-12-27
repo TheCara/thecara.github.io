@@ -1065,7 +1065,131 @@ ALPHA,BETA</code></pre>
 <blockquote>
 <p>声明函数类型的默认值并不需要特殊的语法，只需要把 lambda 作为值放在 = 号后。上述例子展示了多种方式调用函数类型。</p>
 </blockquote>
-<p><strong>声明可空类型参数的函数类型</strong></p>
+<p><strong>声明函数类型其参数是可空的</strong></p>
+<pre><code class="kotlin">/*    案例1    一般情况*/
+fun foo(callback: (() -&gt;Unit)?){
+    if(callback != null){
+        callback()
+    }
+}
+</code></pre>
+<blockquote>
+<p>这里不能直接调用作为参数传递进行的函数：Kotlin 会因为检查到潜在的空指针异常而导致编译失败。<strong>这里可选的办法是显式地检查null</strong>。</p>
+</blockquote>
+<pre><code class="kotlin">/*    使用函数类型的可空参数    */
+fun &lt;T&gt; Collection&lt;T&gt;.joinToString(
+        separator: String = &quot;,&quot;,
+        prefix: String = &quot;&quot;,
+        postfix: String = &quot;&quot;,
+        transform:    ((T) -&gt; String ) ?=null    // 声明一个函数类型的可空参数
+): String{
+    val result = StringBuilder(prefix)
+    for ((index,element) in this.withIndex()){
+        if (index &gt; 0) result.append(separator)
+        val str = transform?.invoke(element)    // 使用安全调用语法，调用函数
+            ?: element.toString()    //使用 Elvis 运算符处理回调没有被指定的情况
+        result.append(str)
+    }
+    result.append(postfix)
+    return result.toString()
+
+}</code></pre>
+<blockquote>
+<p>这是一个更简单的版本，它利用了一个事实 ，函数类型是包含 invoke 方法的接口具体实现。作为一个普通方法，invoke可以通过安全调用语法被调用：callback?.invoke()方法</p>
+</blockquote>
+<h3 id="8-1-5-返回函数的函数"><a href="#8-1-5-返回函数的函数" class="headerlink" title="8.1.5 返回函数的函数"></a>8.1.5 返回函数的函数</h3><pre><code class="kotlin">/*    定义一个返回函数的函数    */
+enum class Delivery {STANDARD, EXPEDITED}
+class Order(val itemCount:Int)
+fun getShippingCostCalculator(delivery:Delivery):(Order)-&gt;Double{    // 声明返回函数的函数
+    if (delivery == Delivery.EXPEDITEM){    // 返回 lambda
+        return {order -&gt; 6+2.1 * order.itemCount}
+    }
+    return {order -&gt;1.2*order.itemCount}
+}
+&gt;&gt;&gt; val calculator = getShippingCostCalculator(Delivery.EXPEDITEM)    // 将返回的函数保存在变量中
+&gt;&gt;&gt; println(&quot;Shapping costs ${calculator(Order(3))}&quot;)    // 调用返回的函数
+Shipping costs 12.3</code></pre>
+<blockquote>
+<p><strong>使用场景</strong></p>
+<p>例如，运输费用的计算依赖于选择恰当的逻辑变体并将它作为另一个函数返回。<strong>声明一个 返回另一个函数的函数，需要指定一个函数类型作为返回类型。</strong></p>
+<p>函数 getShippingCostCalculator返回一个函数，这个函数以Order最为参数并返回一个Double类型的值。</p>
+<p><strong>要返回一个函数，需要写一个return表达式，跟上一个lambda、一个成员引用，或者其他的函数类型的表达式，比如一个函数的局部变量。</strong></p>
+</blockquote>
+<p><strong>另一个返回函数的例子</strong></p>
+<blockquote>
+<p>例如，你可以在 UI 上输入一个字符串，然后只显示那些名字以这个字符串开头的联系人；还可以隐藏没有电话号码的联系人。用ContactListFilters这个类来保存这个选项的状态。</p>
+</blockquote>
+<pre><code class="kotlin">class ContactListFilters{
+    var prefix: String = &quot;&quot;
+    var onlyWithPhoneNumber: Boolean = false
+}</code></pre>
+<blockquote>
+<p>当用户输入 D 来查看姓或者名以 D 开头的联系人时，prefix的值会被更新。</p>
+</blockquote>
+<pre><code class="kotlin">/*    在UI代码中定义一个返回函数的函数    */
+data class Persion(
+    val firstName:String,
+    val lastName:String,
+    val phoneNumber:String?
+)
+
+class ContactListFilters{
+    val prefix:String = &quot;&quot;
+    val onlyWithPhoneNumber: Boolean = false
+    fun getPredicate():(Person) -&gt; Boolean{    //声明一个返回函数的函数
+        val    startWithPrefix  = {p:Persion -&gt; p.firstName.startsWith(prefix) || p.lastName.startsWith(prefix)
+        }
+        if (!onlyWithPhoneNumber){
+            return startWithPrefix    // 返回一个函数类型的变量
+        }
+        return { startsWithPrefix(it)&amp;&amp;it.phoneNumber != null }    //从函数返回一个lambda
+
+    }
+}
+&gt;&gt;&gt; val contacts = listOf(Persion(&quot;Dmitry&quot;,&quot;Jemeroy&quot;,&quot;123-4567&quot;),
+...                          Persion(&quot;Svetlane&quot;,&quot;Isakova&quot;,null))
+&gt;&gt;&gt; val contactListFilters = ContactListFilters()
+&gt;&gt;&gt; with (contactListFilters){
+&gt;&gt;&gt;        prefix = &quot;Dm&quot;
+&gt;&gt;&gt;     onlyWithPhoneNumber = true
+&gt;&gt;&gt; }
+&gt;&gt;&gt; println(contacts.filter(
+...        contactListFilters.getPredicate()))        // 将 getPredicate 返回的函数作为参数传递给 “filter” 函数
+[Persion (firstName = Dmitry,lastName = Jemetov,phoneNumber = 123-4567)]</code></pre>
+<blockquote>
+<p>为了让展示联系人列表的逻辑代码和输入的过滤条件的UI条件解耦，可以定义一个函数来创建一个判断式，用来过滤联系人列表。判断式检查前戳，如果有需要也检查电话号码时候存在。</p>
+</blockquote>
+<blockquote>
+<p>getPredicate 函数返回一个函数（类型）的值，这个值被传递给filter作为参数。</p>
+</blockquote>
+<h3 id="8-1-6-通过lambda-去除重复代码"><a href="#8-1-6-通过lambda-去除重复代码" class="headerlink" title="8.1.6 通过lambda 去除重复代码"></a>8.1.6 通过lambda 去除重复代码</h3><p>例子</p>
+<blockquote>
+<p>这是一个分析网站访问的例子。SiteVisit类用来保存每次访问的如今、持续时间和用户的操作系统。不同的操作系统使用枚举来表示。</p>
+</blockquote>
+<pre><code class="kotlin">/*    定义站点访问数据    */
+data calss SiteVisit(
+    val path: String,
+    val dutation: Double,
+    val os: OS
+    )
+enum class OS{ WINDOWS,LINUX,MAC,IOS,ANDROID}
+val log = listOf(
+    SiteVisit(&quot;/&quot;,34.0,OS.WINDOWS),
+    SiteVisit(&quot;/&quot;,22.0,OS.MAC),
+    SiteVisit(&quot;/login&quot;,12.0,OS.WINDOWS),
+    SiteVisit(&quot;/signup&quot;,8.0,OS.IOS),
+    SiteVisit(&quot;/&quot;,16.3.OS.ANDROID)
+)</code></pre>
+<blockquote>
+<p>需要显示来自 Windows 的平均访问时间，可以使用 average 函数来完成这个任务。</p>
+</blockquote>
+<pre><code class="kotlin">/*    使用硬编码的过滤器分析站点访问数据    */
+val averageWindowsDutation = log
+    .filter {it.os == OS.WINDOWS}
+    .map(SiteVisit::dutation)
+    .avaerage()
+&gt;&gt;&gt;println(averageWindowsDutaion)
+23.0</code></pre>
 <h1 id="补充"><a href="#补充" class="headerlink" title="补充"></a>补充</h1><h3 id="字段和属性"><a href="#字段和属性" class="headerlink" title="字段和属性"></a>字段和属性</h3><p><a href="https://blog.csdn.net/chenchunlin526/article/details/71424844" target="_blank" rel="noopener">深入理解Java中的字段与属性的区别</a></p>
 <h4 id="属性和字段的区别"><a href="#属性和字段的区别" class="headerlink" title="属性和字段的区别"></a>属性和字段的区别</h4><p>属性（property），通常可以理解为get 和 set 方法。</p>
 <p>字段（field），通常叫做 <strong>类成员</strong>，或者 <strong>类变量</strong> ，有时也叫 域 ，理解为 数据成员，用来承担数据的。</p>
