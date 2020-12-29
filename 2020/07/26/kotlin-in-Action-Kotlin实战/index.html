@@ -1190,6 +1190,46 @@ val averageWindowsDutation = log
     .avaerage()
 &gt;&gt;&gt;println(averageWindowsDutaion)
 23.0</code></pre>
+<blockquote>
+<p>显示来自于Windows机器的平均访问时间，用 average 函数来完成任务。</p>
+</blockquote>
+<pre><code class="kotlin">/*    使用普通的方法去除重复代码    */
+fun List&lt;SiteVisit&gt;.averageDurationFor(os:OS) = filter{it.os == os}.map(SiteVisit::dutation).average()    // 将重复代码抽取到函数中
+&gt;&gt;&gt; println(log.averageDurationFor(OS.WINDOWS))
+23.0
+&gt;&gt;&gt; println(log.averageDurationFor(OS.MAC))
+22.0</code></pre>
+<blockquote>
+<p>现在你要计算一个来自MAC用户的相同数据，为了避免重复，可以将平台类型抽象成一个参数.</p>
+<p>注意这个函数作为扩展函数增强了可读性。如果它值在局部的上下文中有用，你甚至可以将这个函数声明为局部的扩展函数。</p>
+</blockquote>
+<pre><code class="kotlin">/*    用一个重复的硬编码函数分析站点访问数据    */
+val averageMobileDutation = log
+    .filter{it.os == setOf(OS.IOS,OS.ANDROID)}
+    .map(SiteVisit::duration)
+    .average()
+
+&gt;&gt;&gt; println(averageMobileDuration)
+12.15
+</code></pre>
+<blockquote>
+<p>如果你对移动平台的访问的平均时间感兴趣。</p>
+<p>这时已经不能再再用简单的参数表示不同的平台了。可能还需要使用更加复杂的条件查询日志，比如，“来自IOS平台对注册页面的访问平均时间是多少？”</p>
+<p><strong>可以使用函数类型将需要的条件抽象到一个参数中</strong></p>
+</blockquote>
+<pre><code class="kotlin">/*    用高阶函数去除重复代码    */
+fun List&lt;SiteVisit&gt;.averageDutationFor(predicate:(SiteVisit) -&gt; Boolean) = filter(predicate).map(SiteVisit::duration).average()
+&gt;&gt;&gt; println(log.averageDurationFor{
+...        it.os in setOf(OS.ANDROID,OS.IOS)
+})
+12.15
+&gt;&gt;&gt; println(log.averageDurationFor{
+...        it.os == OS.IOS &amp;&amp; it.path == &quot;/signup&quot;    // 满足系统为IOS，访问地址为 注册界面的条件
+})
+8.0</code></pre>
+<blockquote>
+<p>函数类型可以帮助去除重复代码。使用lambda，不仅可以去除重复的数据，也可以去除重复的行为。</p>
+</blockquote>
 <h1 id="补充"><a href="#补充" class="headerlink" title="补充"></a>补充</h1><h3 id="字段和属性"><a href="#字段和属性" class="headerlink" title="字段和属性"></a>字段和属性</h3><p><a href="https://blog.csdn.net/chenchunlin526/article/details/71424844" target="_blank" rel="noopener">深入理解Java中的字段与属性的区别</a></p>
 <h4 id="属性和字段的区别"><a href="#属性和字段的区别" class="headerlink" title="属性和字段的区别"></a>属性和字段的区别</h4><p>属性（property），通常可以理解为get 和 set 方法。</p>
 <p>字段（field），通常叫做 <strong>类成员</strong>，或者 <strong>类变量</strong> ，有时也叫 域 ，理解为 数据成员，用来承担数据的。</p>
