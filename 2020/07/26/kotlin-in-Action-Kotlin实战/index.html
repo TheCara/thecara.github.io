@@ -1230,7 +1230,13 @@ fun List&lt;SiteVisit&gt;.averageDutationFor(predicate:(SiteVisit) -&gt; Boolean
 <blockquote>
 <p>函数类型可以帮助去除重复代码。使用lambda，不仅可以去除重复的数据，也可以去除重复的行为。</p>
 </blockquote>
-<h1 id="补充"><a href="#补充" class="headerlink" title="补充"></a>补充</h1><h3 id="字段和属性"><a href="#字段和属性" class="headerlink" title="字段和属性"></a>字段和属性</h3><p><a href="https://blog.csdn.net/chenchunlin526/article/details/71424844" target="_blank" rel="noopener">深入理解Java中的字段与属性的区别</a></p>
+<h2 id="8-2-内联函数：消除lambda带来的运行时开销"><a href="#8-2-内联函数：消除lambda带来的运行时开销" class="headerlink" title="8.2 内联函数：消除lambda带来的运行时开销"></a>8.2 内联函数：消除lambda带来的运行时开销</h2><blockquote>
+<p>Kotlin 中传递 lambda 作为函数参数的简明语法与普通的表达式语法很相似。</p>
+<p>lambda 表达式会被正常地编译成匿名类。这表示每调用一次 lambda 表达式，就会额外的创建一个类。并且如果 lambda 捕捉了某个变量，那么每次调用的时候都会创建一个新的对象。这会带来运行时的额外开销，导致使用 lambda 比使用一个直接执行相同代码的函数效率更低。</p>
+<p>有没有可能让编译器生成跟 Java 语句相同高效的代码，但还是能把重复的逻辑抽取到库函数中呢？（作用）</p>
+<p>如果使用 <strong>inline</strong> 修饰符标记一个函数，在函数被使用的时候编译器并不会生成函数调用的代码，而是使用函数实现的真实代码替换每一次的函数调用。</p>
+</blockquote>
+<h3 id="8-2-1-内联函数如何运作"><a href="#8-2-1-内联函数如何运作" class="headerlink" title="8.2.1 内联函数如何运作"></a>8.2.1 内联函数如何运作</h3><h1 id="补充"><a href="#补充" class="headerlink" title="补充"></a>补充</h1><h3 id="字段和属性"><a href="#字段和属性" class="headerlink" title="字段和属性"></a>字段和属性</h3><p><a href="https://blog.csdn.net/chenchunlin526/article/details/71424844" target="_blank" rel="noopener">深入理解Java中的字段与属性的区别</a></p>
 <h4 id="属性和字段的区别"><a href="#属性和字段的区别" class="headerlink" title="属性和字段的区别"></a>属性和字段的区别</h4><p>属性（property），通常可以理解为get 和 set 方法。</p>
 <p>字段（field），通常叫做 <strong>类成员</strong>，或者 <strong>类变量</strong> ，有时也叫 域 ，理解为 数据成员，用来承担数据的。</p>
 <h4 id="属性和字段详解"><a href="#属性和字段详解" class="headerlink" title="属性和字段详解"></a>属性和字段详解</h4><p><strong>字段（field）</strong></p>
