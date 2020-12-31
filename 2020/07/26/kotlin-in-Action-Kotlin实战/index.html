@@ -1236,7 +1236,89 @@ fun List&lt;SiteVisit&gt;.averageDutationFor(predicate:(SiteVisit) -&gt; Boolean
 <p>有没有可能让编译器生成跟 Java 语句相同高效的代码，但还是能把重复的逻辑抽取到库函数中呢？（作用）</p>
 <p>如果使用 <strong>inline</strong> 修饰符标记一个函数，在函数被使用的时候编译器并不会生成函数调用的代码，而是使用函数实现的真实代码替换每一次的函数调用。</p>
 </blockquote>
-<h3 id="8-2-1-内联函数如何运作"><a href="#8-2-1-内联函数如何运作" class="headerlink" title="8.2.1 内联函数如何运作"></a>8.2.1 内联函数如何运作</h3><h1 id="补充"><a href="#补充" class="headerlink" title="补充"></a>补充</h1><h3 id="字段和属性"><a href="#字段和属性" class="headerlink" title="字段和属性"></a>字段和属性</h3><p><a href="https://blog.csdn.net/chenchunlin526/article/details/71424844" target="_blank" rel="noopener">深入理解Java中的字段与属性的区别</a></p>
+<p><strong>内联函数简介</strong></p>
+<blockquote>
+<p>在<a href="https://baike.baidu.com/item/计算机科学" target="_blank" rel="noopener">计算机科学</a>中，<strong>内联函数</strong>（有时称作<strong>在线函数</strong>或<strong>编译时期展开函数</strong>）是一种<a href="https://baike.baidu.com/item/编程语言" target="_blank" rel="noopener">编程语言</a>结构，用来建议<a href="https://baike.baidu.com/item/编译器" target="_blank" rel="noopener">编译器</a>对一些特殊<a href="https://baike.baidu.com/item/函数" target="_blank" rel="noopener">函数</a>进行内联扩展（有时称作<strong>在线扩展</strong>）；也就是说建议编译器将指定的函数体插入并取代每一处调用该函数的地方（<a href="https://baike.baidu.com/item/上下文" target="_blank" rel="noopener">上下文</a>），从而节省了每次调用函数带来的额外时间开支。但在选择使用内联函数时，必须在程序占用空间和程序执行效率之间进行权衡，因为过多的比较复杂的函数进行内联扩展将带来很大的存储资源开支。另外还需要特别注意的是对<a href="https://baike.baidu.com/item/递归函数" target="_blank" rel="noopener">递归函数</a>的内联扩展可能引起部分编译器的无穷编译。</p>
+</blockquote>
+<h3 id="8-2-1-内联函数如何运作"><a href="#8-2-1-内联函数如何运作" class="headerlink" title="8.2.1 内联函数如何运作"></a>8.2.1 内联函数如何运作</h3><blockquote>
+<p><strong>内联函数！</strong></p>
+<p>当一个函数被声明为 inline 时，它的函数体是内联的–换句话说，函数体会被直接替换到函数被调用的地方，而不是被正常调用。</p>
+</blockquote>
+<pre><code class="kotlin">/*    定义一个内联函数    */
+inline fun &lt;T&gt; sysnchronized(lock:Lock,action : () -&gt; T):T{
+    lock.lock()
+    try{
+        return action()
+    }
+    finally    {
+        lock.unlock()
+    }
+}
+val l = Lock()
+synchronized(1){
+    //...
+}</code></pre>
+<blockquote>
+<p>函数用于确保一个共享资源不会并发地被多个线程访问。函数锁住一个Lock对象，执行代码块。</p>
+</blockquote>
+<blockquote>
+<p>调用这个函数的语法跟Java中使用 synchronized 语法完全一直。<strong>区别</strong>，Java 的 synchronized 语法可以用于任何对象，这个函数则要求传入一个Lock实例。</p>
+<p>同时，Kotlin 标准库中定义了一个可以接受任何对象作为参数的 synchronized 函数版本。</p>
+<p>这里使用同步操作时显式的对象锁能够提升代码的可读性和维护性。</p>
+</blockquote>
+<blockquote>
+<p><strong>使用 inline 的效果！</strong></p>
+<p>因为已经将 synchronized 函数声明为 inline，所以每次调用它所生成的代码跟 Java 的synchronized 语句都是一样的。</p>
+</blockquote>
+<p><strong>使用 synchronized 的例子。</strong></p>
+<pre><code class="kotlin">fun foo(l:Lock){
+    println(&quot;Before sync&quot;)
+    synchronized(1){
+        println(&quot;Action&quot;)    //内联函数
+    }
+    println(&quot;After sync&quot;)
+}</code></pre>
+<pre><code class="kotlin">/*    编译后的 foo 函数    */
+fun _foo_(l:Lock){
+    println(&quot;Before sync&quot;)    //这是调用者 foo 的代码
+    l.lock()    // 这是被内联的 synchronized 函数代码
+    try(
+        println(&quot;Action&quot;)    //被内联的lmabda题代码
+    )finally{
+        l.unlock()        //这是调用者 foo 的代码
+    }
+    println(&quot;After sync&quot;)    //这是调用者 foo 的代码
+}</code></pre>
+<blockquote>
+<p>展示的是作用相同的代码，将会被编译成同样的字节码。</p>
+</blockquote>
+<blockquote>
+<p>这里 lambda 表达式 和 synchronized 函数实现了内联。</p>
+<p>由于lambda 生成的字节码成为了函数调用这定义的部分，而不是被包含在一个实现了函数接口的匿名类中</p>
+</blockquote>
+<pre><code class="kotlin">/*    调用内联函数的时候可以传递函数类型的变量作为参数    */
+class LockOwner(val lock:Lock){
+    fun runUnderLock(body:() -&gt; Unit){
+        synchronized(lock,body)    //作为函数类型的变量作为参数，而不是lambda
+    }
+}</code></pre>
+<blockquote>
+<p>使用函数类型的变量作为参数，不会被内联。</p>
+</blockquote>
+<blockquote>
+<p>只有synchronized 函数体被内联了，lambda 才会被正确调用。</p>
+</blockquote>
+<pre><code>/*    runUnderLock 的函数字节码    */
+class LockOwner(val lock:Lock){
+    fun runUnderLock(body:() -&gt; Unit){    //函数类似于真正的runUnberLock被编译成的字节码
+        lock.lock()
+        try{
+            body() // body 没有被内联，因为在调用到地方换没有 lambda
+        }finally{
+            lock.unlock()
+        }
+    }
+}</code></pre><h1 id="补充"><a href="#补充" class="headerlink" title="补充"></a>补充</h1><h3 id="字段和属性"><a href="#字段和属性" class="headerlink" title="字段和属性"></a>字段和属性</h3><p><a href="https://blog.csdn.net/chenchunlin526/article/details/71424844" target="_blank" rel="noopener">深入理解Java中的字段与属性的区别</a></p>
 <h4 id="属性和字段的区别"><a href="#属性和字段的区别" class="headerlink" title="属性和字段的区别"></a>属性和字段的区别</h4><p>属性（property），通常可以理解为get 和 set 方法。</p>
 <p>字段（field），通常叫做 <strong>类成员</strong>，或者 <strong>类变量</strong> ，有时也叫 域 ，理解为 数据成员，用来承担数据的。</p>
 <h4 id="属性和字段详解"><a href="#属性和字段详解" class="headerlink" title="属性和字段详解"></a>属性和字段详解</h4><p><strong>字段（field）</strong></p>
