@@ -1318,7 +1318,33 @@ class LockOwner(val lock:Lock){
             lock.unlock()
         }
     }
-}</code></pre><h1 id="补充"><a href="#补充" class="headerlink" title="补充"></a>补充</h1><h3 id="字段和属性"><a href="#字段和属性" class="headerlink" title="字段和属性"></a>字段和属性</h3><p><a href="https://blog.csdn.net/chenchunlin526/article/details/71424844" target="_blank" rel="noopener">深入理解Java中的字段与属性的区别</a></p>
+}</code></pre><h3 id="8-2-2-内联函数的限制"><a href="#8-2-2-内联函数的限制" class="headerlink" title="8.2.2 内联函数的限制"></a>8.2.2 内联函数的限制</h3><blockquote>
+<p>鉴于内联的运作方式，不是所有使用lambda的函数都可以被内联的。</p>
+</blockquote>
+<blockquote>
+<p>当函数被内联的时候，作为参数的lambda表达式函数体会被直接替换成最终生成的代码中。这会限制函数体中对应的（lambda）参数使用。如果（lambda）参数被调用，这样的代码能被容易的内联。<strong>但是如果（lambda）参数在某个地方被保存起来，一遍后边可以继续使用，lambda表达式的代码将不能被内联，因为必须要有一个包含这些代码的对象存在。</strong></p>
+</blockquote>
+<blockquote>
+<p>一般来说，参数如果被直接调用或者作为参数传递给另外一个inline函数，它是可以被内联的。否则，编译器会禁止参数被内联并给出错误信息“Illeal usage of inline-parameter”</p>
+</blockquote>
+<blockquote>
+<p>例如，许多作用域序列的函数会返回一些类的实例，这些类代表对应的序列操作并接受lambda作为构造参数。 这是 Sequence.map函数的定义：</p>
+</blockquote>
+<pre><code class="kotlin">fun &lt;T,R&gt; Sequence&lt;T&gt;.map(transform:(T) -&gt; R):Sequence&lt;R&gt;{
+    return TransformingSequence(this,transform)
+
+}</code></pre>
+<blockquote>
+<p>map 函数没有直接调用作为 transform参数传递进来的函数。而是将这个函数传递给类的构造方法，构造方法将它保存在一个属性中。</p>
+<p>这时为了支持这一点，作为transform参数传递的lambda需要被编译成标准的非内联的表达式，即实现了一个函数接口的匿名类。</p>
+</blockquote>
+<blockquote>
+<p> 当函数期望两个或多个 lambda 参数，可以选择只内联其中一些参数。这是有道理的，因为一个lambda可能会包含很多代码或者不允许内联的方式使用。接受这样的非内联lambda的参数，可以用 noinline 修饰符来标记它：</p>
+<pre><code class="kotlin">inline fun foo(inlined:() -&gt; Unit,noinlune notInlined:() -&gt; Unit){
+    //...
+}</code></pre>
+</blockquote>
+<h1 id="补充"><a href="#补充" class="headerlink" title="补充"></a>补充</h1><h3 id="字段和属性"><a href="#字段和属性" class="headerlink" title="字段和属性"></a>字段和属性</h3><p><a href="https://blog.csdn.net/chenchunlin526/article/details/71424844" target="_blank" rel="noopener">深入理解Java中的字段与属性的区别</a></p>
 <h4 id="属性和字段的区别"><a href="#属性和字段的区别" class="headerlink" title="属性和字段的区别"></a>属性和字段的区别</h4><p>属性（property），通常可以理解为get 和 set 方法。</p>
 <p>字段（field），通常叫做 <strong>类成员</strong>，或者 <strong>类变量</strong> ，有时也叫 域 ，理解为 数据成员，用来承担数据的。</p>
 <h4 id="属性和字段详解"><a href="#属性和字段详解" class="headerlink" title="属性和字段详解"></a>属性和字段详解</h4><p><strong>字段（field）</strong></p>
