@@ -1344,6 +1344,36 @@ class LockOwner(val lock:Lock){
     //...
 }</code></pre>
 </blockquote>
+<h3 id="8-2-3-内联集合操作"><a href="#8-2-3-内联集合操作" class="headerlink" title="8.2.3 内联集合操作"></a>8.2.3 内联集合操作</h3><p>Kotlin 标准库中操作集合函数的性能。大部分标准库中的集合函数都带有lambda参数。<strong>不管使用标准库函数，还是直接实现这些操作效率都是一样的。</strong></p>
+<p>我们来比较一下。</p>
+<pre><code class="kotlin">/*    使用lambda过滤一个集合    */
+data class Person(val name:String,val age:Int)
+val people = listOf(Persion(&quot;Alice&quot;,29),Person(&quot;Bob&quot;,31))
+&gt;&gt;&gt; println(people.filter(it.age&lt;30))
+[Person(name = Alice,age = 29)]</code></pre>
+<pre><code class="kotlin">/*    手动过滤一个集合 不用lambda表达式来实现*/
+&gt;&gt;&gt; val result = mutableListOf&lt;Person&gt;()
+&gt;&gt;&gt; for (person in people){
+&gt;&gt;&gt;         if(person.age &lt; 30) result.add(person)
+&gt;&gt;&gt;}
+&gt;&gt;&gt; println(result)
+[Person(name = &quot;Alice&quot;, age = 29)]</code></pre>
+<blockquote>
+<p>Kotlin 对内联函数的支持让你不必担心性能问题。</p>
+</blockquote>
+<blockquote>
+<p>在Kotlin中，filter 函数被声明为内联函数。这意味着 filter 函数，以及传递给它的lambda的字节码会被一起内联到filter被调用的地方。最终，第一种实现所产生的字节码和第二种实现所产生的字节码大致是一样的。你可以很安全地使用符合语言习惯的集合操作。</p>
+</blockquote>
+<blockquote>
+<p>现象你在连续使用 filter 和 map 两个操作。</p>
+<pre><code class="kotlin">&gt;&gt;&gt; println(people.filter{it.age &gt; 30}
+...                .map (Persion::name))
+[Bob]</code></pre>
+<p><strong>这个例子使用了 lambda 表达式和一个成员引用。</strong></p>
+<p>这里 filter 和 map 都被声明为了 inline 函数，所以他们的函数体会被内联，因此不会产生额外的类和对象。上述的代码却创建了一个中间集合来把偶出来列表过滤的结果，由 filter 函数生成的代码会向这个集合种添加元素，而由 map 函数生成的代码会读取这个几个。</p>
+<p><strong>如果有大量的元素需要处理，中间集合的运行开销将成为不可忽视的问题，这时可以在调用链后加上一个asSequence调用，用序列代替集合。</strong></p>
+<p>同时如同上一节看到的一样，用于处理序列的 lambda 不能够被内联，每个中间序列被表示成lambda保存在其字段中的对象，<strong>而末端操作会导致由每个中间序列调用组成的链被执行</strong>。因此，即便序列上的操作是惰性的，你不应该总是试图在集合操作的链后<strong>asSequence</strong>。只有在处理大量数据时有用，小的集合可以用普通集合处理。</p>
+</blockquote>
 <h1 id="补充"><a href="#补充" class="headerlink" title="补充"></a>补充</h1><h3 id="字段和属性"><a href="#字段和属性" class="headerlink" title="字段和属性"></a>字段和属性</h3><p><a href="https://blog.csdn.net/chenchunlin526/article/details/71424844" target="_blank" rel="noopener">深入理解Java中的字段与属性的区别</a></p>
 <h4 id="属性和字段的区别"><a href="#属性和字段的区别" class="headerlink" title="属性和字段的区别"></a>属性和字段的区别</h4><p>属性（property），通常可以理解为get 和 set 方法。</p>
 <p>字段（field），通常叫做 <strong>类成员</strong>，或者 <strong>类变量</strong> ，有时也叫 域 ，理解为 数据成员，用来承担数据的。</p>
