@@ -1383,7 +1383,10 @@ val people = listOf(Persion(&quot;Alice&quot;,29),Person(&quot;Bob&quot;,31))
 <blockquote>
 <p><strong>在使用 inline 关键字的时候，你还是应该注意代码的长度。如果你要内联的函数不大，将它的字节码拷贝到每一个调用点将会极大地增加字节码的长度。在这种情况下，你应该将那些与 lambda 参数无关的代码抽取到一个独立的非内联函数中。在 Kotlin 中内联函数总是很小的。</strong></p>
 </blockquote>
-<h3 id="8-2-5-使用-内联-lambda-管理资源"><a href="#8-2-5-使用-内联-lambda-管理资源" class="headerlink" title="8.2.5  使用 内联 lambda 管理资源"></a>8.2.5  使用 内联 lambda 管理资源</h3><h1 id="补充"><a href="#补充" class="headerlink" title="补充"></a>补充</h1><h3 id="字段和属性"><a href="#字段和属性" class="headerlink" title="字段和属性"></a>字段和属性</h3><p><a href="https://blog.csdn.net/chenchunlin526/article/details/71424844" target="_blank" rel="noopener">深入理解Java中的字段与属性的区别</a></p>
+<h3 id="8-2-5-使用-内联-lambda-管理资源"><a href="#8-2-5-使用-内联-lambda-管理资源" class="headerlink" title="8.2.5  使用 内联 lambda 管理资源"></a>8.2.5  使用 内联 lambda 管理资源</h3><p><strong>Lambda 可以去除重复代码的一个常见模式是资源模式</strong></p>
+<blockquote>
+</blockquote>
+<h1 id="补充"><a href="#补充" class="headerlink" title="补充"></a>补充</h1><h3 id="字段和属性"><a href="#字段和属性" class="headerlink" title="字段和属性"></a>字段和属性</h3><p><a href="https://blog.csdn.net/chenchunlin526/article/details/71424844" target="_blank" rel="noopener">深入理解Java中的字段与属性的区别</a></p>
 <h4 id="属性和字段的区别"><a href="#属性和字段的区别" class="headerlink" title="属性和字段的区别"></a>属性和字段的区别</h4><p>属性（property），通常可以理解为get 和 set 方法。</p>
 <p>字段（field），通常叫做 <strong>类成员</strong>，或者 <strong>类变量</strong> ，有时也叫 域 ，理解为 数据成员，用来承担数据的。</p>
 <h4 id="属性和字段详解"><a href="#属性和字段详解" class="headerlink" title="属性和字段详解"></a>属性和字段详解</h4><p><strong>字段（field）</strong></p>
