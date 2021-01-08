@@ -1374,7 +1374,16 @@ val people = listOf(Persion(&quot;Alice&quot;,29),Person(&quot;Bob&quot;,31))
 <p><strong>如果有大量的元素需要处理，中间集合的运行开销将成为不可忽视的问题，这时可以在调用链后加上一个asSequence调用，用序列代替集合。</strong></p>
 <p>同时如同上一节看到的一样，用于处理序列的 lambda 不能够被内联，每个中间序列被表示成lambda保存在其字段中的对象，<strong>而末端操作会导致由每个中间序列调用组成的链被执行</strong>。因此，即便序列上的操作是惰性的，你不应该总是试图在集合操作的链后<strong>asSequence</strong>。只有在处理大量数据时有用，小的集合可以用普通集合处理。</p>
 </blockquote>
-<h1 id="补充"><a href="#补充" class="headerlink" title="补充"></a>补充</h1><h3 id="字段和属性"><a href="#字段和属性" class="headerlink" title="字段和属性"></a>字段和属性</h3><p><a href="https://blog.csdn.net/chenchunlin526/article/details/71424844" target="_blank" rel="noopener">深入理解Java中的字段与属性的区别</a></p>
+<h3 id="8-2-4-决定何时将函数声明成内联"><a href="#8-2-4-决定何时将函数声明成内联" class="headerlink" title="8.2.4 决定何时将函数声明成内联"></a>8.2.4 决定何时将函数声明成内联</h3><p>使用 inline 关键词只能提高 lambda 参数的函数性能，其他情况需要额外的度量和研究。</p>
+<p><strong>将带有 lambda 参数的函数内联能够带来什么好处。</strong></p>
+<blockquote>
+<p>首先， 通过内联避免运行时开销更加明显了。毕竟节约了函数运行时的开销，而且节约了 lambda 创建匿名类，以及创建 lambda 实例对象的开销。其次，JVM 还没有聪明到总是能将函数调用内联。内联可以使用一些不可能被普通 lambda 使用的特征，比如非局部返回。</p>
+</blockquote>
+<p><strong>注意</strong></p>
+<blockquote>
+<p><strong>在使用 inline 关键字的时候，你还是应该注意代码的长度。如果你要内联的函数不大，将它的字节码拷贝到每一个调用点将会极大地增加字节码的长度。在这种情况下，你应该将那些与 lambda 参数无关的代码抽取到一个独立的非内联函数中。在 Kotlin 中内联函数总是很小的。</strong></p>
+</blockquote>
+<h3 id="8-2-5-使用-内联-lambda-管理资源"><a href="#8-2-5-使用-内联-lambda-管理资源" class="headerlink" title="8.2.5  使用 内联 lambda 管理资源"></a>8.2.5  使用 内联 lambda 管理资源</h3><h1 id="补充"><a href="#补充" class="headerlink" title="补充"></a>补充</h1><h3 id="字段和属性"><a href="#字段和属性" class="headerlink" title="字段和属性"></a>字段和属性</h3><p><a href="https://blog.csdn.net/chenchunlin526/article/details/71424844" target="_blank" rel="noopener">深入理解Java中的字段与属性的区别</a></p>
 <h4 id="属性和字段的区别"><a href="#属性和字段的区别" class="headerlink" title="属性和字段的区别"></a>属性和字段的区别</h4><p>属性（property），通常可以理解为get 和 set 方法。</p>
 <p>字段（field），通常叫做 <strong>类成员</strong>，或者 <strong>类变量</strong> ，有时也叫 域 ，理解为 数据成员，用来承担数据的。</p>
 <h4 id="属性和字段详解"><a href="#属性和字段详解" class="headerlink" title="属性和字段详解"></a>属性和字段详解</h4><p><strong>字段（field）</strong></p>
