@@ -1385,6 +1385,53 @@ val people = listOf(Persion(&quot;Alice&quot;,29),Person(&quot;Bob&quot;,31))
 </blockquote>
 <h3 id="8-2-5-使用-内联-lambda-管理资源"><a href="#8-2-5-使用-内联-lambda-管理资源" class="headerlink" title="8.2.5  使用 内联 lambda 管理资源"></a>8.2.5  使用 内联 lambda 管理资源</h3><p><strong>Lambda 可以去除重复代码的一个常见模式是资源模式</strong></p>
 <blockquote>
+<p>先获取资源，完成一个操作，释放资源。</p>
+<p>这里资源表示多种不同的东西：一个文件、一个锁、一个数据库事务等。</p>
+<p>实现这个模式的标准做法是使用 try/finally 语句。资源在 try 代码块之前被获取，在 finally 代码块中释放。</p>
+</blockquote>
+<p><strong>synchronization</strong></p>
+<blockquote>
+<p>前部分讲到将 try/finally的逻辑封装在一个函数中，然后将使用资源的代码作为 lambda 传递给这个方法。</p>
+<p>synchronization将一个锁对象作为参数。</p>
+</blockquote>
+<p>代替 <strong>synchronization</strong></p>
+<blockquote>
+<p>Kotlin 标准库定义了一个叫 withLock的函数，它提供了实现同样功能的更符合语言习惯的API：它是 Lock 接口的扩展函数。</p>
+<p>如何使用。</p>
+<pre><code class="kotlin">val l:Lock = ...
+l.withLock{
+    // access the resource protected by this lock 在加锁的情况下执行指定的操作。
+}
+/*    在Kotlin标准库中的定义    */
+fun &lt;T&gt; Lock.withLock(action : () -&gt; T):T{    //需要加锁的代码被抽取到一个独立的方法中
+    lock()
+    try{
+        return action()
+    } finally{
+        unlock()
+    }
+
+}</code></pre>
+</blockquote>
+<p><strong>文件是另一种可以使用这种模式的常见资源类型。（文件使用 资源模式）</strong></p>
+<blockquote>
+<p>Java 7 为这种模式引入了特殊的语法：try-with-resource 语句。</p>
+<pre><code class="kotlin">/*    下述代码来读取文件的第一行Java方法    */
+/*    在Java中使用try-with-resource语句    */
+static String readFirstLineFromFile(String path) throws IOException{
+    try(BufferedReader br = new BufferedReader(new FileReader(path))){
+        return br.readLine();
+    }
+}</code></pre>
+<p>Kotlin 中并没有等价的语法，因为通过使用一个带有函数类型参数的函数可以无缝地完成相同的事情。这个函数叫use()</p>
+<p><strong>使用 use 函数 重写上述代码</strong></p>
+<pre><code class="kotlin">/*    使用use函数作为资源管理    */
+fun readFirstLineFromFile (path:String):String{
+    BufferedReader(FileReader(path)).use{    // 构成 BufferedReader，调用 “use” 函数，传递一个lambda执行文件操作
+        br -&gt; return br.readLine()    // 从函数中返回文件的一行
+    }
+}</code></pre>
+<p>use 函数是一个扩展函数，被用来操作可关闭的资源，它接受一个lambda作为参数。这个返回调用lambda并且确保资源被关闭，无论lambda正常执行饭是抛出了异常。当然使用use函数是内联函数，所以使用它并不会引发任何性能开销。</p>
 </blockquote>
 <h1 id="补充"><a href="#补充" class="headerlink" title="补充"></a>补充</h1><h3 id="字段和属性"><a href="#字段和属性" class="headerlink" title="字段和属性"></a>字段和属性</h3><p><a href="https://blog.csdn.net/chenchunlin526/article/details/71424844" target="_blank" rel="noopener">深入理解Java中的字段与属性的区别</a></p>
 <h4 id="属性和字段的区别"><a href="#属性和字段的区别" class="headerlink" title="属性和字段的区别"></a>属性和字段的区别</h4><p>属性（property），通常可以理解为get 和 set 方法。</p>
