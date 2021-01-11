@@ -1433,6 +1433,47 @@ fun readFirstLineFromFile (path:String):String{
 }</code></pre>
 <p>use 函数是一个扩展函数，被用来操作可关闭的资源，它接受一个lambda作为参数。这个返回调用lambda并且确保资源被关闭，无论lambda正常执行饭是抛出了异常。当然使用use函数是内联函数，所以使用它并不会引发任何性能开销。</p>
 </blockquote>
+<h2 id="8-3-高阶函数中的控制流"><a href="#8-3-高阶函数中的控制流" class="headerlink" title="8.3 高阶函数中的控制流"></a>8.3 高阶函数中的控制流</h2><p>把 return 语句放在循环的中间是很简单的事情，但是如果将循环转换成一个类似于 <strong>filter （filter 是内联函数）</strong> 的函数呢？这种情况下 return 会如何工作。</p>
+<h3 id="8-3-1-lambda-中的返回语句：从一个封闭的函数返回"><a href="#8-3-1-lambda-中的返回语句：从一个封闭的函数返回" class="headerlink" title="8.3.1 lambda 中的返回语句：从一个封闭的函数返回"></a>8.3.1 lambda 中的返回语句：从一个封闭的函数返回</h3><p>比较两种不同的 遍历集合的返回： 在下面的代码清单中，如果一个人的名字是 “Alice” ，就应该从函数lookForAlice 返回。</p>
+<pre><code class="kotlin">/*    在一个普通循环中使用return    */
+data class Person(val neme:String, val age:Int)
+val people = listOf(Person (&quot;Alice&quot;,29),Person(&quot;Bob&quot;,11))
+fun lookForAlice(people:List&lt;Person&gt;){
+    for (person in people){
+        if (person.name == &quot;Alice&quot;){
+            println(&quot;Found!&quot;)
+            return
+        }
+    }
+    println(&quot;Alice is not found&quot;)     //如果“people”中没用Alice，这一行就会被打印出来
+}
+
+&gt;&gt;&gt; lookForAlice(people)
+Found!</code></pre>
+<blockquote>
+<p>使用 forEach迭代重写这段代码安全吗？</p>
+<pre><code class="kotlin">/*    在传递给 forEach 的lambda 中使用 return    */
+fun lookForAlice(people:List&lt;Person&gt;){
+    people.forEach{
+        if (it.name == &quot;Alice&quot;){
+            println(&quot;Found!&quot;)
+            return
+        }
+    }
+
+    println(&quot;Alice is not found&quot;)    //和上一个代码清单中的效果是一样的
+}</code></pre>
+<p>这是安全的</p>
+</blockquote>
+<blockquote>
+<p>当你在 lambda 中使用 return 关键字，它会从调用 lambda 的函数中返回，并不是从 lambda 中返回。这个叫做<strong>非局部返回</strong>。<strong>因为它从一个比包含 return 的代码块更大的代码块中返回了。</strong></p>
+</blockquote>
+<blockquote>
+<p>为了理解这条规则背后的逻辑，从Java函数中在for循环或者synchronized 代码块中使用 return 关键字。显然这会从函数中返回，而不是从循环或者代码块中返回。使用以 lambda 作为参数的函数的时候 kotlin 保留了同样的行为。</p>
+</blockquote>
+<blockquote>
+<p>需要注意的是，<strong><em>只有在以 lambda 作为参数的函数是内联函数的时候才能从跟外层的函数返回。</em></strong>在上述代码中，forEach 的函数体和lambda的函数体一起被内联了，所以在编译的时候能很容易做到从包含它的函数中返回。在 非内联函数的lambda 中使用 return 表达式是不允许的。一个非内联函数可以把传给它的lambda保存在变量中，以便在函数返回以后可以继续使用，这个时候lambda先去影响函数的返回已经太晚了。</p>
+</blockquote>
 <h1 id="补充"><a href="#补充" class="headerlink" title="补充"></a>补充</h1><h3 id="字段和属性"><a href="#字段和属性" class="headerlink" title="字段和属性"></a>字段和属性</h3><p><a href="https://blog.csdn.net/chenchunlin526/article/details/71424844" target="_blank" rel="noopener">深入理解Java中的字段与属性的区别</a></p>
 <h4 id="属性和字段的区别"><a href="#属性和字段的区别" class="headerlink" title="属性和字段的区别"></a>属性和字段的区别</h4><p>属性（property），通常可以理解为get 和 set 方法。</p>
 <p>字段（field），通常叫做 <strong>类成员</strong>，或者 <strong>类变量</strong> ，有时也叫 域 ，理解为 数据成员，用来承担数据的。</p>
