@@ -1474,6 +1474,61 @@ fun lookForAlice(people:List&lt;Person&gt;){
 <blockquote>
 <p>需要注意的是，<strong><em>只有在以 lambda 作为参数的函数是内联函数的时候才能从跟外层的函数返回。</em></strong>在上述代码中，forEach 的函数体和lambda的函数体一起被内联了，所以在编译的时候能很容易做到从包含它的函数中返回。在 非内联函数的lambda 中使用 return 表达式是不允许的。一个非内联函数可以把传给它的lambda保存在变量中，以便在函数返回以后可以继续使用，这个时候lambda先去影响函数的返回已经太晚了。</p>
 </blockquote>
+<h3 id="8-3-2-从-lambda-返回：使用标签返回"><a href="#8-3-2-从-lambda-返回：使用标签返回" class="headerlink" title="8.3.2 从 lambda 返回：使用标签返回"></a>8.3.2 从 lambda 返回：使用标签返回</h3><p><strong>标签返回</strong></p>
+<blockquote>
+<p>可以在lambda表达式总使用<strong>局部返回</strong>。</p>
+<p>lambda 中的局部返回跟 for 循环中的 break 表达式显示。它会终止 lambda 的执行，并接着从调用 lambda 的代码处执行。</p>
+</blockquote>
+<p><strong>区分 局部返回和非局部返回</strong></p>
+<blockquote>
+<p>要区分局部返回和非局部返回，要用到<strong>标签</strong>。</p>
+<p><strong>如何区分。</strong></p>
+<p>想从 lambda 表达式处返回你可以标记它，然后在 return 关键字后面引用这个标签。</p>
+</blockquote>
+<pre><code class="kotlin">/*    用一个标签实现局部返回    */
+fun lookForAlice(people:List&lt;Person&gt;){
+    people.forEach lable@{    // ←给lambda表达式加上标签
+        if (it.name == &quot;Alice&quot;) return@label    //← return@label 引用了这个标签
+    }
+    println(&quot;Alice might be somewhere&quot;)    //这里总被打印
+}
+
+&gt;&gt;&gt; lookForAlice(people)
+Alice might be somewhere!</code></pre>
+<blockquote>
+<p><strong>如何使用标签</strong></p>
+<p>要标记一个lambda表达式，在 lambda 的花括号之前放一个标签名，接着放一个 @ 符号。（标签名可以是任意的）、</p>
+<p>要从一个lambda返回，在return关键词后放一个@符号，接着放标签名。</p>
+<pre><code class="kotlin">// “label@” lambda标签
+people.forEach label@{
+    if (it.name == &quot;Alice&quot;) return@label //返回表达式标签
+}
+/*    用 “@” 符号标记一个标签从一个lambda返回    */</code></pre>
+</blockquote>
+<blockquote>
+<p><strong>另一种方式，使用 lambda 作为参数的函数的函数名可以作为标签</strong></p>
+<pre><code class="kotlin">/*    用函数名 return 标签    */
+fun lookForAlice(people:List&lt;Person&gt;) {
+    people.forEach{
+        if(it.name == &quot;Alice&quot;)    return@forEach    // ←return@forEach从 lambda 表达式返回
+    }
+    println(&quot;Alice might be somewhere&quot;)
+}</code></pre>
+<p>当里显式的<strong>指定了 lambda 表达式的标签</strong>，再使用函数名作为标签没有任何效果。</p>
+<p>一个 lambda 表达式的标签数量不能多于一个。</p>
+</blockquote>
+<blockquote>
+<p><strong>带标签的 “this” 表达式</strong></p>
+<p>同样的规则也适用于this表达式。在带接收者的lambda中–包含一个隐式上下文对象的lamdba也有通过一个this去访问。</p>
+<p>如果你给带接收者 lambda 指定标签，就可以通过对应的带有标签的this表达式访问它的隐式接收者。</p>
+<pre><code class="kotlin">&gt;&gt;&gt; println(StringBuilder().apply sb@{    // 这个 lambda 隐式接收者可以通过 this@sb 访问
+...        listOf(1,2,3).apply{    // ”this”指定作用域内最近的隐式接收者
+...            this@sb.append(this.toString())    // 所以隐式接收者都可以被访问，外层的接收者通过显式的标签访问
+...        }
+...    }) 
+    [1,2,3]</code></pre>
+<p>局部返回的语法相当冗长，如果一个 lambda 包含多个返回语句会变得更加笨重。所以这里可以使用 <strong>匿名函数。</strong></p>
+</blockquote>
 <h1 id="补充"><a href="#补充" class="headerlink" title="补充"></a>补充</h1><h3 id="字段和属性"><a href="#字段和属性" class="headerlink" title="字段和属性"></a>字段和属性</h3><p><a href="https://blog.csdn.net/chenchunlin526/article/details/71424844" target="_blank" rel="noopener">深入理解Java中的字段与属性的区别</a></p>
 <h4 id="属性和字段的区别"><a href="#属性和字段的区别" class="headerlink" title="属性和字段的区别"></a>属性和字段的区别</h4><p>属性（property），通常可以理解为get 和 set 方法。</p>
 <p>字段（field），通常叫做 <strong>类成员</strong>，或者 <strong>类变量</strong> ，有时也叫 域 ，理解为 数据成员，用来承担数据的。</p>
