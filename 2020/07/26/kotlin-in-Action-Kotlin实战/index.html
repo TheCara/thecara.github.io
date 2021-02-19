@@ -762,6 +762,25 @@ class PrivateUser(override val nickname: String) : User {
 <p><img src="https://raw.githubusercontent.com/TheCara/RepoPicture/master/image/20200908104646.png" alt=""></p>
 <p><img src="https://raw.githubusercontent.com/TheCara/RepoPicture/master/image/20200908111027.png" alt=""></p>
 <p>运行结果</p>
+<h4 id="4-2-4-通过-getter或setter访问支持字段"><a href="#4-2-4-通过-getter或setter访问支持字段" class="headerlink" title="4.2.4 通过 getter或setter访问支持字段"></a>4.2.4 通过 getter或setter访问支持字段</h4><p>关于两种属性的例子：存储值的属性和具有自定义访问器在每次访问时的属性。<strong>现在让我们来看看怎么结合这两种来实现一个既可以存储值又可以被值访问和修改时提供额外逻辑的属性。</strong>要支持这种情况，需要能够从属性的访问器中访问它的支持字段。</p>
+<p>假设在任何适合对存储的属性中的数据进行修改时输出日志，你声明了一个可变属性并且在每次 setter 访问时执行额外的代码。</p>
+<pre><code class="kotlin">/*    在 setter 中访问支持字段    */
+class User(val name:String) {
+    var address: String = &quot;unspecified&quot;
+        set(value: String){
+            println(&quot;&quot;&quot;
+                Address was changed for $name:&quot;$field&quot; -&gt; &quot;$value&quot;.&quot;&quot;&quot;.trinmIndent())    //读取支持字段的值
+                field = value    // 更新支持字段的值
+        }
+}</code></pre>
+<pre><code class="kotlin">&gt;&gt;&gt; val user = User(&quot;Alice&quot;)
+&gt;&gt;&gt; user.address = &quot;Elasenheimerstrasse 47, 80687 Muenchen&quot;
+Address was changed for Alice:
+&quot;unspecified&quot; -&gt; &quot;Elsenheimerstrasse 47, 80687 Muenchen&quot;</code></pre>
+<blockquote>
+<p>可以像平常一样通过使用 user.address = “new value” 来修改一个属性的值，这其实在底层调用了setter。在这个例子中，setter 被重新定义了，所以额外的输出日志的代码被执行了（简单起见，这里直接将其打印出来）。</p>
+<p>在 setter 的函数体中，使用了特殊的标识符 field来访问支持字段的值。在 getter 中，只能读取值：而在 setter 中，既能读取它也能修改它。</p>
+</blockquote>
 <h3 id="4-3-编译器生成的方法-数据类和委托"><a href="#4-3-编译器生成的方法-数据类和委托" class="headerlink" title="4.3 编译器生成的方法:数据类和委托"></a>4.3 编译器生成的方法:数据类和委托</h3><h4 id="4-3-2-数据类-自动生成通用方法的实现"><a href="#4-3-2-数据类-自动生成通用方法的实现" class="headerlink" title="4.3.2 数据类:自动生成通用方法的实现."></a>4.3.2 数据类:自动生成通用方法的实现.</h4><p>实现一个数据类需要重写方法:toString、equals和hashcode。</p>
 <p><strong>数据类</strong></p>
 <pre><code class="kotlin">data class Client(val name:String,val postalCode:Int)</code></pre>
@@ -903,7 +922,7 @@ class MyText{
 <p>能够消除lambda带来的性能开销，还能够使lambda内的控制流更加灵活。</p>
 <h2 id="8-1-声明高阶函数"><a href="#8-1-声明高阶函数" class="headerlink" title="8.1 声明高阶函数"></a>8.1 声明高阶函数</h2><p>定义</p>
 <blockquote>
-<p>高阶函数就是以另一个函数作为参数或者返回值的函数。在kotlin中，函数可以用lambda或者函数引用来表示。因此，任何以lambda或者<strong>函数引用</strong>作为参数的函数，或者返回值为lambda或函数引用的函数，或者两者都有满足的函数都是高阶函数。</p>
+<p>高阶函数就是以另一个函数作为参数或者返回值的函数。在kotlin中，函数可以用lambda或者函数引用来表示。因此，<strong>任何以lambda或者函数引用作为参数的函数，或者返回值为lambda或函数引用的函数</strong>，或者两者都有满足的函数都是高阶函数。</p>
 </blockquote>
 <p>标准库中的filter函数将一个判断式函数作为参数，因此它是一个高阶函数：</p>
 <pre><code class="kotlin">list.filter{x&gt;0}</code></pre>
