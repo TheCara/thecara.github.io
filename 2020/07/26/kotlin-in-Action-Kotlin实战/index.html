@@ -933,7 +933,7 @@ val action = {println(42)}</code></pre>
 <p>编译器推导出sum和action两个变量具有<strong>函数类型</strong>。</p>
 <p>显式声明<strong>函数类型的变量</strong></p>
 <pre><code class="kotlin">val sum:(Int ,Int) -&gt; Int = {x,y-&gt;x+y}    // 有两个Int类型参数和Int类型返回值
-val action:() - &gt; Unit = { println(42) }    //没用参数和返回值</code></pre>
+val action:() - &gt; Unit = { println(42) }    //没有参数和返回值</code></pre>
 <p>声明函数类型，需要将函数参数类型放在括号中，紧接着是一个箭头和函数的返回值类型。</p>
 <pre><code class="kotlin">(Int,String) -&gt; Unit
 // ↑参数类型    ↑返回类型</code></pre>
