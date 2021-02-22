@@ -497,7 +497,7 @@
 <li>Android中我们所有的代码都跑在线程中的，<strong>而线程是跑在进程中的</strong>。</li>
 <li><strong>协程没有直接和操作系统关联</strong>，它也是<strong>跑在线程中的</strong>，可以是单线程，也可以是多线程。</li>
 <li>单线程中的协程总的<strong>执行时间</strong>并不会比不用协程少。</li>
-<li>Android总，如果在主线程中进行网络访问，会抛出 <strong>NetworkOnMainThreadException</strong>，对于在主线程上的协程也不例外，所以在这种使用场景中也是要切换线程的。</li>
+<li>Android中，如果在主线程中进行网络访问，会抛出 <strong>NetworkOnMainThreadException</strong>，对于在主线程上的协程也不例外，所以在这种使用场景中也是要切换线程的。</li>
 </ul>
 <h4 id="协程的应用场景之一-线程控制"><a href="#协程的应用场景之一-线程控制" class="headerlink" title="协程的应用场景之一 线程控制"></a>协程的应用场景之一 线程控制</h4><blockquote>
 <p>协程可以让我们在写<strong>代码时不用更多的关注多线程同时更方便的写出并发操作</strong>。</p>
@@ -595,7 +595,7 @@ coroutineScope.launch {
 <pre><code class="kotlin">coroutineScope.launch(Dispatchers.IO) {
     ...
 }</code></pre>
-<p>使用 <strong>DIspatchers.Main</strong> 参数切换到主线程：</p>
+<p>使用 <strong>Dispatchers.Main</strong> 参数切换到主线程：</p>
 <pre><code class="kotlin">coroutineScope.launch(Dispatchers.Main) {
     ...
 }</code></pre>
