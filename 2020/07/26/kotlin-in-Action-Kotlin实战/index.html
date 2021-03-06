@@ -807,7 +807,86 @@ Address was changed for Alice:
         }
     }
 }</code></pre><p>对象声明通过 object 关键词引入。与类一样，一个对象声明也可以包含属性、方法、初始化语句块等的声明，唯一不允许的是构造方法。对象声明在定义时就创建了构造对象，不需要在代码的其他地方调用构造方法。对象声明同样可以继承类和接口。</p>
-<h1 id="5-Lambda-编程"><a href="#5-Lambda-编程" class="headerlink" title="5 Lambda 编程"></a>5 Lambda 编程</h1><h2 id="5-5-带接收者的lambda：“with”与“apply”"><a href="#5-5-带接收者的lambda：“with”与“apply”" class="headerlink" title="5.5 带接收者的lambda：“with”与“apply”"></a>5.5 带接收者的lambda：“with”与“apply”</h2><h5 id="什么是带接收者的-lambda？"><a href="#什么是带接收者的-lambda？" class="headerlink" title="什么是带接收者的 lambda？"></a>什么是带接收者的 lambda？</h5><blockquote>
+<h1 id="5-Lambda-编程"><a href="#5-Lambda-编程" class="headerlink" title="5 Lambda 编程"></a>5 Lambda 编程</h1><h2 id="5-1-Lambda表达式和成员引用"><a href="#5-1-Lambda表达式和成员引用" class="headerlink" title="5.1 Lambda表达式和成员引用"></a>5.1 Lambda表达式和成员引用</h2><h3 id="5-1-1-Lambda-简介：作为函数参数的代码块"><a href="#5-1-1-Lambda-简介：作为函数参数的代码块" class="headerlink" title="5.1.1 Lambda 简介：作为函数参数的代码块"></a>5.1.1 Lambda 简介：作为函数参数的代码块</h3><p>在代码中存储和传递一小段行为是常有的任务。例如，“当一个事件发生的时候运行这个事件处理器”又或是“把这个操作应用到这个数据结构的所有元素上”。在老版本的Java中可以使用匿名函数。</p>
+<blockquote>
+<p>使用函数式编程 提供了另外一种解决问题的方法：</p>
+<p>把函数当作值来对待。可以直接传递函数，而不需要先声明一个类再传递一个类的实例。使用 lambda 表达式后代码会变的更加简洁。</p>
+</blockquote>
+<p>例子。假设你要定义一个点击按钮的行为，添加一个处理点击的监听器。监听器实现了想对应的接口 OnClickListener 和它的一个方法 onClick。</p>
+<pre><code class="java">/*    用匿名内部类实现监听器    */
+button.setOnClickListener(new OnClickListener(){
+    @Override
+    public void onClick(View view){
+        /*点击之后执行的动作*/
+    }
+})</code></pre>
+<p>使用匿名内部类的写法，更加冗余。接下来使用 lambda 写法</p>
+<pre><code class="kotlin">/*    用 lambda 实现监听器    */
+button.setOnClickListener{    /*    点击后执行操作    */    }</code></pre>
+<h3 id="5-1-2-Lamda-和-集合"><a href="#5-1-2-Lamda-和-集合" class="headerlink" title="5.1.2 Lamda 和 集合"></a>5.1.2 Lamda 和 集合</h3><p>良好的编程风格原则之一是避免代码的重复。我们对集合执行大部分任务都遵循这几个通用的模式，所以要实现这几个模式的代码应该放在一个库里。在没有 lambda 的帮助，很难为集合提供一个好用方便的库。</p>
+<p>看个例子。</p>
+<p>创建一个 Person 类，它包含了这个了的名字和年龄信息。</p>
+<pre><code class="kotlin">data class Person(val name:String, val age :Int)</code></pre>
+<p>假设你现在要在列表中找到年龄最大的那个人。</p>
+<pre><code class="kotlin">/*    手动在集合中搜索    */
+fun findTheOldest(people:List&lt;Person&gt;){
+    var maxAge = 0    //存储最大年龄
+    var theOldest:Person ?= null //存储年龄最大的人
+    for (person in people){
+        if(person.age &gt; maxAge){    //如果下一个比现在年龄最大的人还要大，改变最大值
+            maxAge = person.age
+            theOldest = person
+        }
+    }
+    println(theOldest)
+}
+&gt;&gt;&gt; val people = listOf(Person(&quot;Alice&quot;,29),Person(&quot;Bob&quot;,31))
+&gt;&gt;&gt; findTheOldest(people)
+Person(name = Bob,age = 31)</code></pre>
+<pre><code class="kotlin">/*    用 lambda 在集合中搜索    */
+&gt;&gt;&gt; val people = listOf(Person(&quot;Alice&quot;,29),Person(&quot;Bob&quot;,31))
+&gt;&gt;&gt; println(people.maxBy{it.age})    // 比较年龄最大的元素
+Person(name = Bob, age = 31)</code></pre>
+<p>maxBy函数可以在任何集合上调用，且只需要一个参数：函数指定比较哪个值来找到最大元素。</p>
+<p>花括号中的代码 <strong>{it.age}</strong>就是实现了这个逻辑的lmabda。 它接收一个集合中的元素作为实参(作用 it 引用它)并且返回用来比较的值。在这个例子中，集合元素是Person对象，用来比较的是存储在其age属性中的年龄。</p>
+<pre><code class="kotlin">/*    用成员引用    */
+people.maxBy(Person:age)</code></pre>
+<h3 id="5-1-3-Lambda-表达式的语法"><a href="#5-1-3-Lambda-表达式的语法" class="headerlink" title="5.1.3 Lambda 表达式的语法"></a>5.1.3 Lambda 表达式的语法</h3><p>概述 lambda</p>
+<blockquote>
+<p>一个 lambda 把一小段行为进行编码，你能把它当作值到处传递。它可以被独立地声明并储存一个变量。</p>
+</blockquote>
+<pre><code class="kotlin">/*    lambda 表达式的语法    */
+{x:Int,y:Int -&gt; x+y}
+/*    参数 -&gt; 函数体    */</code></pre>
+<blockquote>
+<p>Kotlin 的lambda 表达式始终用花括号包围。实参并没有用括号括起来。箭头把实参列表和lambda 函数体隔开了。</p>
+</blockquote>
+<p>可以把 lambda表达式存储在一个变量中，把这个变量当作普通函数对待（即通过相应实参调用它）</p>
+<pre><code class="kotlin">&gt;&gt;&gt; val sum = {x:Int,y:int -&gt; x+y}
+&gt;&gt;&gt; println(sum(1,2))    // 调用保存在变量中的lambda
+3</code></pre>
+<blockquote>
+<p>Kotlin 中的语法约定，如果 lambda 表达式是函数调用的最后一个实参，它可以放到括号外边。在这个例子中lambda是唯一的实参，所以可以放到括号外边</p>
+<pre><code class="kotlin">people.maxBy(){p:Person -&gt; p.age}</code></pre>
+<p>当 lamdba 是函数的唯一实参时，还可以去除调用代码中的空括号。</p>
+<pre><code class="kotlin">people.maxBy{p:Person -&gt; p.age}</code></pre>
+<p>三种语法形式的含义都是一样的，但最后都是易读的。如果lambda是唯一的实参，你当然愿意在写代码的时候省掉这个括号。而当你有多个实参时，既可以把lambda留在括号内来强调它是一个实参，也可以把它放在括号外面，两种选择都是可行的。如果你想传递两个或多个lamdba，不能把超过一个的lamdba放在外面。这时使用常规语法来传递它们通常是更好的选择。</p>
+</blockquote>
+<p>回顾 joinToString 函数 （对元素添加分隔符）。 Kotlin 标准库中也有定义它，标准库中的这个版本的不同之处在于它可以接收一个附加的函数参数。这个函数可以使用 toString函数以外的方法把一个元素转换成字符串。</p>
+<p><strong>打印出人的名字</strong></p>
+<pre><code class="kotlin">/*    把 lambda 作为命名实参传递    */
+&gt;&gt;&gt;val people = listOf(Person(&quot;Alice&quot;,31),Person(&quot;Bob&quot;,29))
+&gt;&gt;&gt;val names = people.joinToString(separator = &quot;&quot;,transform = {p:Person -&gt; p.name})
+
+&gt;&gt;&gt;println(names)
+Alices Bob</code></pre>
+<p><strong>用更简单的方法</strong></p>
+<pre><code class="kotlin">/*    把 lambda 放在括号外传递    */
+people.joinToString(&quot; &quot;){p:Person -&gt; p.name}</code></pre>
+<p><strong>简化语法，移除参数类型</strong></p>
+<pre><code>/*    省略 lambda 参数类型    */
+people.maxBy{p:Person -&gt; p.age}    // 显式地写出参数类型
+people.maxBY{p-&gt;p.age}    // 推导出参数类型</code></pre><h2 id="5-5-带接收者的lambda：“with”与“apply”"><a href="#5-5-带接收者的lambda：“with”与“apply”" class="headerlink" title="5.5 带接收者的lambda：“with”与“apply”"></a>5.5 带接收者的lambda：“with”与“apply”</h2><h5 id="什么是带接收者的-lambda？"><a href="#什么是带接收者的-lambda？" class="headerlink" title="什么是带接收者的 lambda？"></a>什么是带接收者的 lambda？</h5><blockquote>
 <p>Kotlin 中独特的 lambda 功能：在lambda函数体内可以调用一个不同的对象方法，而且无需借助任何额外的限定符。</p>
 </blockquote>
 <p><strong>接收者：</strong>调用者</p>
