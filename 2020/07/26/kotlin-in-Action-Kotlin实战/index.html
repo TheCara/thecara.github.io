@@ -884,9 +884,48 @@ Alices Bob</code></pre>
 <pre><code class="kotlin">/*    把 lambda 放在括号外传递    */
 people.joinToString(&quot; &quot;){p:Person -&gt; p.name}</code></pre>
 <p><strong>简化语法，移除参数类型</strong></p>
-<pre><code>/*    省略 lambda 参数类型    */
+<pre><code class="kotlin">/*    省略 lambda 参数类型    */
 people.maxBy{p:Person -&gt; p.age}    // 显式地写出参数类型
-people.maxBY{p-&gt;p.age}    // 推导出参数类型</code></pre><h2 id="5-5-带接收者的lambda：“with”与“apply”"><a href="#5-5-带接收者的lambda：“with”与“apply”" class="headerlink" title="5.5 带接收者的lambda：“with”与“apply”"></a>5.5 带接收者的lambda：“with”与“apply”</h2><h5 id="什么是带接收者的-lambda？"><a href="#什么是带接收者的-lambda？" class="headerlink" title="什么是带接收者的 lambda？"></a>什么是带接收者的 lambda？</h5><blockquote>
+people.maxBY{p-&gt;p.age}    // 推导出参数类型</code></pre>
+<p>和局部变量一样，如果 lambda 参数的类型可以被推导出来，你就不需要显式地指定它。以这里的 maxBy 为例子，其参数类型始终和集合的元素类型相同。编译器知道你是对一个Person对象的集合调用maxBy函数，所以它能推断出 lambda参数也会是Person类型。<strong>也存在不能推断出的情况，先遵循：先不声明类型，等编译器报错后再指定它。</strong></p>
+<p><strong>最后的简化是使用默认参数名称 it 代替命名参数</strong></p>
+<pre><code class="kotlin">/*    使用默认参数名称    */
+people.maxBy(it.age)    //&quot;it&quot;是自动生成的参数名称</code></pre>
+<p>仅在参数名称没有显式地指定时这个默认的名称才会生成。</p>
+<p><strong>可以用变量存储 lambda 表达式</strong></p>
+<pre><code class="kotlin">&gt;&gt;&gt; val getAge = {p:Person -&gt; p.age}
+&gt;&gt;&gt; people.maxBy(getAge)</code></pre>
+<blockquote>
+<p>lambda 并没有被限制在这样小的规模，它可以包含更多的语句。</p>
+</blockquote>
+<pre><code class="kotlin">&gt;&gt;&gt; val sum = {x:Int,y:Int -&gt;
+    println(&quot;Computing the sum of $x and $y...&quot;)
+    x + y}
+&gt;&gt;&gt; println(sum(1,2))
+Computing the sum of 1 and 2...
+3</code></pre>
+<h3 id="5-1-4-在作用域中访问变量"><a href="#5-1-4-在作用域中访问变量" class="headerlink" title="5.1.4 在作用域中访问变量"></a>5.1.4 在作用域中访问变量</h3><blockquote>
+<p>在声明一个匿名内部类的时候，能够在这个匿名类内部引用这个函数的参数和局部变量。</p>
+<p>而在使用 lambda 声明的时候，也可以做同样的事情。如果在函数内部使用 lambda 也可以访问这个函数的参数，还有在 lambda 之前定义的局部变量。</p>
+</blockquote>
+<p><strong>forEach 函数</strong></p>
+<p> 用 forEach 函数展示 上述行为。</p>
+<p>它是最基本集合操作函数之一；它所作的全部事情就是在集合中的每个元素上都调用给定的 lambda。forEach 函数比普通for 函数循环更简洁，除此之外没有其它优势，所以并不急于把所有的循环更改为  lambda。</p>
+<pre><code class="kotlin">/*    在 lambda 中使用函数参数    */
+fun printMessageWithPrefix(message : Collection&lt;String&gt;,prefix:String){
+    messages.forEach{    // 接受 lambda 作为实参指定对每个元素操作
+        println(&quot;$prefix $it&quot;)    // 在 lambda 中访问 “prefix”
+    }
+}
+
+&gt;&gt;&gt; val errors = listOf(&quot;433 Forbidden&quot;,&quot;404 Not Found&quot;)
+&gt;&gt;&gt; printMessagesWithPrefix(errors,&quot;Error:&quot;)
+Error:403 Forbidden
+Error:404 Not Found</code></pre>
+<blockquote>
+<p>Kotlin 和 Java的一个显著区别就是，在 Kotlin 中不会仅限于访问 final 变量</p>
+</blockquote>
+<h2 id="5-5-带接收者的lambda：“with”与“apply”"><a href="#5-5-带接收者的lambda：“with”与“apply”" class="headerlink" title="5.5 带接收者的lambda：“with”与“apply”"></a>5.5 带接收者的lambda：“with”与“apply”</h2><h5 id="什么是带接收者的-lambda？"><a href="#什么是带接收者的-lambda？" class="headerlink" title="什么是带接收者的 lambda？"></a>什么是带接收者的 lambda？</h5><blockquote>
 <p>Kotlin 中独特的 lambda 功能：在lambda函数体内可以调用一个不同的对象方法，而且无需借助任何额外的限定符。</p>
 </blockquote>
 <p><strong>接收者：</strong>调用者</p>
