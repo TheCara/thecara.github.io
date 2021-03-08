@@ -923,7 +923,38 @@ fun printMessageWithPrefix(message : Collection&lt;String&gt;,prefix:String){
 Error:403 Forbidden
 Error:404 Not Found</code></pre>
 <blockquote>
-<p>Kotlin 和 Java的一个显著区别就是，在 Kotlin 中不会仅限于访问 final 变量</p>
+<p>Kotlin 和 Java的一个显著区别就是，在 Kotlin 中不会仅限于访问 final 变量，在 lambda 内部也可以修改变量。</p>
+</blockquote>
+<pre><code class="kotlin">/*    在lambda中改变局部变量    */
+fun printProblemCounts(responeses:Collection&lt;String&gt;){
+    var clientErrors = 0
+    var serverErrors = 0
+    responeses.forEach{
+        if(it.startsWith(&quot;4&quot;)){
+            clientErrors ++
+        }else if(it.startsWith(&quot;5&quot;)){
+            serverErrors++
+        }
+    }
+    println(&quot;$clientErrors client error,$serverErrors server errors&quot;)
+}
+&gt;&gt;&gt; val responses = listOf(&quot;200 OK&quot;,&quot;418 I&#39;m a teapot&quot;,&quot;500 Internal Server Error&quot;)
+...
+&gt;&gt;&gt; printProblemCounts(responses)
+1 client errors,1 server errors</code></pre>
+<blockquote>
+<p>于 Java 不同，Kotlin 允许在 lambda 内部访问非 final 变量甚至修改它们。从 lambda 内访问外部变量，我们称这个变量被 <strong>lambda捕捉</strong>，如同上述的案例中的 prefix，clientErrors，serverErrors一样。</p>
+</blockquote>
+<p><strong>默认情况下，局部变量的声明期被限制在声明这个变量的函数中。但是如果它被lambda捕捉了，使用这个变量的代码可以被存储并稍后执行。</strong></p>
+<p><strong>如果 lambda 被用作 <em>事件处理器</em> 或者用在其他 <em>异步执行</em> 的情况下，对局部变量的修改只会在 lambda 执行的时候发生。</strong></p>
+<blockquote>
+<p>反面案例</p>
+<pre><code class="kotlin">fun tryToCountButtonClicks(button:Button):Int{
+    var clicks = 0
+    button.onClick{clicks++}
+    return clicks
+}</code></pre>
+<p>这个函数始终返回0。尽管 onClick 处理器可以修改clicks的值，你并不能观察到值发生了变化，因为onClick处理器是在函数返回之后调用的。<strong>这个函数正确的实现方法需要把点击次数存储在函数外依然可以访问到的地方–例如类的属性，而不是存储在函数的局部变量中。</strong></p>
 </blockquote>
 <h2 id="5-5-带接收者的lambda：“with”与“apply”"><a href="#5-5-带接收者的lambda：“with”与“apply”" class="headerlink" title="5.5 带接收者的lambda：“with”与“apply”"></a>5.5 带接收者的lambda：“with”与“apply”</h2><h5 id="什么是带接收者的-lambda？"><a href="#什么是带接收者的-lambda？" class="headerlink" title="什么是带接收者的 lambda？"></a>什么是带接收者的 lambda？</h5><blockquote>
 <p>Kotlin 中独特的 lambda 功能：在lambda函数体内可以调用一个不同的对象方法，而且无需借助任何额外的限定符。</p>
