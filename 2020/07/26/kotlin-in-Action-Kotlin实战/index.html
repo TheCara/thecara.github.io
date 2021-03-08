@@ -956,6 +956,54 @@ fun printProblemCounts(responeses:Collection&lt;String&gt;){
 }</code></pre>
 <p>这个函数始终返回0。尽管 onClick 处理器可以修改clicks的值，你并不能观察到值发生了变化，因为onClick处理器是在函数返回之后调用的。<strong>这个函数正确的实现方法需要把点击次数存储在函数外依然可以访问到的地方–例如类的属性，而不是存储在函数的局部变量中。</strong></p>
 </blockquote>
+<h3 id="5-1-5-成员引用"><a href="#5-1-5-成员引用" class="headerlink" title="5.1.5 成员引用"></a>5.1.5 成员引用</h3><p>​    如果把函数转换成一个值，你就可以传递它。</p>
+<pre><code class="kotlin">val getAge = Person::age    //引用 age</code></pre>
+<blockquote>
+<p>这种表达式称为 <strong>成员引用</strong>，它提供了简明语法，来创建一个调用单个方法或者访问单个属性的函数值。 <strong>双冒号把类名称与你要引用的成员（一个方法或者一个属性）名称隔开</strong></p>
+<pre><code class="kotlin">Person::age //类::成员</code></pre>
+</blockquote>
+<p>等价于 </p>
+<pre><code class="kotlin">val getAge = {person:Person -&gt;person.age}</code></pre>
+<blockquote>
+<p>注意，不管你引用的是函数还是属性，都不要在成员引用的名称后面添加括号。</p>
+</blockquote>
+<blockquote>
+<p>成员引用和调用该函数的lambda具有一样的类型，所以可以互换使用：</p>
+<pre><code class="kotlin">people.maxBy(Person::age)</code></pre>
+<p>还可以引用顶层函数</p>
+<pre><code class="kotlin">fun salute() = println(&quot;Salute!&quot;)
+&gt;&gt;&gt; run(::salute)    // 引用顶层函数
+Salute!</code></pre>
+<p>这种情况下，你省略了类名称，直接以::开头。成员引用::salute被当作实参传递给库函数run，它会调用想对应的函数。</p>
+<p>如果 lambda 要委托给一个接收多个参数的函数，提供成员引用代替它将会非常方便</p>
+<pre><code class="kotlin">val action = {person:Person,message:String -&gt;
+    sendEmail(person,massage)    //这个lambda委托sendEmail函数
+    }
+val nextAction = :: sendEmail    //用成员引用代替</code></pre>
+<pre><code class="kotlin">/*    用构造方法引用存储或者延期执行创建类实例的动作。 构造方法引用的形式在双冒号后指定类的名称：    */
+data class Person(val name:String,val age:Int)
+&gt;&gt;&gt; val createPerson = :：Person    //创建Person实例的动作被保存成了值
+&gt;&gt;&gt; val p = createPerson(&quot;Alice&quot;,29)
+&gt;&gt;&gt; println(p)
+Person(name = Alice,age = 29)</code></pre>
+<p><strong>可以用同样的方法引用扩展函数</strong></p>
+<pre><code class="kotlin">fun Person.isAdult() = age &gt;= 21
+val predicate = Person::isAdult</code></pre>
+<p>尽管 isAdult 不同类的成员，还是可以通过引用访问它，这个访问的成员没有两样：person.isAdult()。</p>
+</blockquote>
+<p><strong>绑定引用</strong></p>
+<blockquote>
+<p>在 kotlin 1.0 中 ，当接受一个类的方法或者属性引用时，你始终需要提供一个该类的实例来调用这个引用。Kotlin1.1计划支持绑定成员引用，它允许你使用成员引用语法捕捉特定实例对象的方法引用。</p>
+<pre><code class="kotlin">&gt;&gt;&gt; val p = Person(&quot;Dmitry&quot;,34)
+&gt;&gt;&gt; val personAgeFunction = Person::age
+&gt;&gt;&gt; println(personsAgeFunction(p))
+34 
+&gt;&gt;&gt; val dmitrysAgeFunction = p::age
+&gt;&gt;&gt; println(dmitryAgeFunction())
+34</code></pre>
+<p>注意，personsAgeFunction是一个当参数函数（返回给定了的年龄），而dmitryAgeFunction是一个零参数的函数（返回已经指定好的人的年龄）。</p>
+<p>在 Kotlin1.1之前，你需要显式地写出 lambda{p.age},而不是使用绑定成员引用p::age。</p>
+</blockquote>
 <h2 id="5-5-带接收者的lambda：“with”与“apply”"><a href="#5-5-带接收者的lambda：“with”与“apply”" class="headerlink" title="5.5 带接收者的lambda：“with”与“apply”"></a>5.5 带接收者的lambda：“with”与“apply”</h2><h5 id="什么是带接收者的-lambda？"><a href="#什么是带接收者的-lambda？" class="headerlink" title="什么是带接收者的 lambda？"></a>什么是带接收者的 lambda？</h5><blockquote>
 <p>Kotlin 中独特的 lambda 功能：在lambda函数体内可以调用一个不同的对象方法，而且无需借助任何额外的限定符。</p>
 </blockquote>
