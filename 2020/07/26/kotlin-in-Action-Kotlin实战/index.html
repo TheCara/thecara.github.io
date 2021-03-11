@@ -1035,11 +1035,64 @@ val predicate = Person::isAdult</code></pre>
 <p>当需要获得分组中最大人的名字时。</p>
 <pre><code class="kotlin"> val maxAge = people.maxBy(Person::age).age
  people.filter{it.age == maxAge}</code></pre>
-<p><strong>map 使用过滤变换函数</strong></p>
+<p><strong>map 应用过滤和变换函数</strong></p>
 <pre><code class="kotlin">&gt;&gt;&gt; val numbers = mapOf(0 to &quot;zero&quot;,1 to &quot;one&quot;)
-&gt;&gt;&gt; println(numbers.mapValues{it.value.toUppterCase()})    // 变换对应的值。
+&gt;&gt;&gt; println(numbers.mapValues{it.value.toUppterCase()})    // 对map集合的值进行操作
 [0=ZERO,1=ONE]</code></pre>
 <p>键和值分别由各自的函数来处理。<strong>filterKeys和mapKeys过滤和变换map的键，而另外的filterValues和mapValues过滤和变换对应的值。</strong></p>
+</blockquote>
+<h3 id="5-2-2-“all”“any”“count”和“find”：对集合引用判断式"><a href="#5-2-2-“all”“any”“count”和“find”：对集合引用判断式" class="headerlink" title="5.2.2 “all”“any”“count”和“find”：对集合引用判断式"></a>5.2.2 “all”“any”“count”和“find”：对集合引用判断式</h3><blockquote>
+<p>这些方法作用</p>
+<p>Kotlin中，它们是通过 all 和 any 函数表达式的（检查集合中的所有元素是否都符合某个条件）。count 函数检查由多少元素满足判断式，而find函数返回第一个符合条件的元素。</p>
+<p>案例：</p>
+<p>检查一个人是否还没有到28岁。</p>
+<pre><code class="kotlin">val canBeInClub27 = {p:Person -&gt; p.age &lt;=27}</code></pre>
+<p>如果是<strong>所有元素都满足判断式条件</strong>的应该使用 all 函数。（）</p>
+<pre><code class="kotlin">&gt;&gt;&gt; val people = listOf(Person(&quot;Alice&quot;,27),Person(&quot;Bob&quot;,31))
+&gt;&gt;&gt; println(people.all(canBeInClub27))
+false</code></pre>
+<p>如果你<strong>检查集合中至少存在一个匹配的元素</strong>，则使用 any 函数</p>
+<pre><code class="kotlin">&gt;&gt;&gt; println(people.any(canBeInClub27))</code></pre>
+<p>true</p>
+<p>如果<strong>你想知道有多少元素满足判断式</strong>，使用count：</p>
+<pre><code class="kotlin">&gt;&gt;&gt; val people = listOf(Person(&quot;Alice&quot;,27),Person(&quot;Bob&quot;,31))
+&gt;&gt;&gt; println(people.count(canBeInClub27))
+1</code></pre>
+</blockquote>
+<p><strong>使用正确的函数完成工作：”count” VS. “size”</strong></p>
+<p>count 方法容易被遗忘，然后通过过滤集合之后再取大小来实现它：</p>
+<pre><code class="kotlin">&gt;&gt;&gt; println(people.filter(canBeInClub27).size)
+1</code></pre>
+<p>再这种情况下，一个集合中间会被创建并用来存储所有满足判断式的元素。</p>
+<p>而另一方面，count 方法只是最终匹配元素的数量，不关心元素本身，所以更高效。</p>
+<blockquote>
+<p><strong>要找到一个满足判断式的元素，使用 find 函数</strong></p>
+<pre><code class="kotlin">&gt;&gt;&gt; val people = listOf(Person(&quot;Alice&quot;,27),Person(&quot;Bob&quot;,31))
+&gt;&gt;&gt; println(people.find(canBeInClub27))
+Person[name = Alice,age = 27]</code></pre>
+<p>存在多个能够匹配的元素就返回其中第一个元素：或者返回 null，如果没有一个元素能满足判断式。find还有一个同义方法 firstOrNull，可以使用这个方法更加清楚的表达你的意图。</p>
+</blockquote>
+<h3 id="5-2-3-groupBy：把列表转换成分组的map"><a href="#5-2-3-groupBy：把列表转换成分组的map" class="headerlink" title="5.2.3 groupBy：把列表转换成分组的map"></a>5.2.3 groupBy：把列表转换成分组的map</h3><blockquote>
+<p><strong>当你想把人按照年龄分组，相同年龄的人放在一组。</strong></p>
+<p>groupBy: 按照表达式将几个进行分组并返回一个 map 集合</p>
+<pre><code class="kotlin">&gt;&gt;&gt; val people = listOf(Perosn(&quot;Alice&quot;,31),Perosn(&quot;Bob&quot;,29),Person(&quot;Carol&quot;,31))
+&gt;&gt;&gt; println(people.groupBy{it.age})</code></pre>
+<p>返回结果 map，是元素分组依据的键（这个例子中是age）和元素分组（persons）之间映射</p>
+<pre><code class="kotlin">{
+29 = [Person(name = Bob,age = 29)],
+31 = [Person(name = Alice,age = 31),
+        Person(name = Carol,age = 31)]
+        }</code></pre>
+<p>每个分组都是存储在一个列表中，<strong>结果的类型就是Map&lt;Int,List<Person>&gt;</strong>。</p>
+<p>可以使用像 mapKeys 和 mapValues 这也的函数对这个map做进一步的修改。</p>
+</blockquote>
+<blockquote>
+<p><strong>使用成员引用把字符串按照首字母分组：</strong></p>
+<pre><code class="kotlin">&gt;&gt;&gt; val list = listOf(&quot;a&quot;,&quot;ab&quot;,b)
+&gt;&gt;&gt; println(list.groupBy(String::first))
+{a = [a,ab],
+ b = [b]}</code></pre>
+<p>first并不是String类的成员，而是一个扩展。然而，可以把它当作成员引用访问。</p>
 </blockquote>
 <h2 id="5-5-带接收者的lambda：“with”与“apply”"><a href="#5-5-带接收者的lambda：“with”与“apply”" class="headerlink" title="5.5 带接收者的lambda：“with”与“apply”"></a>5.5 带接收者的lambda：“with”与“apply”</h2><h5 id="什么是带接收者的-lambda？"><a href="#什么是带接收者的-lambda？" class="headerlink" title="什么是带接收者的 lambda？"></a>什么是带接收者的 lambda？</h5><blockquote>
 <p>Kotlin 中独特的 lambda 功能：在lambda函数体内可以调用一个不同的对象方法，而且无需借助任何额外的限定符。</p>
@@ -1829,9 +1882,17 @@ fun lookForAlice(people:List&lt;Person&gt;) {
 <p>这些算是 函数引用 的大致概念。同时<strong>函数引用</strong>也是可以赋值给变量的。</p>
 <pre><code class="kotlin">val sumLambda: (Int, Int) -&gt; Int = ::sum
 applyOp(2, 3, sumLambda)</code></pre>
+<h3 id="lamnda-表达式-与-匿名内部类的区别"><a href="#lamnda-表达式-与-匿名内部类的区别" class="headerlink" title="lamnda 表达式 与 匿名内部类的区别"></a>lamnda 表达式 与 匿名内部类的区别</h3><blockquote>
+<ul>
+<li>lambda 表达式只能为函数式接口创建实例；匿名内部类可以为任意接口创建实例 – 不管接口包含多少抽象方法，只要匿名内部类是实现所有的抽象方法即可。</li>
+<li>lambda 表达式只能为函数式接口创建实例；匿名内部类可以为抽象类甚至普通话类创建实例；</li>
+<li>lambda 表达式的代码不允许调用接口中定义的默认方法；匿名内部类实现的抽象方法的方法体允许调用接口中定义的默认方法。</li>
+</ul>
+</blockquote>
 <p><strong>引用：</strong></p>
 <p><a href="https://www.web3.xin/code/2606.html" target="_blank" rel="noopener">Kotlin this表达式</a></p>
 <p><a href="https://www.jianshu.com/p/10358883455c" target="_blank" rel="noopener">kotlin中的函数引用详解</a>    </p>
+<p><a href="http://c.biancheng.net/view/6559.html" target="_blank" rel="noopener">Lambda表达式与匿名内部类的联系和区别</a></p>
 <p><img src="https://raw.githubusercontent.com/TheCara/RepoPicture/master/image/2020-8-3-1.gif" alt="如果有些方法没有详细说明你可以自行搜索查看"></p>
 
             </div>
