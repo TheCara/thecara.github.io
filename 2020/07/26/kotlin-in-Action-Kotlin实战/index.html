@@ -1094,6 +1094,35 @@ Person[name = Alice,age = 27]</code></pre>
  b = [b]}</code></pre>
 <p>first并不是String类的成员，而是一个扩展。然而，可以把它当作成员引用访问。</p>
 </blockquote>
+<h3 id="5-2-4-flatMap-和-flatten：处理嵌套集合和元素"><a href="#5-2-4-flatMap-和-flatten：处理嵌套集合和元素" class="headerlink" title="5.2.4 flatMap 和 flatten：处理嵌套集合和元素"></a>5.2.4 flatMap 和 flatten：处理嵌套集合和元素</h3><p><strong>例子</strong></p>
+<blockquote>
+<p>假设你有一堆藏书，使用Book表示：</p>
+<pre><code class="kotlin">class Book(val title:String,val authors:List&lt;String&gt;)</code></pre>
+<p>authors ：保存书的所有作者。</p>
+<p>统计出图书馆中所有作者的set；</p>
+<pre><code class="kotlin">books.flatMap{it.authros}.toSet()    //包含撰写 “books” 集合中书籍的所有作者 set</code></pre>
+<p>flatMap:作用，1.首先根据作为实参给定的函数对集合中的每个元素做转换（或者说映射），然后把多个列表合并（或者说平铺）成一个列表。</p>
+</blockquote>
+<blockquote>
+<p>说明：</p>
+<pre><code class="kotlin">&gt;&gt;&gt; val strings = listOf(&quot;abc&quot;,&quot;def&quot;)
+&gt;&gt;&gt; pritnln(strings.flatMap{it.toList()})
+[a,b,c,d,e,f]</code></pre>
+<p>字符串上的toList函数把它转换成字符列表。</p>
+<p>使用 map 函数，你会得到一个字符列表的列表。</p>
+<p>flatMap 函数：执行后面操作，并返回一个包含所有元素（字符）的列表</p>
+<p>回到例子中：</p>
+<pre><code class="kotlin">&gt;&gt;&gt; val books = listOf(Book(&quot;Thursday Next&quot;,listOf(&quot;Jasper Fforde&quot;)),
+                        Book(&quot;Mort&quot;,listOf(&quot;Terry Pratchett&quot;)),
+                        Book(&quot;Good Omens&quot;,listOf(&quot;Terry Pratchett&quot;,
+                                                &quot;Neil Gaiman&quot;)))
+&gt;&gt;&gt; println(books.flatMap{it.authors}.toSet)                                                
+[Jasper Fforde,Terry Pratchett,Neil Gaiman]</code></pre>
+<p>book.authors 是存储了多个作者的集合。flatMap 函数把所有书籍的作者合并成变频的列表。</p>
+<p><strong>toSet调用移除了结果集合中的所有重复元素。</strong></p>
+<p>所以 Terry Pratchett 在输出中只出现了一次。</p>
+<p><strong>如果你只需要平铺一个集合，可以使用 flatten 函数：listOfLists.flatten</strong></p>
+</blockquote>
 <h2 id="5-5-带接收者的lambda：“with”与“apply”"><a href="#5-5-带接收者的lambda：“with”与“apply”" class="headerlink" title="5.5 带接收者的lambda：“with”与“apply”"></a>5.5 带接收者的lambda：“with”与“apply”</h2><h5 id="什么是带接收者的-lambda？"><a href="#什么是带接收者的-lambda？" class="headerlink" title="什么是带接收者的 lambda？"></a>什么是带接收者的 lambda？</h5><blockquote>
 <p>Kotlin 中独特的 lambda 功能：在lambda函数体内可以调用一个不同的对象方法，而且无需借助任何额外的限定符。</p>
 </blockquote>
@@ -2012,7 +2041,7 @@ applyOp(2, 3, sumLambda)</code></pre>
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/18.jpg" class="responsive-img" alt="Chocolatey的配置与应用的安装">
+                        <img src="/medias/featureimages/21.jpg" class="responsive-img" alt="Chocolatey的配置与应用的安装">
                         
                         <span class="card-title">Chocolatey的配置与应用的安装</span>
                     </div>
@@ -2065,7 +2094,7 @@ choco install 7zip如何安装Chocolatey在桌面下载
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/21.jpg" class="responsive-img" alt="RecyclerView在Kotlin中的使用">
+                        <img src="/medias/featureimages/19.jpg" class="responsive-img" alt="RecyclerView在Kotlin中的使用">
                         
                         <span class="card-title">RecyclerView在Kotlin中的使用</span>
                     </div>
