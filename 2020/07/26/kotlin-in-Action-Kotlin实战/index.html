@@ -1123,7 +1123,7 @@ Person[name = Alice,age = 27]</code></pre>
 <p>所以 Terry Pratchett 在输出中只出现了一次。</p>
 <p><strong>如果你只需要平铺一个集合，可以使用 flatten 函数：listOfLists.flatten</strong></p>
 </blockquote>
-<h2 id="5-5-带接收者的lambda：“with”与“apply”"><a href="#5-5-带接收者的lambda：“with”与“apply”" class="headerlink" title="5.5 带接收者的lambda：“with”与“apply”"></a>5.5 带接收者的lambda：“with”与“apply”</h2><h5 id="什么是带接收者的-lambda？"><a href="#什么是带接收者的-lambda？" class="headerlink" title="什么是带接收者的 lambda？"></a>什么是带接收者的 lambda？</h5><blockquote>
+<h2 id="5-3-惰性集合操作：序列"><a href="#5-3-惰性集合操作：序列" class="headerlink" title="5.3 惰性集合操作：序列"></a>5.3 惰性集合操作：序列</h2><h2 id="5-5-带接收者的lambda：“with”与“apply”"><a href="#5-5-带接收者的lambda：“with”与“apply”" class="headerlink" title="5.5 带接收者的lambda：“with”与“apply”"></a>5.5 带接收者的lambda：“with”与“apply”</h2><h5 id="什么是带接收者的-lambda？"><a href="#什么是带接收者的-lambda？" class="headerlink" title="什么是带接收者的 lambda？"></a>什么是带接收者的 lambda？</h5><blockquote>
 <p>Kotlin 中独特的 lambda 功能：在lambda函数体内可以调用一个不同的对象方法，而且无需借助任何额外的限定符。</p>
 </blockquote>
 <p><strong>接收者：</strong>调用者</p>
@@ -1918,7 +1918,7 @@ applyOp(2, 3, sumLambda)</code></pre>
 <li>lambda 表达式的代码不允许调用接口中定义的默认方法；匿名内部类实现的抽象方法的方法体允许调用接口中定义的默认方法。</li>
 </ul>
 </blockquote>
-<p><strong>引用：</strong></p>
+<h3 id="链式调用"><a href="#链式调用" class="headerlink" title="链式调用"></a>链式调用</h3><p><strong>引用：</strong></p>
 <p><a href="https://www.web3.xin/code/2606.html" target="_blank" rel="noopener">Kotlin this表达式</a></p>
 <p><a href="https://www.jianshu.com/p/10358883455c" target="_blank" rel="noopener">kotlin中的函数引用详解</a>    </p>
 <p><a href="http://c.biancheng.net/view/6559.html" target="_blank" rel="noopener">Lambda表达式与匿名内部类的联系和区别</a></p>
