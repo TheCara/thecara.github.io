@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="网络协议, TheCara">
+    <meta name="keywords" content="关于链式调用, TheCara">
     <meta name="description" content="">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>网络协议 | TheCara</title>
+    <title>关于链式调用 | TheCara</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -321,12 +321,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('https://storage.googleapis.com/gweb-interland.appspot.com/en-us/hub/images/peardeck/slides_hero.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('https://raw.githubusercontent.com/TheCara/RepoPicture/master/image/https___hypebeast.com_wp-content_blogs.dir_4_files_2020_08_palace-adidas-originals-sunpal-collection-01.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">网络协议</h1>
+                    <h1 class="description center-align post-title">关于链式调用</h1>
                 </div>
             </div>
         </div>
@@ -443,8 +443,8 @@
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">
-                                <span class="chip bg-color">计算机网络</span>
+                            <a href="/tags/Java/">
+                                <span class="chip bg-color">Java</span>
                             </a>
                         
                     </div>
@@ -455,8 +455,8 @@
                     <div class="post-cate">
                         <i class="fas fa-bookmark fa-fw icon-category"></i>
                         
-                            <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" class="post-category">
-                                计算机网络
+                            <a href="/categories/Java/" class="post-category">
+                                Java
                             </a>
                         
                     </div>
@@ -468,7 +468,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2021-02-19
+                    2021-03-19
                 </div>
                 
 
@@ -484,8 +484,51 @@
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h1 id=""><a href="#" class="headerlink" title=""></a></h1><p><strong>引用</strong></p>
-<p><a href="https://www.cnblogs.com/fzz9/p/8964513.html" target="_blank" rel="noopener">一些重要的计算机网络协议（IP、TCP、UDP、HTTP）</a></p>
+                <h1 id="什么是链式调用"><a href="#什么是链式调用" class="headerlink" title="什么是链式调用"></a>什么是链式调用</h1><p>当调用的样式为这样时。</p>
+<blockquote>
+<p>可以不受限制的通过”.”操作符调用方法。</p>
+<pre><code class="java">a.b().c()</code></pre>
+<p>此方法起源于 java8</p>
+</blockquote>
+<h1 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h1><blockquote>
+<p>每个方法返回对象本身即可</p>
+<pre><code class="java">public class Book{
+    private String name;
+    private String author;
+    public static create(){
+        return new Student();
+    }
+    public void setName(String name){
+        this.name = name; 
+    }
+    public void setAuthor(String author){
+        this.age = age; 
+    }
+    public Student name(String name){
+        this.name = name; 
+        return this;
+    }
+    public Student author(String author){
+        this.author = author; 
+        return this;
+    }
+}</code></pre>
+<pre><code class="java">/*    调用    */
+public class Main{
+    public static void main(String[] ages){
+        Book b = new Book()
+        b.setName(&quot;链式调用&quot;)
+        b.setAuthor(&quot;TheCara&quot;)
+        Book b2 = Book.create().name(&quot;集合&quot;).author(&quot;网友&quot;)
+    }
+
+}</code></pre>
+<p><strong>优缺点</strong></p>
+<p>优：方法关系联系紧密，简洁。</p>
+<p>缺：方法之间依赖于上一个方法，返回空指针会报错。</p>
+</blockquote>
+<p>引用：</p>
+<p><a href="https://blog.ahao.moe//posts/what_is_Methods_Chaining_in_Java.html" target="_blank" rel="noopener"><strong>什么是链式调用</strong></a></p>
 
             </div>
             <hr/>
@@ -511,7 +554,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://thecara.github.io/2021/02/19/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/">https://thecara.github.io/2021/02/19/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/</a>
+                    <a href="https://thecara.github.io/2021/03/19/%E5%85%B3%E4%BA%8E%E9%93%BE%E5%BC%8F%E8%B0%83%E7%94%A8/">https://thecara.github.io/2021/03/19/%E5%85%B3%E4%BA%8E%E9%93%BE%E5%BC%8F%E8%B0%83%E7%94%A8/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -549,8 +592,8 @@
                     
                         <div class="article-tag">
                             
-                                <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">
-                                    <span class="chip bg-color">计算机网络</span>
+                                <a href="/tags/Java/">
+                                    <span class="chip bg-color">Java</span>
                                 </a>
                             
                         </div>
@@ -592,9 +635,10 @@
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
             <div class="card">
                 <a href="/2021/03/19/%E5%85%B3%E4%BA%8E%E9%93%BE%E5%BC%8F%E8%B0%83%E7%94%A8/">
                     <div class="card-image">
@@ -620,9 +664,9 @@ public class Book{
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2021-03-19
-                        </span>
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-03-19
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
@@ -635,6 +679,7 @@ public class Book{
                         </span>
                     </div>
                 </div>
+
                 
                 <div class="card-action article-tags">
                     
@@ -653,33 +698,32 @@ public class Book{
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2020/12/07/Android-PendingIntent/">
+                <a href="/2021/02/19/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/">
                     <div class="card-image">
                         
+                        <img src="https://storage.googleapis.com/gweb-interland.appspot.com/en-us/hub/images/peardeck/slides_hero.jpg" class="responsive-img" alt="网络协议">
                         
-                        <img src="/medias/featureimages/6.jpg" class="responsive-img" alt="Android PendingIntent">
-                        
-                        <span class="card-title">Android PendingIntent</span>
+                        <span class="card-title">网络协议</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            PendingIntent
-描述
-A description of an Intent and target action to perform with it. Instances of this class are created wi
+                            引用
+一些重要的计算机网络协议（IP、TCP、UDP、HTTP）
+
                         
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2020-12-07
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-02-19
                             </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/Android/" class="post-category">
-                                    Android
+                            <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" class="post-category">
+                                    计算机网络
                                 </a>
                             
                             
@@ -689,8 +733,8 @@ A description of an Intent and target action to perform with it. Instances of th
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/Android/">
-                        <span class="chip bg-color">Android</span>
+                    <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">
+                        <span class="chip bg-color">计算机网络</span>
                     </a>
                     
                 </div>

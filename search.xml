@@ -4,6 +4,31 @@
   
     
     <entry>
+      <title>关于链式调用</title>
+      <link href="/2021/03/19/%E5%85%B3%E4%BA%8E%E9%93%BE%E5%BC%8F%E8%B0%83%E7%94%A8/"/>
+      <url>/2021/03/19/%E5%85%B3%E4%BA%8E%E9%93%BE%E5%BC%8F%E8%B0%83%E7%94%A8/</url>
+      
+        <content type="html"><![CDATA[<h1 id="什么是链式调用"><a href="#什么是链式调用" class="headerlink" title="什么是链式调用"></a>什么是链式调用</h1><p>当调用的样式为这样时。</p><blockquote><p>可以不受限制的通过”.”操作符调用方法。</p><pre><code class="java">a.b().c()</code></pre><p>此方法起源于 java8</p></blockquote><h1 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h1><blockquote><p>每个方法返回对象本身即可</p><pre><code class="java">public class Book{    private String name;    private String author;    public static create(){        return new Student();    }    public void setName(String name){        this.name = name;     }    public void setAuthor(String author){        this.age = age;     }    public Student name(String name){        this.name = name;         return this;    }    public Student author(String author){        this.author = author;         return this;    }}</code></pre><pre><code class="java">/*    调用    */public class Main{    public static void main(String[] ages){        Book b = new Book()        b.setName(&quot;链式调用&quot;)        b.setAuthor(&quot;TheCara&quot;)        Book b2 = Book.create().name(&quot;集合&quot;).author(&quot;网友&quot;)    }}</code></pre><p><strong>优缺点</strong></p><p>优：方法关系联系紧密，简洁。</p><p>缺：方法之间依赖于上一个方法，返回空指针会报错。</p></blockquote><p>引用：</p><p><a href="https://blog.ahao.moe//posts/what_is_Methods_Chaining_in_Java.html" target="_blank" rel="noopener"><strong>什么是链式调用</strong></a></p>]]></content>
+      
+      
+      <categories>
+          
+          <category> Java </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Java </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>网络协议</title>
       <link href="/2021/02/19/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/"/>
       <url>/2021/02/19/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/</url>
