@@ -546,9 +546,9 @@
             
             <tag> Android </tag>
             
-            <tag> RxJava </tag>
-            
             <tag> 软件工程 </tag>
+            
+            <tag> RxJava </tag>
             
         </tags>
       
@@ -575,9 +575,9 @@
             
             <tag> Android </tag>
             
-            <tag> 软件工程 </tag>
-            
             <tag> Kotlin </tag>
+            
+            <tag> 软件工程 </tag>
             
             <tag> koin </tag>
             
@@ -870,9 +870,9 @@
       
         <tags>
             
-            <tag> hexo-theme-matery </tag>
-            
             <tag> git </tag>
+            
+            <tag> hexo-theme-matery </tag>
             
             <tag> hexo </tag>
             
