@@ -1167,6 +1167,25 @@ Person[name = Alice,age = 27]</code></pre>
 map(1) filter(1) map(2) filter(4) map(3) filter(9) map(4) filter(16)</code></pre>
 <p>末端操作触发执行了所有的延期计算。</p>
 </blockquote>
+<p><strong>计算执行的顺序。</strong></p>
+<blockquote>
+<p>一个笨办法实在每个元素上调用map函数，然后再结果序列的每个元素上再调用filter函数。</p>
+<p>map和filter对集合就是这样做的，而序列不一样。对序列来说，所有操作是按序列应用再每个元素上：处理完第一个元素（先映射再过滤），然后完成第二个元素的处理，以此类推。</p>
+<p><strong>这种方法意味着部分元素根本不会发生任何转换</strong></p>
+<p>如果在轮到它们之前就已经取得了结果。我们来看一个map和find的例子。首先一个数字映射成它的平方，然后找到第一个比数字3大的条目：</p>
+<pre><code class="kotlin">&gt;&gt;&gt; println(listOf(1,2,3,4).asSequence()
+                           .map{it*it}
+                           .find{it &gt; 3}
+                           )
+4</code></pre>
+<p>如果同样的操作被应用在集合而不是序列上时，那么 map 的结果首先被求出来。即变换初始集合中的所有元素。第二步，中间集合中满足判断式的一个元素会被找出来。而对于序列来说，惰性方法意味这你可以跳过处理部分元素。图 5.8 阐明了 这段代码两种求值方法之间的区别，一种是及早求值（使用集合），一种是惰性求值（使用序列）。</p>
+</blockquote>
+<p><img src="https://raw.githubusercontent.com/TheCara/RepoPicture/master/image/20210331223924.png" alt="及早求值在整个集合上执行每个操作；惰性求值则逐个处理元素"></p>
+<blockquote>
+<p><strong>在集合上执行操作的顺序也会影响性能。</strong></p>
+<p>假设你有一个人的集合，想要打印集合中那些长度小于某个限制的人名。</p>
+<p>这时你需要做两件事：把每个人映射成他们的名字，然后过滤掉其中那些不够短的名字。</p>
+</blockquote>
 <h2 id="5-5-带接收者的lambda：“with”与“apply”"><a href="#5-5-带接收者的lambda：“with”与“apply”" class="headerlink" title="5.5 带接收者的lambda：“with”与“apply”"></a>5.5 带接收者的lambda：“with”与“apply”</h2><h5 id="什么是带接收者的-lambda？"><a href="#什么是带接收者的-lambda？" class="headerlink" title="什么是带接收者的 lambda？"></a>什么是带接收者的 lambda？</h5><blockquote>
 <p>Kotlin 中独特的 lambda 功能：在lambda函数体内可以调用一个不同的对象方法，而且无需借助任何额外的限定符。</p>
 </blockquote>
