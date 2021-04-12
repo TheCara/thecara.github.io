@@ -1540,7 +1540,56 @@ fun Person.countryName():String{
 &gt;&gt;&gt; val person = Person(&quot;Dmitry&quot;,null)
 &gt;&gt;&gt; println(person.countryName())
 Unknown</code></pre>
-<h3 id="6-1-4-Elvis-运算符：“-”"><a href="#6-1-4-Elvis-运算符：“-”" class="headerlink" title="6.1.4 Elvis 运算符：“?:”"></a>6.1.4 Elvis 运算符：“?:”</h3><h3 id="6-1-7-“let”-函数"><a href="#6-1-7-“let”-函数" class="headerlink" title="6.1.7 “let” 函数"></a>6.1.7 “let” 函数</h3><p>用来处理可空表达式。和安全调用运算符一起使用，允许你对表达式求值，检查求值结果是否null，并把结果保存为一个变量。</p>
+<h3 id="6-1-4-Elvis-运算符：“-”"><a href="#6-1-4-Elvis-运算符：“-”" class="headerlink" title="6.1.4 Elvis 运算符：“?:”"></a>6.1.4 Elvis 运算符：“?:”</h3><p>Kotlin有方便的运算符来提供代替null的默认值。它被称为Elvis运算符。（或者null合并运算符）</p>
+<pre><code class="kotlin">fun foo(s:String?){
+    val t:String = s?:&quot;&quot;    //如果“s”为null，结果为空字符串
+}</code></pre>
+<blockquote>
+<p>Elvis运算符接收两个运算数，如果第一个运算数不为null，或者结果就是第一个运算数；如果第一个运算数为null，运算结果就是第二个运算数。</p>
+</blockquote>
+<p><img src="https://raw.githubusercontent.com/TheCara/RepoPicture/master/image/20210411235620.png" alt="Elvis运算符用其他值代替null"></p>
+<blockquote>
+<p>Elvis 运算符经常和安全调用运算符一起使用，<strong>用一个值代替null对象调用返回时返回null。</strong></p>
+<pre><code class="kotlin">fun strLenSafe(s:String?):Int = s?.length?:0
+&gt;&gt;&gt; println(strLenSafe(&quot;abc&quot;))
+3
+&gt;&gt;&gt; pritnln(strLenSafe(null))
+0</code></pre>
+</blockquote>
+<blockquote>
+<p>在 6.1.3 “链接多个安全调用” 的函数 countryName现在也可以使用一行代码来完成。</p>
+<pre><code class="kotlin">fun Person.countryName()=conpany?.address?.country?:=&quot;Unknown&quot;**</code></pre>
+</blockquote>
+<p><strong>在Kotlin中有种场景下Elvis运算符会特别顺手，想return和throw这样的操作其实是表达式，因此可以把它们写在Elvis运算符的右边。这种情况下，如果Elvis运算符左边的值为null，函数就会立即返回一个值或者抛出一个异常，如果函数中需要检查先决条件，这个方式会很有用。</strong></p>
+<p><strong>实现一个打印包含个人公司地址的出货标签函数。</strong></p>
+<pre><code class="kotlin">/*    同时使用throw和Elvis运算符    */
+class Address(val streetAddress:String,val zipCOde:Int,val city:String,val country:String)
+
+class Company(val name:String,val address:Address?)
+
+class Person(val name:String,val company:Company?)
+
+fun pritnlnShippingLabel(person:Person){
+    val address = person.company?.address
+                ?: throw IllegalArgumentException(&quot;No address&quot;)    //如果缺少addres就抛出异常
+    with(address){    //address 不为空
+        println(streetAddress
+        println(&quot;$zipCode $city,$country&quot;)
+    }
+}
+&gt;&gt;&gt; val address = Address(&quot;Elsestr. 47&quot;,80687,&quot;Munich&quot;,&quot;Germany&quot;)               
+&gt;&gt;&gt; val jetbrains = Company(&quot;JetBrains&quot;,address)                
+&gt;&gt;&gt; val person = Person(&quot;Dmitry&quot;,jetbrains)                
+
+&gt;&gt;&gt; printShippingLabel(person)
+Elsestr.47
+80687 Munich.Germany
+
+&gt;&gt;&gt; printShippingLable(Person(&quot;Alexey&quot;,null))
+java.lang.IllegalArgumentException:No address</code></pre>
+<p><strong>如果一切正常，函数printShippingLable会打印出标签。如果地址不存在，它不会只是抛出一个带行号的NullPointerException，相反，它会报告一个有意义的错误。</strong>如果地址存在，标签会包含街道地址、邮编、城市和国家。留意之前说过的with函数是如何被用来避免在一行中重复四次address的。</p>
+<h3 id="6-1-5-安全转换-“as-”"><a href="#6-1-5-安全转换-“as-”" class="headerlink" title="6.1.5 安全转换 “as?”"></a>6.1.5 安全转换 “as?”</h3><p>“as”用来转换类型的常规Kotlin运算符，<strong>和常规的Java类型转发一样，如果被转换的值不是你试图转换的类型，就会抛出ClassCastException异常。</strong></p>
+<h3 id="6-1-7-“let”-函数"><a href="#6-1-7-“let”-函数" class="headerlink" title="6.1.7 “let” 函数"></a>6.1.7 “let” 函数</h3><p>用来处理可空表达式。和安全调用运算符一起使用，允许你对表达式求值，检查求值结果是否null，并把结果保存为一个变量。</p>
 <pre><code class="kotlin">fun sendEmailTo(email : String){
     println(&quot;Sending emaill to $emaill&quot;)
 }
