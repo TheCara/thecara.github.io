@@ -1588,7 +1588,44 @@ Elsestr.47
 &gt;&gt;&gt; printShippingLable(Person(&quot;Alexey&quot;,null))
 java.lang.IllegalArgumentException:No address</code></pre>
 <p><strong>如果一切正常，函数printShippingLable会打印出标签。如果地址不存在，它不会只是抛出一个带行号的NullPointerException，相反，它会报告一个有意义的错误。</strong>如果地址存在，标签会包含街道地址、邮编、城市和国家。留意之前说过的with函数是如何被用来避免在一行中重复四次address的。</p>
-<h3 id="6-1-5-安全转换-“as-”"><a href="#6-1-5-安全转换-“as-”" class="headerlink" title="6.1.5 安全转换 “as?”"></a>6.1.5 安全转换 “as?”</h3><p>“as”用来转换类型的常规Kotlin运算符，<strong>和常规的Java类型转发一样，如果被转换的值不是你试图转换的类型，就会抛出ClassCastException异常。</strong></p>
+<h3 id="6-1-5-安全转换-“as-”"><a href="#6-1-5-安全转换-“as-”" class="headerlink" title="6.1.5 安全转换 “as?”"></a>6.1.5 安全转换 “as?”</h3><p>“as”用来转换类型的常规Kotlin运算符，<strong>和常规的Java类型转换一样，如果被转换的值不是你试图转换的类型，就会抛出ClassCastException异常。</strong></p>
+<p><strong>“as?”运算符尝试把值转换成指定的类型，如果值不是合适的类型就返回null</strong></p>
+<p><img src="https://raw.githubusercontent.com/TheCara/RepoPicture/master/image/20210414230332.png" alt="安全转换运算符尝试把值转换成给定的类型。如果类型不合适就返回null"></p>
+<p><strong>一种常见的模式是把安全转换和Elvis运算符结合使用。</strong></p>
+<pre><code class="kotlin">/*    使用安全转换实现equals    */
+class Person(val firstName:String,val lastName:String){
+    override fun equals(o:Any?):Boolean{
+        val otherPerson = o as? Person ?: return false    // 检查类型，如果不匹配就返回false
+        return otherPerson.firstName == firstName &amp;&amp; otherPerson.lastName == lastName    //在安全转换之后，变量otherPerson被智能地转换为 Person 类型
+    }
+    override fun hashCode():Int = firstName.hashCode() * 37 + lastName.hashCode()
+}
+&gt;&gt;&gt; val p1 = Person(&quot;Dmitry&quot;,&quot;Jemerov&quot;)
+&gt;&gt;&gt; val p2 = Person(&quot;Dmitry&quot;,&quot;Jemerov&quot;)
+&gt;&gt;&gt; println(p1 == p2)
+true
+&gt;&gt;&gt; println(p1.equals(42))
+false</code></pre>
+<p><strong>使用这种模式，可以非常容易地检查实参是否是适当的类型，转换它，并在它的类型不能确定是返回false，而且这些操作全部在同一个表达式中。</strong>当然，这种场景下智能转换也会生效：当你检查过类型并拒绝了null值，编译器就确定了变量otherPerson值的类型是Person并当你能够相应的使用它。</p>
+<h3 id="6-1-6-非空断言：“-”"><a href="#6-1-6-非空断言：“-”" class="headerlink" title="6.1.6 非空断言：“!!”"></a>6.1.6 非空断言：“!!”</h3><p>非空断言：</p>
+<p><strong>它使用双感叹号表示，可以把任何值转换成非空类型。如果对null值做非空断言，则会抛出异常。</strong></p>
+<p><img src="https://raw.githubusercontent.com/TheCara/RepoPicture/master/image/20210414234748.png" alt="通过使用非空断言，如果值为null，可以显式地抛出异常"></p>
+<p><strong>使用非空断言来吧可空的实参转换成非空。</strong></p>
+<pre><code class="kotlin">/*    使用非空断言    */
+fun ignoreNulls(s:String?){
+    val sNotNull:String = s!!    // 异常指向这一行
+    println(sNotNull.length)
+}
+&gt;&gt;&gt; igoreNulls(null)
+Exceptin in thread &quot;main&quot; kotlin.KotlinNullPointerException
+    at &lt;...&gt;.ignoreNulls(07_NotnullAssertions.kt:2)</code></pre>
+<blockquote>
+<p>如果上面函数中s为null会发生什么？Kotlin没有其他选择，它会在运行时抛出一个异常（一种特殊的NullPointerException）。但是注意异常抛出的位置是非空断言所在的哪一行，而不是接下来试图使用那个值的一行。本质上，你在告诉编译器：“我知道这个字不为null，如果我错了我准备好啦接收这个异常。”</p>
+<blockquote>
+<p>注意：Kotlin的设计者试图说服你思考更好的解决方案，这些方案不会使用断言这种编译器无法验证的方法。</p>
+</blockquote>
+<p>但是确实存在这种情况，某些问题适合使用非空断言来解决。当你在一个函数中检测一个值是否为null，而在另一个函数中使用这个值时，这种情况下编译器无法识别这种用法是否安全。（也就是使用前检查他是否为null）</p>
+</blockquote>
 <h3 id="6-1-7-“let”-函数"><a href="#6-1-7-“let”-函数" class="headerlink" title="6.1.7 “let” 函数"></a>6.1.7 “let” 函数</h3><p>用来处理可空表达式。和安全调用运算符一起使用，允许你对表达式求值，检查求值结果是否null，并把结果保存为一个变量。</p>
 <pre><code class="kotlin">fun sendEmailTo(email : String){
     println(&quot;Sending emaill to $emaill&quot;)
