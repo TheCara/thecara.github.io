@@ -1626,23 +1626,28 @@ Exceptin in thread &quot;main&quot; kotlin.KotlinNullPointerException
 </blockquote>
 <p>但是确实存在这种情况，某些问题适合使用非空断言来解决。当你在一个函数中检测一个值是否为null，而在另一个函数中使用这个值时，这种情况下编译器无法识别这种用法是否安全。（也就是使用前检查他是否为null）</p>
 </blockquote>
-<h3 id="6-1-7-“let”-函数"><a href="#6-1-7-“let”-函数" class="headerlink" title="6.1.7 “let” 函数"></a>6.1.7 “let” 函数</h3><p>用来处理可空表达式。和安全调用运算符一起使用，允许你对表达式求值，检查求值结果是否null，并把结果保存为一个变量。</p>
-<pre><code class="kotlin">fun sendEmailTo(email : String){
+<h3 id="6-1-7-“let”-函数"><a href="#6-1-7-“let”-函数" class="headerlink" title="6.1.7 “let” 函数"></a>6.1.7 “let” 函数</h3><p><strong>用来处理可空表达式。和安全调用运算符一起使用，允许你对表达式求值，检查求值结果是否null，并把结果保存为一个变量。</strong></p>
+<pre><code class="kotlin">
+/*    使用let调用一个接收非空参数的函数    */
+fun sendEmailTo(email : String){
     println(&quot;Sending emaill to $emaill&quot;)
 }
 
 &gt;&gt;&gt; var email:String ? = &quot;yole@example.com&quot;
 &gt;&gt;&gt; email?.let{sendEmailTo(it)}
+Sending email to yole@example.com
 &gt;&gt;&gt; emaill = null
 &gt;&gt;&gt; emaill?.let{    sendEmailTo(it)        }</code></pre>
 <blockquote>
 <p>所以说只有这段表达式不为空时才会执行代码块里的代码</p>
 </blockquote>
-<h3 id="6-1-8-延迟初始化的属性"><a href="#6-1-8-延迟初始化的属性" class="headerlink" title="6.1.8 延迟初始化的属性"></a>6.1.8 延迟初始化的属性</h3><h4 id="使用-延迟初始化属性的原因"><a href="#使用-延迟初始化属性的原因" class="headerlink" title="使用 延迟初始化属性的原因"></a>使用 延迟初始化属性的原因</h4><blockquote>
-<p>Kotlin 通常要求你在构造方法中初始化所有属性，如果某个属性是可空类型，你就必须提供一个非空的初始化值。否则，你就必须使用可空类型。如果你这样做，该属性的每一次访问都需要null检查或者！！运算符</p>
+<h3 id="6-1-8-延迟初始化的属性"><a href="#6-1-8-延迟初始化的属性" class="headerlink" title="6.1.8 延迟初始化的属性"></a>6.1.8 延迟初始化的属性</h3><p><strong>使用延迟初始化属性的原因</strong></p>
+<blockquote>
+<p>Kotlin 通常要求你在构造方法中初始化所有属性，如果某个属性是可空类型，你就必须提供一个非空的初始化值。否则，你就必须使用可空类型。如果你这样做，该属性的每一次访问都需要null检查或者”!!”运算符</p>
 </blockquote>
 <p><strong>使用非空断言访问可控属性</strong></p>
-<pre><code class="kotlin">class MyService{
+<pre><code class="kotlin">/*    使用非空断言访问可空属性    */
+class MyService{
     fun performAction():String = &quot;foo&quot;
 }
 class MyText{
@@ -1654,8 +1659,8 @@ class MyText{
         Assert.assertEquals(&quot;foo&quot;,myService!!.performAction())    // 必须注意可空性：要么用&quot;!!&quot;，要么用&quot;?.&quot;
     }
 }</code></pre>
-<p><strong>使用延迟初始化</strong></p>
-<pre><code class="kotlin">class MyService{
+<pre><code class="kotlin">/*    使用延迟初始化属性    */
+class MyService{
     fun performAction():String = &quot;foo&quot;
 }
 class MyText{
@@ -1671,9 +1676,75 @@ class MyText{
 <blockquote>
 <p>初始化的属性必须为var，因为需要在构造方法外修改它的值，使用val属性被编译时必须在构造方法中初始化final片段。</p>
 <p>尽管 myService 属性是非空的，你不需要在构造方法中初始化它。在属性没有被初始化之前调用会得到异常 “lateinit property myService has not been initialized”。</p>
+<blockquote>
 <p>lateinit 属性常见的一种用法是在依赖注入。在某种情况下，lateinit 属性的值是被依赖注入框架从外部设置的。为了保证和各种依赖注入框架的兼容性</p>
-<p>，Kotlin 会自动生成一个和 lateinit 属性具有相同可见性的字段。如果属性的可见性是public，生成的字段意思public</p>
+<p>，Kotlin 会自动生成一个和 lateinit 属性具有相同可见性的字段。如果属性的可见性是public，生成字段也是可见性public</p>
 </blockquote>
+</blockquote>
+<h3 id="6-1-9可空类型的扩展"><a href="#6-1-9可空类型的扩展" class="headerlink" title="6.1.9可空类型的扩展"></a>6.1.9可空类型的扩展</h3><blockquote>
+<p>为可空类型定义扩展函数。可以允许接收者（调用者）为空null 的（扩展函数）调用，并在该函数中处理null，而不是在确保变量不为null之后再调用它的方法。</p>
+<p><strong>只有扩展函数才能做到这一点，普通成员方法的调用是通过对象实例来分发的，因此实例为null时（成员方法）永远不能被执行。</strong></p>
+</blockquote>
+<p>Kotlin标准库中定义的String的两个扩展函数isEmpty和isBlanck就是这样的例子。第一个函数判断字符串是否是一个空的字符串“”。第二个函数则判断它是否是空的或者它只包含空白字符。通常用这些函数来检查字符串中是否有价值的，以确保对它的操作是由意义的。</p>
+<p><strong>像这种无意义的空字符串和空白字符串这样处理null也很有用。事实上，你的确可以这样做：函数isEmptyOrNull和isNullOrBlank就可以由String?类型的接收者调用（用于可空类型接收者调用）。</strong></p>
+<pre><code class="kotlin">/*    用可空接收者调用扩展函数    */
+fun verifyUserInput(input:String?){
+    if (input.isNullOrBlank()){    //不需要安全调用
+        println(&quot;Please fill in the requied fileds&quot;)
+    }
+}
+
+&gt;&gt;&gt; verifyUserInput(&quot; &quot;)    //可空类型的扩展函数在接收者为空时也可以调用
+Please fill in the required fields
+&gt;&gt;&gt; verifyUserInput(null)
+Please fill in the required fields</code></pre>
+<p>不需要安全访问，就可以直接为可控接收者声明扩展函数</p>
+<p><img src="https://raw.githubusercontent.com/TheCara/RepoPicture/master/image/20210417170332.png" alt="不需要安全调用就可以访问可空类型的扩展"></p>
+<p><strong>函数isNullOrBlank显式地检查了null，这种情况下返回true，然后调用isBlank，它只能在非空String上调用：</strong></p>
+<pre><code class="kotlin">fun String?.isNullOrBlank():Boolean =    //可空字符串的扩展
+        this == null || this.isBlank    //第二个“this”使用了智能转换</code></pre>
+<blockquote>
+<p>当你为一个可空类型（以?结尾）定义扩展函数时，这意味着你可以对可空的值调用这个函数；并且函数体中的this可能为null，所以你必须显式地价差。在Java中，this永远是非空的，因为它引用的时当前你所在这个类的实例。而在Kotlin中，这并不永远成立：在可空类型的扩展函数中，this可以是null的。</p>
+<p>let函数也能被可空的接收者调用，但它并不检查值是否为null。如果你在一个可空类型上调用let函数，而没有使用安全调用运算符，lambda的实参将会是可空的：</p>
+<p>（let检查是否为null，并把结果保存为一个变量）</p>
+<pre><code class="kotlin">&gt;&gt;&gt; val person:Person?=...    // 可空类型的非空属性
+&gt;&gt;&gt; person.let{ sendEmailTo(it) }    // 没有安全调用，所以“it”是可空类型
+ERROR:Type mismatch:inferred type is Person? but Person was expected</code></pre>
+<p><strong>使用let来检查非空的实参，必须使用安全调用运算符“?.”，就像代码：person?.let{ sendEmailTo(it) }。</strong></p>
+<blockquote>
+<p>当你定义自己的扩展函数时，需要考虑该扩展是否需要为可空类型定义。默认情况下，应该把它定义成会空类型的扩展函数。在发现大部分情况下需要在可空类型上使用这个函数，再安全的修改它。</p>
+</blockquote>
+</blockquote>
+<h3 id="6-1-10-类型参数的可空性"><a href="#6-1-10-类型参数的可空性" class="headerlink" title="6.1.10 类型参数的可空性"></a>6.1.10 类型参数的可空性</h3><p>Kotlin 中<strong>所有泛型类和泛型函数的类型参数默认</strong>都是可空的。</p>
+<p>任何类型，包括可空类型在内，都可以替换类型参数。这种情况下，使用类型参数作为类型的声明都允许为null，尽管类型参数T并没有用问号结尾。</p>
+<p>例子：</p>
+<pre><code class="kotlin">/*    处理可空的类型参数    */
+fun &lt;T&gt; printHashCode(t:T){
+    println(t?.hashCode())    //因为”T“ 可能为null，所以必须使用安全调用
+}
+&gt;&gt;&gt; printHashCode(null)    //”T“被推导为”Any?“
+null</code></pre>
+<p>在printHashCode调用中，类型参数T推导出的类型是可空类型Any?。    因此，尽管没有用问号结尾，实参t依然允许持有null。</p>
+<p><strong>要使类型参数非空（不为空）必须要为它指定一个非空的上界，那样泛型就会拒绝可空值作为实参。</strong></p>
+<pre><code class="kotlin">/*    为类型参数声明非空三界    */
+fun &lt;T:Any&gt; printHashCode(t:T){    //现在”T“就不是可空的
+    println(t.hashCode())
+}
+&gt;&gt;&gt; printHashCode(null)    //这段代码是无法编译的：你不能传递null，因为期望值是非空值。
+Error:Type paramater bound for &#39;T&#39; is not asthisfied
+&gt;&gt;&gt; printHashCode(42)
+42</code></pre>
+<p>注意必须使用问号结尾来标记类型为可空的，没有问号就是非空的。类型参数是这个规则唯一的例外。（在使用三界后，想使用可空类型就要加问号来标记可空。）</p>
+<h3 id="6-1-11-可空性和Java"><a href="#6-1-11-可空性和Java" class="headerlink" title="6.1.11 可空性和Java"></a>6.1.11 可空性和Java</h3><p>Kotlin 引以为傲的是和Java的互操作性，而你知道Java类型系统是不支持可空性的。在你混合使用Kotlin和Java时会发生什么？会不会失去所有的安全性？或者每个值都必须检查是否为null？</p>
+<blockquote>
+<p>有些时候Java代码包含了可空性的信息，这些信息用注解来表达。</p>
+<p><strong>当代码中出现了这些信息时，Kotlin就会使用。因此Java中@Nullable string 被Kotlin当作String?(可空类型)，而@NotNull String就是String(不为空类型)</strong></p>
+</blockquote>
+<p><img src="https://raw.githubusercontent.com/TheCara/RepoPicture/master/image/20210419170543.png" alt="根据Java类型识别的注解，Java类型回在Kotlin中表示为可空类型和非空类型"></p>
+<p>Kotlin 可以识别多种不同风格的可空性注解，包括JSR-305标准的注解（在javax.annotation包之中）、Android的注解（android.support.annotation包之中）和JetBrains工具支持的注解（org.jetbrains.annotation）。</p>
+<p><strong>如果这些注解不存在会发生什么？</strong></p>
+<p><strong>Java 类型会变成Kotlin中的平台类型</strong></p>
+<p><strong>平台类型</strong></p>
 <h1 id="8-高阶函数：Lambda作为形参和返回值"><a href="#8-高阶函数：Lambda作为形参和返回值" class="headerlink" title="8 高阶函数：Lambda作为形参和返回值"></a>8 高阶函数：Lambda作为形参和返回值</h1><p><strong>内联函数作用</strong></p>
 <p>能够消除lambda带来的性能开销，还能够使lambda内的控制流更加灵活。</p>
 <h2 id="8-1-声明高阶函数"><a href="#8-1-声明高阶函数" class="headerlink" title="8.1 声明高阶函数"></a>8.1 声明高阶函数</h2><p>定义</p>
