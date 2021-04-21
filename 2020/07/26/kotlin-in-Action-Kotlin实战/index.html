@@ -498,8 +498,9 @@
 <p><img src="https://raw.githubusercontent.com/TheCara/RepoPicture/master/image/1595899976491.png" alt=""></p>
 <p>自身不可变(只可以执行一次,初始化一次)</p>
 <p>注意,尽管val引用自身是不可变的,但是它指向的对象<strong>`可能</strong>`是可变的。列如</p>
-<pre><code>val languages = arrayListOf(&quot;Java&quot;)
-lenguages.add(&quot;Kotlin&quot;)</code></pre><h3 id="2-3-表示和处理选择：枚举和“when”"><a href="#2-3-表示和处理选择：枚举和“when”" class="headerlink" title="2.3 表示和处理选择：枚举和“when”"></a>2.3 表示和处理选择：枚举和“when”</h3><h4 id="2-3-1-声明枚举类"><a href="#2-3-1-声明枚举类" class="headerlink" title="2.3.1 声明枚举类"></a>2.3.1 声明枚举类</h4><p><strong>什么是枚举</strong></p>
+<pre><code class="kotlin">val languages = arrayListOf(&quot;Java&quot;)
+lenguages.add(&quot;Kotlin&quot;)</code></pre>
+<h3 id="2-3-表示和处理选择：枚举和“when”"><a href="#2-3-表示和处理选择：枚举和“when”" class="headerlink" title="2.3 表示和处理选择：枚举和“when”"></a>2.3 表示和处理选择：枚举和“when”</h3><h4 id="2-3-1-声明枚举类"><a href="#2-3-1-声明枚举类" class="headerlink" title="2.3.1 声明枚举类"></a>2.3.1 声明枚举类</h4><p><strong>什么是枚举</strong></p>
 <p>为了让编译器能够自动检查某个值在枚举的集合中，并且，不同用途的枚举需要不同的类型来标记，不能混用，我们可以使用 <strong>enum</strong> 来定义枚举类。</p>
 <pre><code class="kotlin">enum class Color{
     RED,ORANGE,YELLOW,GREEN,BLUE,INDIGO,VIOLET
@@ -1745,7 +1746,89 @@ Error:Type paramater bound for &#39;T&#39; is not asthisfied
 <p><strong>如果这些注解不存在会发生什么？</strong></p>
 <p><strong>Java 类型会变成Kotlin中的平台类型</strong></p>
 <p><strong>平台类型</strong></p>
-<h1 id="8-高阶函数：Lambda作为形参和返回值"><a href="#8-高阶函数：Lambda作为形参和返回值" class="headerlink" title="8 高阶函数：Lambda作为形参和返回值"></a>8 高阶函数：Lambda作为形参和返回值</h1><p><strong>内联函数作用</strong></p>
+<blockquote>
+<p><strong>平台类型本质上就是Kotlin不知道可空性信息的类型</strong>。<strong>即可以把它当作可空类型处理，也可以当作会空类型处理</strong>。</p>
+</blockquote>
+<p><img src="https://raw.githubusercontent.com/TheCara/RepoPicture/master/image/20210420145256.png" alt="Java类型在Kotlin中表示为平台类型，既可以把它当作可空类型也可以当作会空类型来处理"></p>
+<blockquote>
+<p>这意味着，你要像在Java中意义，对你在这个类型上做的操作负全部责任。编译器将会允许所有的操作，它不会把对这些字的空安全操作高亮多余的，但它平时确实这样对待会空类型值上的空安全操作。<strong>如果你认为这个字为null，在使用它之前可以用它和null进行比较。如果你认位它不为null，就直接使用它。就像在Java中一样，如果你错误地理解了这个值，使用的时候就会遇到NullPointerException。</strong></p>
+</blockquote>
+<p><strong>例子</strong></p>
+<pre><code class="java">/*    没有可空性注解的Java类    */
+public class Person{
+    private final String name;
+    public Person(String name){
+        this.name = name
+    }
+    public String getName(){
+        return name
+    }
+}</code></pre>
+<blockquote>
+<p>getName能不能返回null?这种情况下Kotlin编译器完全不知道String类型的可空性，所以你必须处理它。<strong>如果你确定name不为null，就可以像Java中一样按照通常的方式对它解引用，不需要额外的检查。但是这种情况下请准备好接受异常。</strong></p>
+</blockquote>
+<pre><code class="kotlin">/*    不使用null检查访问Java类    */
+fun yellAt(person:Person){
+    println(person.name.toUpperCase()+ &quot;!!!&quot; )    //toUpperCase()调用的函数接收者person.name为null，所以这里会抛出异常
+}
+&gt;&gt;&gt; yellAt(Person(null))
+java.lang.IllegalArgumentException:Paramater specified as non-null is null: method toUpperCase, parameter $receiver</code></pre>
+<blockquote>
+<p>注意，这里你看到的不是一个NullPointerException，而是一条更详细的错误信息，告诉你方法toUpperCase不能在null的接收者上调用。</p>
+<p><strong>对于公有的Kotlin函数，编译器生成对每个非空类型的参数（和接收者）的检查和，所以使用不正确的参数的调用尝试都立即被报告为异常。（在使用参数前会检查非空的参数。）</strong></p>
+<p>这种值检查在函数调用的时候就执行，而不是等到这些参数被使用的时候。这确保了不正确的调用会被尽早的发现，那些由于null值被传给代码不同层次的多个函数之后，并被这些函数访问时而产生的难以理解的异常就能被避免。</p>
+</blockquote>
+<p>把getName()的返回类型解释为可空的并安全的访问它。</p>
+<pre><code>/*    使用null检查来访问的Java类    */
+fun yellAtSafe(person:Person){
+    println((person.name?:&quot;Anyone&quot;).toUpperCase()+&quot;!!!&quot;)
+}
+
+&gt;&gt;&gt; yellAtSafe(null)
+ANYONE!!!</code></pre><blockquote>
+<p>Java API 中大部分库没有（可空性）注解，所以可以把所有类型都解释为非空，但是会导致错误。为了避免错误，你应该阅读Java方法的文档（必要时还要查看它的实现），并知道它上面时候返回null，并给那些返回加上检查。</p>
+<blockquote>
+<p>为什么需要平台类型？</p>
+<p>对 Kotlin 来说，把来自Java的所有值都当成可空的是不是更安全？这种设计也许可行，但是这需要对永远不为空的值做大量冗余的null检查，因为Kotlin编译器无法了解到这样的信息。</p>
+<p>涉及泛型的话这种新款就更加糟糕了。例如，在Kotlin中，每次来自Java的ArrayList<String>都被当作ArrayList&lt;String?&gt;?，每次访问或者转换类型都需要检查这些值是否为null，这样抵消掉安全性带来的好处。编写这样的检查非常令人厌烦，所以Kotlin的设计者做出了更实用的选择，让开发者负责正确处理来自Java的值</p>
+</blockquote>
+</blockquote>
+<p>在<strong>Kotiln中不能声明一个平台类型（不知道可空信息的）的变量</strong>，这些信息只能来自Java代码，但你可能会在IDE的错误信息中见到它们。</p>
+<pre><code class="kotlin">&gt;&gt;&gt; val i:Ine = person.name
+ERROR:Type mismatch: inferred type is String! but Int was expected</code></pre>
+<blockquote>
+<p>String! 表示法被Kotlin编译器用来表示来自<strong>Java代码的平台类型</strong>。你不能在自己的代码中使用这种语法。而且感叹号通常与问题的来源无关，所以通常可以忽略它。<strong>这只是在强调类型的可空性是未知的。</strong></p>
+</blockquote>
+<p><strong>你可以用你喜欢的方式来解释平台类型，既可以是可控的也可以是非空的。</strong></p>
+<pre><code class="kotlin">&gt;&gt;&gt; val s:String?=person.name    //可空
+&gt;&gt;&gt; val s1:String = person.name    //非空</code></pre>
+<p><strong>如果你用来自Java的null值给一个非空的Kotlin变量赋值，在赋值的瞬间你就会得到异常。</strong>你需要正确的理解可空性。</p>
+<p><strong>继承</strong></p>
+<p>Kotlin 重写Java的方法时，<strong>可以选择把参数和返回类型定义成可空的，也可以选择把它们定义成非空的。</strong></p>
+<p><strong>例子</strong></p>
+<pre><code class="java">/*    Java中的StringProcessor接口    */
+interfece StringProcessor{
+    void process(String value);
+}</code></pre>
+<p>Kotlin 中下面的两种实现编译器都可以接收。</p>
+<pre><code class="kotlin">/*    实现Java接口时使用不同的参数可空性    */
+class StringPrinter:StringProcessor{
+    override fun process(value:String){
+        pritlin(value)
+    }
+}
+class NullableStringPrinter:StringProcessor{
+    override fun process(value:String?){    // 参数可空
+        if(value != null){
+            println(value)
+        }
+
+    }
+}</code></pre>
+<blockquote>
+<p>在实现Java类或者接口的方法时一定要搞清楚它的可空性。<strong>因为方法实现可在非Kotlin的代码中被调用，Kotlin编译器会为你声明的每个非空的参数生成非空断言。</strong>如果Java代码传给这个方法一个null值，断言就会触发，你就会得到一个异常，即便你从来没有在你的实现中访问过这个参数的值。</p>
+</blockquote>
+<h2 id="6-2-基本数据类型和其他基本类型"><a href="#6-2-基本数据类型和其他基本类型" class="headerlink" title="6.2 基本数据类型和其他基本类型"></a>6.2 基本数据类型和其他基本类型</h2><h1 id="8-高阶函数：Lambda作为形参和返回值"><a href="#8-高阶函数：Lambda作为形参和返回值" class="headerlink" title="8 高阶函数：Lambda作为形参和返回值"></a>8 高阶函数：Lambda作为形参和返回值</h1><p><strong>内联函数作用</strong></p>
 <p>能够消除lambda带来的性能开销，还能够使lambda内的控制流更加灵活。</p>
 <h2 id="8-1-声明高阶函数"><a href="#8-1-声明高阶函数" class="headerlink" title="8.1 声明高阶函数"></a>8.1 声明高阶函数</h2><p>定义</p>
 <blockquote>
