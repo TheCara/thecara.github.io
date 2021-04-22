@@ -1828,7 +1828,40 @@ class NullableStringPrinter:StringProcessor{
 <blockquote>
 <p>在实现Java类或者接口的方法时一定要搞清楚它的可空性。<strong>因为方法实现可在非Kotlin的代码中被调用，Kotlin编译器会为你声明的每个非空的参数生成非空断言。</strong>如果Java代码传给这个方法一个null值，断言就会触发，你就会得到一个异常，即便你从来没有在你的实现中访问过这个参数的值。</p>
 </blockquote>
-<h2 id="6-2-基本数据类型和其他基本类型"><a href="#6-2-基本数据类型和其他基本类型" class="headerlink" title="6.2 基本数据类型和其他基本类型"></a>6.2 基本数据类型和其他基本类型</h2><h1 id="8-高阶函数：Lambda作为形参和返回值"><a href="#8-高阶函数：Lambda作为形参和返回值" class="headerlink" title="8 高阶函数：Lambda作为形参和返回值"></a>8 高阶函数：Lambda作为形参和返回值</h1><p><strong>内联函数作用</strong></p>
+<h2 id="6-2-基本数据类型和其他基本类型"><a href="#6-2-基本数据类型和其他基本类型" class="headerlink" title="6.2 基本数据类型和其他基本类型"></a>6.2 基本数据类型和其他基本类型</h2><p>描述程序中的基本数据类型，例如Int、Boolean和Any。</p>
+<p>与Java不同，Kotlin并不区分基本数据类型和它们的包装类。</p>
+<h3 id="6-2-1-基本数据类型：Int、Boolean及其他"><a href="#6-2-1-基本数据类型：Int、Boolean及其他" class="headerlink" title="6.2.1 基本数据类型：Int、Boolean及其他"></a>6.2.1 基本数据类型：Int、Boolean及其他</h3><blockquote>
+<p><strong>Java把基本数据类型和引用类型做了区分。</strong></p>
+<p>一个基本数据类型（如int）的变量直接存储了它的值，而一个引用类型（如String）的变量存储的时指向包含该对象的内存地址的引用。</p>
+</blockquote>
+<blockquote>
+<p>基本数据类型的只能够更高效地存储和传递，但你不能对这些值调用方法，或是它们存放在集合中。</p>
+<p><strong>Java提供了特殊的包装类型（比如java.lang.Integer),在你需要对象的是否对基本数据类型进行封装。因此，你不能用Collection<int>来定义一个整数的集合，而必须用Collection<integer>来定义。</strong></p>
+</blockquote>
+<blockquote>
+<p><strong>Kotlin 并不区分基本数据类型和包装类型，</strong>永远是同一个类型（比如int）</p>
+<pre><code class="kotlin">val i:Int = 1
+val list:List&lt;Int&gt; = listOf(1,2,3)</code></pre>
+<p>同时还能对数字类型的值调用方法。</p>
+<pre><code class="kotlin">/*    使用标准库的函数coerceIn来把值限制在特定范围内    */
+fun showProgress(progress:Int){
+    val percent = progress.coerceIn(0,100)
+    println(&quot;We&#39;re ${percent}% done!&quot;)
+}
+&gt;&gt;&gt; showProgress(146)
+We&#39;re 100% done!</code></pre>
+<p>虽然没有区分基本数据类型和包装类型，但是这不意味着Kotlin使用对象来表示所有数组！</p>
+<p><strong>在运行时，数字类型会尽可能地使用最高效的方式来表示。大多数形况下——对于变量、属性、参数和返回类型——Kotlin的Int类型会被编译成Java基本类型int。唯一不可行的例外是泛型类，例如集合。用作泛型参数的基本数据类型会被编译成对应的包装类。例如，Int类被用作集合类型的类型参数时，集合类将会保存对应包换类型java.lang.Integer的实例。</strong></p>
+</blockquote>
+<p><strong>Java基本数据类型完整列表</strong></p>
+<ul>
+<li>整数类型——Byte、Short、Int、Long</li>
+<li>浮点整数类型——Float、Double</li>
+<li>字符类型——Char</li>
+<li>布尔类型——Boolean</li>
+</ul>
+<p><strong>就像Int 这样的Kotlin类型在底层可以轻易的编译成对应的Java基本类型，因为两种类型都不能存储null引用。当你在Kotlin中使用Java声明时，Java基本数据类型就会变成非空类型（而不是平台类型），因为它们不能持有null值。</strong></p>
+<h1 id="8-高阶函数：Lambda作为形参和返回值"><a href="#8-高阶函数：Lambda作为形参和返回值" class="headerlink" title="8 高阶函数：Lambda作为形参和返回值"></a>8 高阶函数：Lambda作为形参和返回值</h1><p><strong>内联函数作用</strong></p>
 <p>能够消除lambda带来的性能开销，还能够使lambda内的控制流更加灵活。</p>
 <h2 id="8-1-声明高阶函数"><a href="#8-1-声明高阶函数" class="headerlink" title="8.1 声明高阶函数"></a>8.1 声明高阶函数</h2><p>定义</p>
 <blockquote>
