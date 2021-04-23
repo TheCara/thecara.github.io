@@ -1861,6 +1861,53 @@ We&#39;re 100% done!</code></pre>
 <li>布尔类型——Boolean</li>
 </ul>
 <p><strong>就像Int 这样的Kotlin类型在底层可以轻易的编译成对应的Java基本类型，因为两种类型都不能存储null引用。当你在Kotlin中使用Java声明时，Java基本数据类型就会变成非空类型（而不是平台类型），因为它们不能持有null值。</strong></p>
+<h3 id="6-2-2-可空基本数据类型：Int-、Boolean？及其他"><a href="#6-2-2-可空基本数据类型：Int-、Boolean？及其他" class="headerlink" title="6.2.2 可空基本数据类型：Int?、Boolean？及其他"></a>6.2.2 可空基本数据类型：Int?、Boolean？及其他</h3><blockquote>
+<p>Kotlin中的可空类型不能用Java的基本数据类型表示，因为null只能被存储在Java的引用类型的变量中。这意味着任何时候使用了基本数据类型的可空版本，它就会被编译成对应的包装类。</p>
+</blockquote>
+<pre><code class="kotlin">/*    名字永远已知的Person类，但是年龄可能未知或者未指定。添加函数检查一个人是否比另一个人年长    */
+class Person(val name:String,val age:Int ?= null){
+        fun isOlderThan(other:Person):Boolean?{
+            if(age == null ||other.age == null)
+                return null
+            return age &gt; other.age
+        }
+}
+
+&gt;&gt;&gt; println(Person(&quot;Sam&quot;,35).isOlderThan(Person(&quot;Amy&quot;,42)))
+false
+&gt;&gt;&gt; println(Person(&quot;Sam&quot;,34).isOlderThan(Person(&quot;Jane&quot;)))
+null</code></pre>
+<p><strong>注意，普通的可空性规则如何在这里引用。</strong>你不能就这样比较两个值，因为它们当中任何一个都可能为null。你必须检查两个值都不为null。</p>
+<p>Person类声明的age属性的值被当作java.lang.Integer存储（包装类）。但是只有在你使用来自Java的类时这些细节才有意义。为了在Kotlin中选出正确的类型，你只需要考虑对变量或者属性来说，null是否是它们可能的值。</p>
+<p><strong>泛型类（ArrayList<Integer>)是包装类型应用的另一种情况。如果你用基本数据类型作为泛型类的参数类型，那么Kotlin会使用该类型的包装形式（Int ==&gt; Integer）</strong></p>
+<p>创建一个Integer包装类的列表，<strong>尽管没有指定过可空类型或者用过null值</strong></p>
+<pre><code class="kotlin">val listOfInts = listOf(1,2,3)</code></pre>
+<p>这是由Java虚拟机实现泛型的方式决定的。JVM不支持用基本数据类型作为类型参数，所以泛型类（Java和Kotlin一样）必须始终使用类型的包装表示。<strong>因此，你要高效的存储基本数据类型元素的大型集合，要么使用支持这种集合的第三方库（如Trove4J）要么使用数组来存储。</strong></p>
+<h3 id="6-2-3-数字转换"><a href="#6-2-3-数字转换" class="headerlink" title="6.2.3 数字转换"></a>6.2.3 数字转换</h3><p>Kotlin和Java<strong>之间一条重要的区别就是处理数字转换的方式。</strong>Kotlin不会自动的把数字从一种类型转换成另一种，即便是转换范围更大的类型。</p>
+<pre><code class="kotlin">val i = 1
+val i : Long = i    //错误：类型不匹配</code></pre>
+<p>正确的转换</p>
+<pre><code class="kotlin">val i = 1
+val l:Long = i.toLang()</code></pre>
+<blockquote>
+<p>基本数据类型类型（Boolean除外）都定义有转换函数：toByte()、toShort()、toChar()等。这些函数支持双向转换：既可以把 小范围的类型扩展到大范围，比如Int.toLong(),也可以把大范围的类型截取到小范围，比如Long.toInt()。</p>
+<p>Kotlin 要求转换必须是显式的，尤其是在比较<strong>装箱值</strong>的时候。比较两个装箱值的equals方法不仅会检查它们存储的值，还会比较装箱类型。所以，在Java中new Integer(42).equals(new Long(42)) 会返回false。</p>
+<blockquote>
+<p>Java中的装箱和拆箱</p>
+<p><strong>装箱和拆箱是从Java1.5开始引入的，它的目的是将原始类型值自动地转换成对应的对象。</strong>自动装箱机制可以让我们在Java的变量赋值或者其他方法调用等情况下使用原始类型或者对象类型更加简单直接。</p>
+</blockquote>
+</blockquote>
+<p>假如 Kotlin 支持隐式转换，</p>
+<pre><code class="kotlin">val x = 1    // Int变量
+val list = listOf(1L,2L,3L)    //Long值列表
+x in list //假如支持隐式转换它仍然是 false</code></pre>
+<blockquote>
+<p>因此，上列中 x in list 根本不会编译。Kotlin要求你显式的转换类型，这样只有类型相同的值才比较：</p>
+<pre><code class="kotlin">&gt;&gt;&gt; val x = 1
+&gt;&gt;&gt; println(x.toLong() in listOf(1L,2L,3L))
+true</code></pre>
+<p>在代码中用到不同的数据类型，你必须显式的转换这些变量，来避免意想不到的结果。</p>
+</blockquote>
 <h1 id="8-高阶函数：Lambda作为形参和返回值"><a href="#8-高阶函数：Lambda作为形参和返回值" class="headerlink" title="8 高阶函数：Lambda作为形参和返回值"></a>8 高阶函数：Lambda作为形参和返回值</h1><p><strong>内联函数作用</strong></p>
 <p>能够消除lambda带来的性能开销，还能够使lambda内的控制流更加灵活。</p>
 <h2 id="8-1-声明高阶函数"><a href="#8-1-声明高阶函数" class="headerlink" title="8.1 声明高阶函数"></a>8.1 声明高阶函数</h2><p>定义</p>
