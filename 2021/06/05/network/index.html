@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="git 讲解, TheCara">
+    <meta name="keywords" content="计算机网络协议, TheCara">
     <meta name="description" content="">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>git 讲解 | TheCara</title>
+    <title>计算机网络协议 | TheCara</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -321,12 +321,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('https://raw.githubusercontent.com/TheCara/RepoPicture/master/image/20200831155753.png')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('https://raw.githubusercontent.com/TheCara/RepoPicture/master/image/20210605163308.png')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">git 讲解</h1>
+                    <h1 class="description center-align post-title">计算机网络协议</h1>
                 </div>
             </div>
         </div>
@@ -443,8 +443,8 @@
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/git/">
-                                <span class="chip bg-color">git</span>
+                            <a href="/tags/Internet/">
+                                <span class="chip bg-color">Internet</span>
                             </a>
                         
                     </div>
@@ -455,8 +455,8 @@
                     <div class="post-cate">
                         <i class="fas fa-bookmark fa-fw icon-category"></i>
                         
-                            <a href="/categories/git/" class="post-category">
-                                git
+                            <a href="/categories/Internet/" class="post-category">
+                                Internet
                             </a>
                         
                     </div>
@@ -468,7 +468,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2020-07-19
+                    2021-06-05
                 </div>
                 
 
@@ -484,28 +484,51 @@
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h1 id="修改提交文件大小"><a href="#修改提交文件大小" class="headerlink" title="修改提交文件大小"></a>修改提交文件大小</h1><p>在要提交的项目根目录下使用。</p>
-<pre><code>$ git config --local http.postBuffer 524288000</code></pre><p>设置为500MB。</p>
-<h1 id="查看本地分支"><a href="#查看本地分支" class="headerlink" title="查看本地分支"></a>查看本地分支</h1><pre><code>git branch</code></pre><p><img src="https://raw.githubusercontent.com/TheCara/RepoPicture/master/image/20200923155804.png" alt="本地的两个分支"></p>
-<h1 id="查看远程仓库所有分支"><a href="#查看远程仓库所有分支" class="headerlink" title="查看远程仓库所有分支"></a>查看远程仓库所有分支</h1><pre><code>git branch -r</code></pre><p><img src="https://raw.githubusercontent.com/TheCara/RepoPicture/master/image/20200923155838.png" alt="远程仓库的分支"></p>
-<h1 id="查看本地仓库和远程仓库"><a href="#查看本地仓库和远程仓库" class="headerlink" title="查看本地仓库和远程仓库"></a>查看本地仓库和远程仓库</h1><pre><code>git branch -a</code></pre><p><img src="https://raw.githubusercontent.com/TheCara/RepoPicture/master/image/20200923160933.png" alt="本地和远程共有仓库"></p>
-<h1 id="创建本地分支"><a href="#创建本地分支" class="headerlink" title="创建本地分支"></a>创建本地分支</h1><pre><code>git branch annotationVersion</code></pre><p><img src="https://raw.githubusercontent.com/TheCara/RepoPicture/master/image/20200923120947.png" alt="创建了本地分支"></p>
-<h1 id="切换到创建的分支"><a href="#切换到创建的分支" class="headerlink" title="切换到创建的分支"></a>切换到创建的分支</h1><pre><code>git checkout 分支</code></pre><p><img src="https://raw.githubusercontent.com/TheCara/RepoPicture/master/image/20200923121359.png" alt="切换到创建的 annotationVersion 分支"></p>
-<h1 id="本地分支提交到远程分支"><a href="#本地分支提交到远程分支" class="headerlink" title="本地分支提交到远程分支"></a>本地分支提交到远程分支</h1><p><strong>切换到创建的分支</strong>（annotationVersion）。</p>
-<pre><code>git push origin annotationVersion</code></pre><p>如果<strong>远程仓库</strong>没有这个分支，那么也会创建一个该分支。</p>
-<p><img src="https://raw.githubusercontent.com/TheCara/RepoPicture/master/image/20200923153643.png" alt="由于远程仓库没有本地的分支在push时自动创建了annotationVersion分支"></p>
-<h1 id="本地获得一个远程分支"><a href="#本地获得一个远程分支" class="headerlink" title="本地获得一个远程分支"></a>本地获得一个远程分支</h1><p>使用命令</p>
-<pre><code>git pull &lt;远程主机名&gt; &lt;远程分支名&gt;:&lt;本地分支名&gt;
-例如
-git pull origin v1.0:v1.0</code></pre><p>pull 了<strong>远程仓库的v1.0分支</strong>本地命名<strong>为v1.0</strong></p>
-<p><img src="https://raw.githubusercontent.com/TheCara/RepoPicture/master/image/20200923172540.png" alt="pull 完成"></p>
-<h1 id="合并本地两个分支"><a href="#合并本地两个分支" class="headerlink" title="合并本地两个分支"></a>合并本地两个分支</h1><p>如果当前分支（annotationVersion）分支，想与远程分支 master 合并（merge），可以使用如下命令：</p>
-<p>切换到 master 分支：</p>
-<p><img src="https://raw.githubusercontent.com/TheCara/RepoPicture/master/image/20200923161205.png" alt="master分支"></p>
-<p>在 master 分支合并另一个分支（annotationVersion）：</p>
-<p><img src="https://raw.githubusercontent.com/TheCara/RepoPicture/master/image/20200923161241.png" alt="合并完成"></p>
-<p>随后可以将master分支 push 掉（用来提交两个合并了仓库）：</p>
-<p><img src="https://raw.githubusercontent.com/TheCara/RepoPicture/master/image/20200923161838.png" alt="push完成"></p>
+                <h1 id="网络层次划分"><a href="#网络层次划分" class="headerlink" title="网络层次划分"></a>网络层次划分</h1><p>为促使不同计算机厂家生产的计算机能够相互通信，以便建立更大范围的计算机网络，国际标准化组织（ISO）于 1978 年提出了“开放系统互联参考模型”，即OSI/RM模型（Open System Interconnection/Reference Model）。将计算机网络结构的通讯协议划分为七层，由：物理层（Physics Layer）、数据链路层（Data Link Layer）、网络层（Network Layer）、传输层（Transport Layer）、会话层（Session Layer）、表示层（Presentation Layer）、应用层（Application Layer）。其中传输层完成数据传送服务。</p>
+<table>
+<thead>
+<tr>
+<th>OSI 七层网络模型</th>
+<th>TCP/IP四层概念模型</th>
+<th>对应网络协议</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>应用层（Application）</td>
+<td>应用层</td>
+<td>HTTP、TFTP、FTP、NFS、WAIS、SMTP</td>
+</tr>
+<tr>
+<td>表示层（Presentation）</td>
+<td>应用层</td>
+<td>Telent、Rlogin、SNMP、Gopher</td>
+</tr>
+<tr>
+<td>会话层（Session）</td>
+<td>应用层</td>
+<td>SMTP、DNS</td>
+</tr>
+<tr>
+<td>传输层（Transport）</td>
+<td>传输层</td>
+<td>TCP、UDP、</td>
+</tr>
+<tr>
+<td>网络层（Network）</td>
+<td>网络层</td>
+<td>IP、ICMP、ARP、RARP、AKP、UUCP</td>
+</tr>
+<tr>
+<td>数据链路层（Data Link）</td>
+<td>数据链路层</td>
+<td>FDDI、Ethernet、Arpanet、PDN、SLIP、PPP</td>
+</tr>
+<tr>
+<td>物理层（Physical）</td>
+<td>数据链路层</td>
+<td>IEEE 802.1A，IEEE 802.2 到 IEEE802.11</td>
+</tr>
+</tbody></table>
 
             </div>
             <hr/>
@@ -531,7 +554,7 @@ git pull origin v1.0:v1.0</code></pre><p>pull 了<strong>远程仓库的v1.0分�
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://thecara.github.io/2020/07/19/git%20%E8%AE%B2%E8%A7%A3/">https://thecara.github.io/2020/07/19/git%20%E8%AE%B2%E8%A7%A3/</a>
+                    <a href="https://thecara.github.io/2021/06/05/network/">https://thecara.github.io/2021/06/05/network/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -569,8 +592,8 @@ git pull origin v1.0:v1.0</code></pre><p>pull 了<strong>远程仓库的v1.0分�
                     
                         <div class="article-tag">
                             
-                                <a href="/tags/git/">
-                                    <span class="chip bg-color">git</span>
+                                <a href="/tags/Internet/">
+                                    <span class="chip bg-color">Internet</span>
                                 </a>
                             
                         </div>
@@ -612,61 +635,47 @@ git pull origin v1.0:v1.0</code></pre><p>pull 了<strong>远程仓库的v1.0分�
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
             <div class="card">
-                <a href="/2020/07/20/LiveData/">
+                <a href="/2021/06/05/network/">
                     <div class="card-image">
                         
+                        <img src="https://raw.githubusercontent.com/TheCara/RepoPicture/master/image/20210605163308.png" class="responsive-img" alt="计算机网络协议">
                         
-                        <img src="/medias/featureimages/20.jpg" class="responsive-img" alt="LiveData与ViewModel">
-                        
-                        <span class="card-title">LiveData与ViewModel</span>
+                        <span class="card-title">计算机网络协议</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            单独使用LiveData
-创建LiveData实例。持有特定的数据类型，例如 int ,String。
-创建一个Observer对象,并且实现onChanged()方法。在onChanged()方法类可以进行UI的刷新等。
-使用LiveDa
+                            网络层次划分为促使不同计算机厂家生产的计算机能够相互通信，以便建立更大范围的计算机网络，国际标准化组织（ISO）于 1978 年提出了“开放系统互联参考模型”，即OSI/RM模型（Open System Interconnection/Re
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2020-07-20
-                        </span>
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-06-05
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/Android/" class="post-category">
-                                    Android
+                            <a href="/categories/Internet/" class="post-category">
+                                    Internet
                                 </a>
                             
                             
                         </span>
                     </div>
                 </div>
+
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/Android/">
-                        <span class="chip bg-color">Android</span>
-                    </a>
-                    
-                    <a href="/tags/Kotlin/">
-                        <span class="chip bg-color">Kotlin</span>
-                    </a>
-                    
-                    <a href="/tags/LiveData/">
-                        <span class="chip bg-color">LiveData</span>
-                    </a>
-                    
-                    <a href="/tags/ViewModel/">
-                        <span class="chip bg-color">ViewModel</span>
+                    <a href="/tags/Internet/">
+                        <span class="chip bg-color">Internet</span>
                     </a>
                     
                 </div>
@@ -680,34 +689,39 @@ git pull origin v1.0:v1.0</code></pre><p>pull 了<strong>远程仓库的v1.0分�
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2020/07/19/hexo-theme-%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C/">
+                <a href="/2021/03/19/%E5%85%B3%E4%BA%8E%E9%93%BE%E5%BC%8F%E8%B0%83%E7%94%A8/">
                     <div class="card-image">
                         
-                        <img src="https://raw.githubusercontent.com/TheCara/RepoPicture/master/image/hexo-cover.png" class="responsive-img" alt="hexo-theme-matery使用手册">
+                        <img src="https://raw.githubusercontent.com/TheCara/RepoPicture/master/image/peliculas-de-cine-mas-populares-1920-Matrix.jpg" class="responsive-img" alt="关于链式调用">
                         
-                        <span class="card-title">hexo-theme-matery使用手册</span>
+                        <span class="card-title">关于链式调用</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            修改头部的渐变颜色
-修改跟目录下的 themes\hexo-theme-matery\source\css\matery.css 文件。修改”bg-color”即可。
-修改底部的加载进度条
-修改”progress-bar”即可。
-修改 to
+                            什么是链式调用当调用的样式为这样时。
+
+可以不受限制的通过”.”操作符调用方法。
+a.b().c()
+此方法起源于 java8
+
+实现
+每个方法返回对象本身即可
+public class Book{
+    private String n
                         
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2020-07-19
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-03-19
                             </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/hexo-theme-matery/" class="post-category">
-                                    hexo-theme-matery
+                            <a href="/categories/Java/" class="post-category">
+                                    Java
                                 </a>
                             
                             
@@ -717,16 +731,8 @@ git pull origin v1.0:v1.0</code></pre><p>pull 了<strong>远程仓库的v1.0分�
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/git/">
-                        <span class="chip bg-color">git</span>
-                    </a>
-                    
-                    <a href="/tags/hexo-theme-matery/">
-                        <span class="chip bg-color">hexo-theme-matery</span>
-                    </a>
-                    
-                    <a href="/tags/hexo/">
-                        <span class="chip bg-color">hexo</span>
+                    <a href="/tags/Java/">
+                        <span class="chip bg-color">Java</span>
                     </a>
                     
                 </div>

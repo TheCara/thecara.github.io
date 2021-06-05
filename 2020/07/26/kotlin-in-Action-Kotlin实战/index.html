@@ -2117,8 +2117,127 @@ fun printInUppercase(list:List&lt;String&gt;){    // 声明只读的参数
 A</code></pre>
 <p><strong>如果你写了Kotlin函数，使用集合并传递给了Java，这时你要确认使用了正确的参数类型，同时取决于你调用的Java代码是否会修改集合。</strong></p>
 <p>注意，<strong>这些也适用于包含非空类型元素的集合类。</strong>如果你向Java方法传递了这样的集合，该方法就可能在其中写入null值；Kotlin没有办法再不影响性能的情况下，禁止它的发生，或者察觉到已经发生的改变。因此，当你向可以修改集合的Java代码传递集合的时，你需要采取特别的预防措施，来确保Kotlin类型正确的反映出集合上所有可能的修改。</p>
-<h3 id="6-3-4-作为平台类型的集合"><a href="#6-3-4-作为平台类型的集合" class="headerlink" title="6.3.4 作为平台类型的集合"></a>6.3.4 作为平台类型的集合</h3><p><strong>Kotlin 把定义在java代码中的类型看成平台类型。</strong>Kotlin没有任何关于平台类型的可空性信息，所以编译器允许Kotlin代码将其视为可空或者非空的。同样，Java中声明的集合类型的变量也被视为平台类型。<strong>一个平台类型集合本质上就是可变性未知的集合——Kotlin代码将其视为只读的或者可变的。</strong>实际上你想要执行的所有操作都不受影响。</p>
-<p><strong>当你重写或者实现签名中有集合类型的Java方法时这种差异才变的重要。</strong></p>
+<h3 id="6-3-4-作为平台类型的集合"><a href="#6-3-4-作为平台类型的集合" class="headerlink" title="6.3.4 作为平台类型的集合"></a>6.3.4 作为平台类型的集合</h3><p><strong>Kotlin集合作为平台类型的集合</strong></p>
+<p><strong>平台类型不会理会可空或者非空，所以在Kotlin重写或实现平台类型时需要选择集合是否可空。</strong></p>
+<p><strong>Kotlin 把定义在java代码中的类型看成平台类型。</strong>Kotlin没有任何关于平台类型的可空性信息，所以编译器允许Kotlin代码将其视为可空或者非空的。同样，Java中声明的集合类型的变量也被视为平台类型。<strong>一个平台类型集合本质上就是可变性未知的集合——Kotlin代码将其视为只读的或者可变的。</strong>实际上你想要执行的所有操作都不受影响。</p>
+<p><strong>当你重写或者实现签名中有集合类型的Java方法时这种差异才变的重要。</strong>这里像平台类型的可空性一样，你需要决定使用那种 <strong>Kotlin类型 *<em>来表示这个Java类型， *</em>它来自你要重写或实现的方法。</strong></p>
+<p>在重写或者实现时，你要做出多种选择，<strong>它们都会反映在产生的Kotlin代码类型中:</strong></p>
+<ul>
+<li>集合是否可空？</li>
+<li>集合的元素是否可空？</li>
+<li>你的方法会不会修改集合？</li>
+</ul>
+<p>代码中直观的表示。一个Java接口表示一个能处理文件中的文本对象。</p>
+<pre><code class="java">/*    使用集合参数的Java接口    */
+interface FileContentProcessor{
+    void processContents(File path,
+        byte[] binaryContents,
+        List&lt;String&gt; textContents);
+}</code></pre>
+<p>这个接口的Kotlin实现需要做出如下选择：</p>
+<ul>
+<li>列表将是可空的，因为有些文件是二进制格式，它们的内容不能被表示成文本。</li>
+<li>列表中的元素将会是非空的，因为文件中每一行都永远不为null。</li>
+<li>列表将是可读的，因为它表示的文本内容，而且这些内容不会被修改。</li>
+</ul>
+<p>实现的样子</p>
+<pre><code class="kotlin">/*    FileContentProcessor 的Kotlin实现    */
+class FileIndexer:FileContentProcessor{
+    override fun processContents(path:File,
+        binaryContents:ByteArray?,
+        textContents:List&lt;String&gt;?){
+            ....
+        }
+}</code></pre>
+<p>与另一个接口对比。这里接口的实现从文本表单中解析出的数据并放大一个对象列表中，再把这些对象附加到输出列表中。当发现解析失败时，就把错误信息添加到另一个单独的列表中，作为错误日志。</p>
+<pre><code class="java">/*    另一个集合参数的Java接口    Java*/
+interface DataParser&lt;T&gt;{
+    void parseData(String input,
+        List&lt;T&gt; output,
+        List&lt;String&gt; errors);
+}</code></pre>
+<p>这种情况下的选择：</p>
+<ul>
+<li>List<String> 将是非空的，因为调用者总是需要接收错误的信息。</li>
+<li>列表的元素将是可空的，因为不是每个输出列表中的条目都有关联的错误信息。</li>
+<li>List<String> 将是可变的，因为代码实现需要向其中添加元素。</li>
+</ul>
+<p>实现这个接口</p>
+<pre><code class="kotlin">/*    DataParser的Kotlin实现    */
+class PersonParser: DataParser&lt;Person&gt;{
+    override fun parseData(input:String,
+        output:MutableList&lt;Person&gt;,
+        error:MutableList&lt;String?&gt;){
+            //...
+        }
+}</code></pre>
+<p>注意，同样为Java类型——List<String>——如何表示成了两种不同的Kotlin类型：一种是List<String>?（包含字符串的可空列表），另一个是MutableList&lt;String?&gt;（包含可空字符串的可变列表）。你必须知道Java接口或类必须遵守的确切契约。基于你的实现要做的事情通常很容易理解。</p>
+<h3 id="6-3-5-对象和基本数据类型的数组"><a href="#6-3-5-对象和基本数据类型的数组" class="headerlink" title="6.3.5 对象和基本数据类型的数组"></a>6.3.5 对象和基本数据类型的数组</h3><p>默认情况下，你应该优先使用集合而不是数组。但是因为有大量JavaAPI仍然在使用数组，所以来介绍它们在Kotlin中如何使用。</p>
+<p>Kotlin 数组的语法出现在了每个例子中， <strong>因为数组是 Java main 函数标准签名的一部分。</strong></p>
+<blockquote>
+<p>方法签名：</p>
+<p>方法签名由方法名+形参列表组成，目的是让此方法确定为唯一的。</p>
+</blockquote>
+<pre><code class="kotlin">/*    使用数组    */
+fun main(args:Array[String]){
+    for (i in args.indices){    // 使扩展属性array.indeces在下标的访问内迭代
+        pritnl(&quot;Argument $i is :${args[i]}&quot;)    //通过下标使用 array[index] 访问元素
+    }
+}</code></pre>
+<p> Kotlin中的数组是一个带有类型参数的类，其元素类型被指定为相应的类型参数。</p>
+<p><strong>要在Kotlin中创建数组，如下方法供你选择</strong></p>
+<blockquote>
+<ul>
+<li>arrayOf函数创建数组，它包含元素是指定为该函数的实参。</li>
+<li>arrayOfNulls创建一个给定大小的数组，包含为null元素。当然，它只能用来创建包含元素类型的可空数组。</li>
+<li>Array构造方法接收数组大小和一个lambda表达式，使用lambda表达式来创建每一个数组元素。这就是使用元素类型来初始化数组，当不用显式地传递每个元素的方式。</li>
+</ul>
+</blockquote>
+<p>展示如何使用Array函数来创建“a”到”z”的字符串数组。</p>
+<pre><code class="kotlin">/*    创建字符数组    */
+&gt;&gt;&gt; val letters = Array&lt;String&gt;(26){i-&gt;(&#39;a&#39;+i).toString()}
+&gt;&gt;&gt; pritnln(letters.joinToString(&quot;&quot;))
+abcdefghijklmnoprstuvwxyz</code></pre>
+<p>为了清楚起见，这里显示了数组元素的类型，但在真实的代码中可以省略。因为编译器会推导出它的类型。</p>
+<blockquote>
+<p>Kotlin <strong>代码中最常见的创建数组的情况之一是需要调用参数为数组的Java方法</strong>，或是在调用带有vararg参数的Kotlin函数时。这种情况下，通常已经将数据存储在集合中，只需要将其转换为数组即可。可以使用toTypedArray方法来执行此操作。</p>
+<pre><code class="kotlin">/*    向vararg方法传递集合    */
+&gt;&gt;&gt; val string = listOf(&quot;a&quot;,&quot;b&quot;,&quot;c&quot;)
+&gt;&gt;&gt; pritnln(&quot;%s/%s/%s&quot;.format(*strings.toTypedArray()))    // 期望vararg参数时使用展开运算符(*)传递数组
+a/b/c</code></pre>
+</blockquote>
+<blockquote>
+<p>数组类型的类型参数始终会变成对象类型。<strong>因此，如果你声明了一个Array<Int>,它将会是一个包含装箱整型的数组（它的Java类型将是java.lang.Integer[])。如果你需要创建没有装箱的基本数据类型的数组，必须使用一个基本数据类型数组的特殊类。</strong></p>
+</blockquote>
+<p>为表示基本数据类型的数组，Kotlin提供了若干独立的类，每一个基本数据类型都对应一个。例如，Int类型值的数组叫做IntArray。</p>
+<p>要创建一个基本数据类型的数组，你有如下选择：</p>
+<ul>
+<li><strong>该类型的构造方法接收size参数并返回一个使用对应基本数据类型默认值（通常是0）初始化好滴数组。</strong></li>
+<li><strong>工厂函数（IntArray的intArrayOf，以及其他数组类型的函数）接收边长参数的值并创建存储这些的数组。</strong></li>
+<li><strong>另一个构造方法，接受一个大小和一个用来初始化元素的lambda</strong></li>
+</ul>
+<p>例子</p>
+<pre><code class="kotlin">/*    下面创建存储了5个0的整形数组的两种选择    */
+&gt;&gt;&gt; val fiveZeros = IntArray(5)    //默认值 0
+&gt;&gt;&gt; val fiveZerosToo = intArrayOf(0,0,0,0,0)</code></pre>
+<pre><code class="kotlin">/*    下面接收lambda的构造方法的例子    */
+&gt;&gt;&gt; val squares = IntArray(5){i-&gt;(i+1)*(i+1)}
+&gt;&gt;&gt; println(squares.joinToString())
+1,4,9,16,25</code></pre>
+<blockquote>
+<p><strong>假如你有一个持有基本数据类型装箱后的值的数组或者集合，</strong>可以使用对应的转换函数把它们转换成基本数据类型的数组，例如toIntArray。</p>
+</blockquote>
+<blockquote>
+<p><strong>我们来看看你可是对数组做的事情。</strong>处理基本操作外（获得数组长度，获取或者设置元素），Kotlin标准库支持一套和集合相同的用于数组的扩展函数。其中（filter，map等）也适用于数组，包括基本数据类型的数组（注意这些返回值返回的是列表不是数组）。</p>
+<pre><code class="kotlin">/*    使用forEachIndexed函数加上lambda来重写”使用数组“例子    */
+fun main(args:Array&lt;String&gt;){
+    atgs.forEachIndexed{index,elemnt -&gt;
+        println(&quot;Argument $index is: $element&quot;)}
+}</code></pre>
+</blockquote>
+<h3 id="6-4-小结"><a href="#6-4-小结" class="headerlink" title="6.4 小结"></a>6.4 小结</h3><ul>
+<li></li>
+</ul>
 <h1 id="8-高阶函数：Lambda作为形参和返回值"><a href="#8-高阶函数：Lambda作为形参和返回值" class="headerlink" title="8 高阶函数：Lambda作为形参和返回值"></a>8 高阶函数：Lambda作为形参和返回值</h1><p><strong>内联函数作用</strong></p>
 <p>能够消除lambda带来的性能开销，还能够使lambda内的控制流更加灵活。</p>
 <h2 id="8-1-声明高阶函数"><a href="#8-1-声明高阶函数" class="headerlink" title="8.1 声明高阶函数"></a>8.1 声明高阶函数</h2><p>定义</p>
