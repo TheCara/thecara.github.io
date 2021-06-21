@@ -478,21 +478,25 @@
                 <h1 id="BottomSheet"><a href="#BottomSheet" class="headerlink" title="BottomSheet"></a>BottomSheet</h1><p>Demo 代码 <a href="https://medium.com/@droidbyme/android-bottom-sheet-7e9cfcec6427" target="_blank" rel="noopener">https://medium.com/@droidbyme/android-bottom-sheet-7e9cfcec6427</a><br>使用 BottomSheet、BottomSheetDialog、BottomSheetDialogFragment</p>
 <h4 id="BottomSheet使用流程"><a href="#BottomSheet使用流程" class="headerlink" title="BottomSheet使用流程"></a>BottomSheet使用流程</h4><p>BottomSheet实现按钮在点击之后滑动布局.不联动也是可以的只要不设置它就可以了。</p>
 <p><strong>被联动的布局使用</strong></p>
-<pre><code>app:layout_behavior=&quot;@string/bottom_sheet_behavior&quot;</code></pre><p><strong>联动按钮使用属性</strong></p>
-<pre><code>app:layout_behavior=&quot;@string/appbar_scrolling_view_behavior&quot;&gt;</code></pre><p><img src="/img/Snipaste_2020-07-17_21-58-16.png" alt=""></p>
+<pre><code class="xml">app:layout_behavior=&quot;@string/bottom_sheet_behavior&quot;</code></pre>
+<p><strong>联动按钮使用属性</strong></p>
+<pre><code class="xml">app:layout_behavior=&quot;@string/appbar_scrolling_view_behavior&quot;&gt;</code></pre>
+<p><img src="https://raw.githubusercontent.com/TheCara/RepoPicture/master/image/Snipaste_2020-07-17_21-58-16.png" alt=""></p>
 <p><strong>在初始化时被联动</strong></p>
-<pre><code>          //  设置绑定动作
+<pre><code class="kotlin">          //  设置绑定动作
         //  控件和它绑定
-        var buttomSheetBehavior = BottomSheetBehavior.from(bottom_sheet_layout)</code></pre><p><strong>设置按钮了</strong></p>
+        var buttomSheetBehavior = BottomSheetBehavior.from(bottom_sheet_layout)</code></pre>
+<p><strong>设置按钮了</strong></p>
 <p>也就是在现在监听按钮的时候才进行这个按钮的联动滑动</p>
-<pre><code>     btnBottomSheet.setOnClickListener {
+<pre><code class="kotlin">     btnBottomSheet.setOnClickListener {
             if (buttomSheetBehavior.getState() != BottomSheetBehavior.STATE_EXPANDED)
                 buttomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
             else
                 buttomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
-        }</code></pre><p>设置在显示时不显示,不显示时显示。</p>
+        }</code></pre>
+<p>设置在显示时不显示,不显示时显示。</p>
 <p>设置监听器在它被拖动、滑动、切换时产生提示。</p>
-<pre><code>        buttomSheetBehavior.setBottomSheetCallback(object : BottomSheetCallback() {
+<pre><code class="kotlin">        buttomSheetBehavior.setBottomSheetCallback(object : BottomSheetCallback() {
             //这里是拖拽中的回调，根据slideOffset可以做一些动画
             override fun onSlide(bottomSheet: View, slideOffset: Float) {
 
@@ -525,9 +529,10 @@
                 }
             }
 
-        })</code></pre><h4 id="BottomSheetDialog使用流程"><a href="#BottomSheetDialog使用流程" class="headerlink" title="BottomSheetDialog使用流程"></a>BottomSheetDialog使用流程</h4><p>点击按钮之后弹出Dialog提示(布局界面有且准备好的)</p>
+        })</code></pre>
+<h4 id="BottomSheetDialog使用流程"><a href="#BottomSheetDialog使用流程" class="headerlink" title="BottomSheetDialog使用流程"></a>BottomSheetDialog使用流程</h4><p>点击按钮之后弹出Dialog提示(布局界面有且准备好的)</p>
 <p><strong>设置按钮的监听器，点击之后直接弹出Dialog窗口。</strong></p>
-<pre><code>  /*
+<pre><code class="kotlin">  /*
         * Java函数式接口
         * 弹窗提示
         * */
@@ -538,14 +543,16 @@
             val dialog = BottomSheetDialog(this)
             dialog.setContentView(view)
             dialog.show()
-        }</code></pre><h4 id="BottomSheetDialogFragment在当前界面加载Dialog碎片"><a href="#BottomSheetDialogFragment在当前界面加载Dialog碎片" class="headerlink" title="BottomSheetDialogFragment在当前界面加载Dialog碎片"></a>BottomSheetDialogFragment在当前界面加载Dialog碎片</h4><pre><code>
+        }</code></pre>
+<h4 id="BottomSheetDialogFragment在当前界面加载Dialog碎片"><a href="#BottomSheetDialogFragment在当前界面加载Dialog碎片" class="headerlink" title="BottomSheetDialogFragment在当前界面加载Dialog碎片"></a>BottomSheetDialogFragment在当前界面加载Dialog碎片</h4><pre><code class="kotlin">
         /*
         * 在当前界面加载碎片
         * */
         btnBottomSheetDialogFragment.setOnClickListener {
             val bottomSHeetFragment = BottomSheetFragment()
             bottomSHeetFragment.show(supportFragmentManager, bottomSHeetFragment.tag)
-        }</code></pre><p><strong>准备好要加载的碎片,它是要有bottom_sheet_dialog类型的界面</strong></p>
+        }</code></pre>
+<p><strong>准备好要加载的碎片,它是要有bottom_sheet_dialog类型的界面</strong></p>
 
             </div>
             <hr/>
