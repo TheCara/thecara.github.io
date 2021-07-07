@@ -675,6 +675,13 @@ implementation &#39;com.google.android.exoplayer:exoplayer-ui:2.X.X&#39;</code><
 <p>Gets the session token, or null if it has not yet been created or if it has been destroyed.</p>
 <p>获取会话标记，如果尚未创建或已销毁它，则为null。</p>
 </blockquote>
+<p><strong>setSessionActivity</strong></p>
+<p>PendingInten pi：启动到这个会话。</p>
+<pre><code class="java">void setSessionActivity (PendingIntent pi)    </code></pre>
+<blockquote>
+<p>为此会话设置启动用户界面的意图。 这可以用作到正在进行的媒体屏幕的快速链接。 意图应该是针对可能使用<code>startActivity(Intent)</code>开始的活动。</p>
+</blockquote>
+<h1 id="MediaDescriptionCompat-类"><a href="#MediaDescriptionCompat-类" class="headerlink" title="MediaDescriptionCompat 类"></a>MediaDescriptionCompat 类</h1><p>适合显示的媒体项目的一组简单元数据。 这可以使用Builder创建，也可以使用<code>getDescription()</code>从现有元数据中<code>getDescription()</code> 。</p>
 <h4 id="ConcatenatingMediaSource-类"><a href="#ConcatenatingMediaSource-类" class="headerlink" title="ConcatenatingMediaSource 类"></a>ConcatenatingMediaSource 类</h4><blockquote>
 <p><code>ConcatenatingMediaSource</code>允许播放期间动态的添加和删除<code>MediaSource</code></p>
 </blockquote>
