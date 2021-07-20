@@ -2939,7 +2939,11 @@ applyOp(2, 3, sumLambda)</code></pre>
 <li>lambda 表达式的代码不允许调用接口中定义的默认方法；匿名内部类实现的抽象方法的方法体允许调用接口中定义的默认方法。</li>
 </ul>
 </blockquote>
-<h3 id="链式调用"><a href="#链式调用" class="headerlink" title="链式调用"></a>链式调用</h3><p><strong>引用：</strong></p>
+<h3 id="链式调用"><a href="#链式调用" class="headerlink" title="链式调用"></a>链式调用</h3><h2 id="Reified实化类型参数"><a href="#Reified实化类型参数" class="headerlink" title="Reified实化类型参数"></a>Reified实化类型参数</h2><p>背景：</p>
+<blockquote>
+<p>Java中泛型是在JDK1.5版本后引入的，但集合Collection实在JDK1.2版本时引入的，现在看到的List，是在泛型出现后加入的，那么JDK1.2之前就直接用LIst（java中俗称原生态类型）表示。在为了兼容之前的版本Java采用所谓的伪泛型，伪泛型有一个特征就是<strong>泛型擦除</strong>，表示泛型类型信息在编译时期会被抹除掉，包括你是List还是List在运行时它们都是一样，那都是List类型，泛型类型信息已经被抹除掉了。</p>
+</blockquote>
+<p><strong>引用：</strong></p>
 <p><a href="https://www.web3.xin/code/2606.html" target="_blank" rel="noopener">Kotlin this表达式</a></p>
 <p><a href="https://www.jianshu.com/p/10358883455c" target="_blank" rel="noopener">kotlin中的函数引用详解</a>    </p>
 <p><a href="http://c.biancheng.net/view/6559.html" target="_blank" rel="noopener">Lambda表达式与匿名内部类的联系和区别</a></p>

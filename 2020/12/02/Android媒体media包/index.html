@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="媒体浏览器服务, TheCara">
+    <meta name="keywords" content="Android媒体media包, TheCara">
     <meta name="description" content="">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>媒体浏览器服务 | TheCara</title>
+    <title>Android媒体media包 | TheCara</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -321,12 +321,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/7.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/1.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">媒体浏览器服务</h1>
+                    <h1 class="description center-align post-title">Android媒体media包</h1>
                 </div>
             </div>
         </div>
@@ -488,13 +488,16 @@
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h1 id="媒体浏览器服务-MediaBrowserService"><a href="#媒体浏览器服务-MediaBrowserService" class="headerlink" title="媒体浏览器服务 MediaBrowserService"></a>媒体浏览器服务 MediaBrowserService</h1><h4 id="关键类型"><a href="#关键类型" class="headerlink" title="关键类型"></a>关键类型</h4><ol>
+                <blockquote>
+<p>所属 android.support.v4.media包下 </p>
+</blockquote>
+<h1 id="媒体浏览器服务-MediaBrowserService"><a href="#媒体浏览器服务-MediaBrowserService" class="headerlink" title="媒体浏览器服务 MediaBrowserService"></a>媒体浏览器服务 MediaBrowserService</h1><h4 id="关键类型"><a href="#关键类型" class="headerlink" title="关键类型"></a>关键类型</h4><ol>
 <li>MediaBrowserServiceCompat 媒体浏览器服务</li>
 <li>MediaBrowserCompat 媒体浏览器</li>
 <li>MediaControllerCompat 媒体控制器</li>
 <li>MediaSessionCompat 媒体会话</li>
 </ol>
-<h2 id="1-MediaBrowserServiceCompat"><a href="#1-MediaBrowserServiceCompat" class="headerlink" title="1.MediaBrowserServiceCompat"></a>1.MediaBrowserServiceCompat</h2><blockquote>
+<h1 id="MediaBrowserServiceCompat"><a href="#MediaBrowserServiceCompat" class="headerlink" title="MediaBrowserServiceCompat"></a>MediaBrowserServiceCompat</h1><blockquote>
 <p>作用</p>
 <p>音乐播放后台服务。</p>
 <p>客户端中获取音乐数据的服务，所有的音乐数据都通过该服务与服务端进行交互获取。</p>
@@ -520,11 +523,47 @@
 <p>此方法中的 parentId 与上面的方法 onGetRoot 中返回的RootId没有关系，客户端连接后，它可以通过重复调用MediaBrowserCompat.subscribe()方法来发起数据请求。而每次调用subscribe()方法都会返回onLoadChildren()回调到该service中，然后返回MediaBrowser.MediaItem()对象列表</p>
 <p>每个MediaItem都有唯一的Id字符串，它其实是一个隐式的token。当客户想打开子菜单或者播放item时，它就将ID传入。</p>
 </blockquote>
-<h2 id="2-MediaBrowserCompat"><a href="#2-MediaBrowserCompat" class="headerlink" title="2.MediaBrowserCompat"></a>2.MediaBrowserCompat</h2><p><strong>MediaBrowserCompat.MediaItem常量</strong></p>
-<blockquote>
+<h1 id="MediaBrowserCompat"><a href="#MediaBrowserCompat" class="headerlink" title="MediaBrowserCompat"></a>MediaBrowserCompat</h1><h2 id="MediaBrowserCompat-MediaItem常量"><a href="#MediaBrowserCompat-MediaItem常量" class="headerlink" title="MediaBrowserCompat.MediaItem常量"></a>MediaBrowserCompat.MediaItem常量</h2><blockquote>
 <p>一个包含单个媒体项目信息的类，用于浏览媒体。</p>
 </blockquote>
-<h1 id="MediaSessionCompat"><a href="#MediaSessionCompat" class="headerlink" title="MediaSessionCompat"></a>MediaSessionCompat</h1><blockquote>
+<p><strong>常量</strong></p>
+<h3 id="FLAG-PLAYABLE"><a href="#FLAG-PLAYABLE" class="headerlink" title="FLAG_PLAYABLE"></a>FLAG_PLAYABLE</h3><pre><code class="java">int FLAG_PLAYABLE</code></pre>
+<p>标志：表示该项目可以播放。</p>
+<h3 id="FLAG-BROWSABLE"><a href="#FLAG-BROWSABLE" class="headerlink" title="FLAG_BROWSABLE"></a>FLAG_BROWSABLE</h3><pre><code>int FLAG_BROWSABLE</code></pre><p>标志：表示该项目有其自己的子项。</p>
+<h1 id="MediaControllerCompat-类"><a href="#MediaControllerCompat-类" class="headerlink" title="MediaControllerCompat 类"></a>MediaControllerCompat 类</h1><blockquote>
+<p>属于 media.session 包下。</p>
+<p>允许应用与正在进行的媒体会话进行互动。</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th align="center">方法名</th>
+<th align="center">参数</th>
+<th align="center">描述</th>
+<th align="center">返回值</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">getMetadata</td>
+<td align="center">无</td>
+<td align="center">获取此会话的当前元数据。</td>
+<td align="center">返回MediadataCompat类</td>
+</tr>
+<tr>
+<td align="center">getSessionActivity</td>
+<td align="center">无</td>
+<td align="center">获得与启动会话关联的用户界面的意图（如果存在的话）</td>
+<td align="center">PendingIntent意图或者null</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+</tbody></table>
+<h1 id="MediaSessionCompat-类"><a href="#MediaSessionCompat-类" class="headerlink" title="MediaSessionCompat 类"></a>MediaSessionCompat 类</h1><blockquote>
+<p>Allows interaction with media controllers, volume keys, media buttons, and transport controls.</p>
 <p>允许与媒体控制器，音量键，媒体按钮和传输控件进行交互。</p>
 <p>当应用程序想要发布媒体播放信息或处理媒体密钥时，应创建MediaSession。 一般来说，一个应用程序只需要一个会话进行所有播放，但可创建多个会话来提供更精细的媒体控制。</p>
 <p>一旦创建会话，会话的所有者可以将其 <code>session token</code>传递给其他进程，以允许他们创建 <code>MediaControllerCompat</code>与会话进行交互。</p>
@@ -534,6 +573,189 @@
 <p>这是帮助您以向后兼容的方式访问API级别4之后引入的 <code>MediaSession</code>功能。</p>
 <p>ps:摘自 <a href="https://www.apiref.com/android-zh/android/support/v4/media/session/MediaSessionCompat.html" target="_blank" rel="noopener">apiref</a></p>
 </blockquote>
+<p><strong>构造方法</strong></p>
+<p><strong>MediaSessionCompat</strong></p>
+<pre><code>MediaSessionCompat(@NonNull context: Context, @NonNull tag: String)</code></pre><blockquote>
+<p>Creates a new session. You must call <code>release()</code> when finished with the session.</p>
+<p>创建对象。在完成时要调用release()释放。</p>
+<p>参数1：创建Session的上下文</p>
+<p>参数2：调试时所用的 tag。</p>
+</blockquote>
+<p><strong>MediaSessionCompat</strong></p>
+<pre><code>MediaSessionCompat(@NonNull context: Context, @NonNull tag: String, @Nullable mbrComponent: ComponentName?, @Nullable mbrIntent: PendingIntent?)</code></pre><blockquote>
+<p>Creates a new session with a specified media button receiver (a component name and/or a pending intent). You must call <code>release()</code> when finished with the session.</p>
+<p>指定一个媒体接收器来创建对象。在完成时要调用release()释放。</p>
+<p>参数1：创建Session的上下文</p>
+<p>参数2：调试时所用的 tag。</p>
+<p>参数3：指定媒体接收器的名称</p>
+<p>参数4：处理媒体按钮事件的接收器组件。可选选项。</p>
+</blockquote>
+<p><strong>setSessionToken</strong></p>
+<pre><code>open fun setSessionToken(token: MediaSessionCompat.Token!): Unit</code></pre><blockquote>
+<p>Call to set the media session.</p>
+<p>This should be called as soon as possible during the service’s startup. It may only be called once.</p>
+<p>呼叫设置媒体会话。</p>
+<p>这应该在服务启动期间尽快调用。 它只能被调用一次。</p>
+</blockquote>
+<p><strong>getSessionToken</strong></p>
+<pre><code>@Nullable open fun getSessionToken(): MediaSessionCompat.Token?</code></pre><blockquote>
+<p>Gets the session token, or null if it has not yet been created or if it has been destroyed.</p>
+<p>获取会话标记，如果尚未创建或已销毁它，则为null。</p>
+</blockquote>
+<p><strong>setSessionActivity</strong></p>
+<p>PendingInten pi：启动到这个会话。</p>
+<pre><code>void setSessionActivity (PendingIntent pi)    </code></pre><blockquote>
+<p>为此会话设置启动用户界面的意图。 这可以用作到正在进行的媒体屏幕的快速链接。 意图应该是针对可能使用<code>startActivity(Intent)</code>开始的活动。</p>
+</blockquote>
+<h1 id="MediaSessonCompat-Token类"><a href="#MediaSessonCompat-Token类" class="headerlink" title="MediaSessonCompat.Token类"></a>MediaSessonCompat.Token类</h1><p>运行中的Token。表示可能会被会话的所有者传递给应用程序，以允许创建一个MediaControllerCompat与会话进行通信。</p>
+<h1 id="MediaMetadataCompat"><a href="#MediaMetadataCompat" class="headerlink" title="MediaMetadataCompat"></a>MediaMetadataCompat</h1><blockquote>
+<p>包含有关项目的元数据，例如标题，艺术家等</p>
+</blockquote>
+<p><strong>各个常量</strong></p>
+<table>
+<thead>
+<tr>
+<th align="center">类型</th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">string</td>
+<td><code>METADATA_KEY_ALBUM</code>媒体专辑标题。</td>
+</tr>
+<tr>
+<td align="center">string</td>
+<td><code>METADATA_KEY_ALBUM_ART</code>媒体原始资料专辑的作品为 <code>Bitmap</code> 。</td>
+</tr>
+<tr>
+<td align="center">string</td>
+<td><code>METADATA_KEY_ALBUM_ARTIST</code>媒体原始资料专辑的艺术家。</td>
+</tr>
+<tr>
+<td align="center">string</td>
+<td><code>METADATA_KEY_ALBUM_ART_URI</code>作为Uri风格字符串的媒体原始源相册的图片。</td>
+</tr>
+<tr>
+<td align="center">string</td>
+<td><code>METADATA_KEY_ART</code>媒体作品为 <code>Bitmap</code> 。</td>
+</tr>
+<tr>
+<td align="center">string</td>
+<td><code>METADATA_KEY_ARTIST</code>媒体艺术家。</td>
+</tr>
+<tr>
+<td align="center">string</td>
+<td><code>METADATA_KEY_ART_URI</code>媒体的作品是Uri风格的字符串。</td>
+</tr>
+<tr>
+<td align="center">string</td>
+<td><code>METADATA_KEY_AUTHOR</code>媒体的作者。</td>
+</tr>
+<tr>
+<td align="center">string</td>
+<td><code>METADATA_KEY_COMPILATION</code>媒体的编辑状态。</td>
+</tr>
+<tr>
+<td align="center">string</td>
+<td><code>METADATA_KEY_COMPOSER</code>媒体的作曲家。</td>
+</tr>
+<tr>
+<td align="center">string</td>
+<td><code>METADATA_KEY_DATE</code>媒体创建或发布的日期。</td>
+</tr>
+<tr>
+<td align="center">string</td>
+<td><code>METADATA_KEY_DISC_NUMBER</code>媒体原始来源的光盘号码。</td>
+</tr>
+<tr>
+<td align="center">string</td>
+<td><code>METADATA_KEY_DISPLAY_DESCRIPTION</code>适合向用户显示的说明。</td>
+</tr>
+<tr>
+<td align="center">string</td>
+<td><code>METADATA_KEY_DISPLAY_ICON</code>适合向用户显示的图标或缩略图。</td>
+</tr>
+<tr>
+<td align="center">string</td>
+<td><code>METADATA_KEY_DISPLAY_ICON_URI</code>适合向用户显示的图标或缩略图。</td>
+</tr>
+<tr>
+<td align="center">string</td>
+<td><code>METADATA_KEY_DISPLAY_SUBTITLE</code>适合向用户显示的字幕。</td>
+</tr>
+<tr>
+<td align="center">string</td>
+<td><code>METADATA_KEY_DISPLAY_TITLE</code>适合向用户显示的标题。</td>
+</tr>
+<tr>
+<td align="center">string</td>
+<td><code>METADATA_KEY_DURATION</code>媒体的持续时间以毫秒为单位。</td>
+</tr>
+<tr>
+<td align="center">string</td>
+<td><code>METADATA_KEY_GENRE</code>媒体的流派。</td>
+</tr>
+<tr>
+<td align="center">string</td>
+<td><code>METADATA_KEY_MEDIA_ID</code>用于识别内容的字符串键。</td>
+</tr>
+<tr>
+<td align="center">string</td>
+<td><code>METADATA_KEY_NUM_TRACKS</code>媒体原始来源中的曲目数量。</td>
+</tr>
+<tr>
+<td align="center">string</td>
+<td><code>METADATA_KEY_RATING</code>媒体整体评分。</td>
+</tr>
+<tr>
+<td align="center">string</td>
+<td><code>METADATA_KEY_TITLE</code>媒体的标题。</td>
+</tr>
+<tr>
+<td align="center">string</td>
+<td><code>METADATA_KEY_TRACK_NUMBER</code>媒体的曲目号码。</td>
+</tr>
+<tr>
+<td align="center">string</td>
+<td><code>METADATA_KEY_USER_RATING</code>用户对媒体的评分。</td>
+</tr>
+<tr>
+<td align="center">string</td>
+<td><code>METADATA_KEY_WRITER</code>媒体的作者。</td>
+</tr>
+<tr>
+<td align="center">string</td>
+<td><code>METADATA_KEY_YEAR</code>媒体创建或发布的一年。</td>
+</tr>
+</tbody></table>
+<table>
+<thead>
+<tr>
+<th align="center">方法名</th>
+<th align="center">参数</th>
+<th align="center">描述</th>
+<th align="center">返回值</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">getDescription</td>
+<td align="center">无</td>
+<td align="center">为显式，返回次元数据的简单描述</td>
+<td align="center">MediaDescriptionCompat</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+</tbody></table>
 <h1 id="ServiceCompat"><a href="#ServiceCompat" class="headerlink" title="ServiceCompat"></a>ServiceCompat</h1><p>Helper用于访问在向后兼容的API级别4之后引入的 <code>Service</code>功能。</p>
 <h1 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h1><p><a href="">关于媒体浏览器服务(MediaBrowserService)</a></p>
 <p><a href="https://www.apiref.com/android-zh/index.html" target="_blank" rel="noopener">Android开发手册</a></p>
@@ -562,7 +784,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://thecara.github.io/2020/12/02/%E5%AA%92%E4%BD%93%E6%B5%8F%E8%A7%88%E5%99%A8%E6%9C%8D%E5%8A%A1-MediaBrowserService/">https://thecara.github.io/2020/12/02/%E5%AA%92%E4%BD%93%E6%B5%8F%E8%A7%88%E5%99%A8%E6%9C%8D%E5%8A%A1-MediaBrowserService/</a>
+                    <a href="https://thecara.github.io/2020/12/02/Android%E5%AA%92%E4%BD%93media%E5%8C%85/">https://thecara.github.io/2020/12/02/Android%E5%AA%92%E4%BD%93media%E5%8C%85/</a>
                 </span>
             </div>
             <div class="reprint__notice">

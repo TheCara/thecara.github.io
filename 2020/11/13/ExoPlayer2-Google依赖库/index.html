@@ -526,7 +526,7 @@ implementation &#39;com.google.android.exoplayer:exoplayer-ui:2.X.X&#39;</code><
         android:layout_width=&quot;match_parent&quot;
         android:layout_height=&quot;match_parent&quot; /&gt;</code></pre>
 <p><img src="https://raw.githubusercontent.com/TheCara/RepoPicture/master/image/20210621172138.png" alt=""></p>
-<h1 id="DOC"><a href="#DOC" class="headerlink" title="DOC"></a>DOC</h1><h4 id="AudioAttributes-Builder-类"><a href="#AudioAttributes-Builder-类" class="headerlink" title="AudioAttributes.Builder() 类"></a><strong>AudioAttributes.Builder() 类</strong></h4><blockquote>
+<h1 id="DOC"><a href="#DOC" class="headerlink" title="DOC"></a>DOC</h1><h2 id="AudioAttributes-Builder-类"><a href="#AudioAttributes-Builder-类" class="headerlink" title="AudioAttributes.Builder() 类"></a><strong>AudioAttributes.Builder() 类</strong></h2><blockquote>
 <p>用于音频回放的属性，用于配置平台下的AudioTrack。</p>
 <p>如果你要设置音频属性，需要创建一个 AudioAttributes实例。</p>
 </blockquote>
@@ -548,7 +548,7 @@ implementation &#39;com.google.android.exoplayer:exoplayer-ui:2.X.X&#39;</code><
 <blockquote>
 <p>构建器创建一个 AudioAttributes 实例。</p>
 </blockquote>
-<h4 id="C-类"><a href="#C-类" class="headerlink" title="C 类"></a>C 类</h4><blockquote>
+<h2 id="C-类"><a href="#C-类" class="headerlink" title="C 类"></a>C 类</h2><blockquote>
 <p>定义标准库的常量</p>
 </blockquote>
 <ul>
@@ -564,7 +564,7 @@ implementation &#39;com.google.android.exoplayer:exoplayer-ui:2.X.X&#39;</code><
 <blockquote>
 <p>当使用媒体是使用这个值(如音乐或者电影原声带)</p>
 </blockquote>
-<h4 id="SimpleExoPlayer-类"><a href="#SimpleExoPlayer-类" class="headerlink" title="SimpleExoPlayer 类"></a>SimpleExoPlayer 类</h4><blockquote>
+<h2 id="SimpleExoPlayer-类"><a href="#SimpleExoPlayer-类" class="headerlink" title="SimpleExoPlayer 类"></a>SimpleExoPlayer 类</h2><blockquote>
 <p>实现组件的外部播放。</p>
 <p>用SimpleExoPlayer.Build(context:Context)来实现</p>
 </blockquote>
@@ -595,7 +595,7 @@ implementation &#39;com.google.android.exoplayer:exoplayer-ui:2.X.X&#39;</code><
 <p><strong>Parameters:</strong></p>
 <p><code>handleAudioBecomingNoisy</code> - Whether the player should pause automatically when audio is rerouted from a headset to device speakers.</p>
 </blockquote>
-<h4 id="DefaultDataSourceFactory-类"><a href="#DefaultDataSourceFactory-类" class="headerlink" title="DefaultDataSourceFactory  类"></a>DefaultDataSourceFactory  类</h4><blockquote>
+<h2 id="DefaultDataSourceFactory-类"><a href="#DefaultDataSourceFactory-类" class="headerlink" title="DefaultDataSourceFactory  类"></a>DefaultDataSourceFactory  类</h2><blockquote>
 <p>创建工厂，将非文件的数据委托到 DetaultHttpDataSources。</p>
 <p>Factory that produces DefaultDataSource instances that delegate to DefaultHttpDataSources for non-file/asset/content URIs.</p>
 </blockquote>
@@ -621,7 +621,7 @@ implementation &#39;com.google.android.exoplayer:exoplayer-ui:2.X.X&#39;</code><
 </li>
 </ul>
 </blockquote>
-<h4 id="MediaSessionConnector-类"><a href="#MediaSessionConnector-类" class="headerlink" title="MediaSessionConnector 类"></a>MediaSessionConnector 类</h4><p><img src="https://raw.githubusercontent.com/TheCara/RepoPicture/master/image/20201204220725.png" alt="继承关系"></p>
+<h2 id="MediaSessionConnector-类"><a href="#MediaSessionConnector-类" class="headerlink" title="MediaSessionConnector 类"></a>MediaSessionConnector 类</h2><p><img src="https://raw.githubusercontent.com/TheCara/RepoPicture/master/image/20201204220725.png" alt="继承关系"></p>
 <blockquote>
 <p>介绍</p>
 <p>Connects a MediaSessionCompat to a <a href="https://exoplayer.dev/doc/reference/com/google/android/exoplayer2/Player.html" target="_blank" rel="noopener"><code>Player</code></a>.</p>
@@ -638,53 +638,112 @@ implementation &#39;com.google.android.exoplayer:exoplayer-ui:2.X.X&#39;</code><
 <p>Sets the player to be connected to the media session. Must be called on the same thread that is used to access the player.</p>
 <p>将播放器连接到媒体。主要只能在一条线程上。</p>
 </blockquote>
-<h4 id="MediaSessionCompat-类"><a href="#MediaSessionCompat-类" class="headerlink" title="MediaSessionCompat 类"></a>MediaSessionCompat 类</h4><blockquote>
-<p>Allows interaction with media controllers, volume keys, media buttons, and transport controls.</p>
-<p>用来对媒体控制前、音量键、媒体按钮和传输控件进行交互。</p>
-</blockquote>
-<p><strong>构造方法</strong></p>
-<p><strong>MediaSessionCompat</strong></p>
-<pre><code class="kotlin">MediaSessionCompat(@NonNull context: Context, @NonNull tag: String)</code></pre>
-<blockquote>
-<p>Creates a new session. You must call <code>release()</code> when finished with the session.</p>
-<p>创建对象。在完成时要调用release()释放。</p>
-<p>参数1：创建Session的上下文</p>
-<p>参数2：调试时所用的 tag。</p>
-</blockquote>
-<p><strong>MediaSessionCompat</strong></p>
-<pre><code class="kotlin">MediaSessionCompat(@NonNull context: Context, @NonNull tag: String, @Nullable mbrComponent: ComponentName?, @Nullable mbrIntent: PendingIntent?)</code></pre>
-<blockquote>
-<p>Creates a new session with a specified media button receiver (a component name and/or a pending intent). You must call <code>release()</code> when finished with the session.</p>
-<p>指定一个媒体接收器来创建对象。在完成时要调用release()释放。</p>
-<p>参数1：创建Session的上下文</p>
-<p>参数2：调试时所用的 tag。</p>
-<p>参数3：指定媒体接收器的名称</p>
-<p>参数4：处理媒体按钮事件的接收器组件。可选选项。</p>
-</blockquote>
-<p><strong>setSessionToken</strong></p>
-<pre><code class="kotlin">open fun setSessionToken(token: MediaSessionCompat.Token!): Unit</code></pre>
-<blockquote>
-<p>Call to set the media session.</p>
-<p>This should be called as soon as possible during the service’s startup. It may only be called once.</p>
-<p>呼叫设置媒体会话。</p>
-<p>这应该在服务启动期间尽快调用。 它只能被调用一次。</p>
-</blockquote>
-<p><strong>getSessionToken</strong></p>
-<pre><code class="kotlin">@Nullable open fun getSessionToken(): MediaSessionCompat.Token?</code></pre>
-<blockquote>
-<p>Gets the session token, or null if it has not yet been created or if it has been destroyed.</p>
-<p>获取会话标记，如果尚未创建或已销毁它，则为null。</p>
-</blockquote>
-<p><strong>setSessionActivity</strong></p>
-<p>PendingInten pi：启动到这个会话。</p>
-<pre><code class="java">void setSessionActivity (PendingIntent pi)    </code></pre>
-<blockquote>
-<p>为此会话设置启动用户界面的意图。 这可以用作到正在进行的媒体屏幕的快速链接。 意图应该是针对可能使用<code>startActivity(Intent)</code>开始的活动。</p>
-</blockquote>
-<h1 id="MediaDescriptionCompat-类"><a href="#MediaDescriptionCompat-类" class="headerlink" title="MediaDescriptionCompat 类"></a>MediaDescriptionCompat 类</h1><p>适合显示的媒体项目的一组简单元数据。 这可以使用Builder创建，也可以使用<code>getDescription()</code>从现有元数据中<code>getDescription()</code> 。</p>
-<h4 id="ConcatenatingMediaSource-类"><a href="#ConcatenatingMediaSource-类" class="headerlink" title="ConcatenatingMediaSource 类"></a>ConcatenatingMediaSource 类</h4><blockquote>
+<h2 id="MediaDescriptionCompat-类"><a href="#MediaDescriptionCompat-类" class="headerlink" title="MediaDescriptionCompat 类"></a>MediaDescriptionCompat 类</h2><p>适合显示的媒体项目的一组简单元数据。 这可以使用Builder创建，也可以使用<code>getDescription()</code>从现有元数据中<code>getDescription()</code> 。</p>
+<h2 id="MediaDescriptionCompat-Builder"><a href="#MediaDescriptionCompat-Builder" class="headerlink" title="MediaDescriptionCompat.Builder"></a>MediaDescriptionCompat.Builder</h2><h2 id="ConcatenatingMediaSource-类"><a href="#ConcatenatingMediaSource-类" class="headerlink" title="ConcatenatingMediaSource 类"></a>ConcatenatingMediaSource 类</h2><blockquote>
 <p><code>ConcatenatingMediaSource</code>允许播放期间动态的添加和删除<code>MediaSource</code></p>
 </blockquote>
+<h2 id="PlayerNotificationManager-类"><a href="#PlayerNotificationManager-类" class="headerlink" title="PlayerNotificationManager 类"></a>PlayerNotificationManager 类</h2><blockquote>
+<p>用来启动、更新和取消播放器状态的媒体样式通知的。</p>
+</blockquote>
+<p><strong>嵌套类或方法</strong></p>
+<h4 id="public-static-interface-PlayerNotificationManager-NotificationListener"><a href="#public-static-interface-PlayerNotificationManager-NotificationListener" class="headerlink" title="public static interface PlayerNotificationManager.NotificationListener"></a>public static interface PlayerNotificationManager.NotificationListener</h4><blockquote>
+<p>监听状态的监听器。</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th align="center">返回值类型</th>
+<th align="center">方法</th>
+<th align="center">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">void</td>
+<td align="center">onNotificationCancelled(int notificationId,boolean dismissedByUser)</td>
+<td align="center">通知被取消时调用</td>
+</tr>
+<tr>
+<td align="center">void</td>
+<td align="center">onNotificationPosted(int notificationId, Notification notification,boolean ongoing)</td>
+<td align="center">发布通知后调用</td>
+</tr>
+</tbody></table>
+<h4 id="public-static-PlayerNotificationManager-createWithNotificationChannel"><a href="#public-static-PlayerNotificationManager-createWithNotificationChannel" class="headerlink" title="public static PlayerNotificationManager createWithNotificationChannel"></a>public static PlayerNotificationManager createWithNotificationChannel</h4><blockquote>
+<p>创建通知管理器并指定channelId和低优先级的通知通道channelName.</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th align="center">参数</th>
+<th align="center">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">context-Context</td>
+<td align="center">上下文</td>
+</tr>
+<tr>
+<td align="center">channelId</td>
+<td align="center">通知Id</td>
+</tr>
+<tr>
+<td align="center">channelName</td>
+<td align="center">字符串资源标识符，用于用户可见的通知名称。最多40字符过多会被裁断。</td>
+</tr>
+<tr>
+<td align="center">channelDescription</td>
+<td align="center">用户对内容可见部分的描述。没有为0。</td>
+</tr>
+<tr>
+<td align="center">notificationId</td>
+<td align="center">通知的Id</td>
+</tr>
+<tr>
+<td align="center">mediaDescriptionAdapter</td>
+<td align="center">提供当前播放内容的适配器</td>
+</tr>
+<tr>
+<td align="center">notificationListener</td>
+<td align="center">开始和取消通知的监听器</td>
+</tr>
+</tbody></table>
+<h4 id="public-static-interface-PlayerNotificationManager-MediaDescriptionAdapter"><a href="#public-static-interface-PlayerNotificationManager-MediaDescriptionAdapter" class="headerlink" title="public static interface PlayerNotificationManager.MediaDescriptionAdapter"></a>public static interface PlayerNotificationManager.MediaDescriptionAdapter</h4><blockquote>
+<p>提供当前播放内容的适配器</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th align="center">方法名</th>
+<th align="center">参数</th>
+<th>返回值</th>
+<th align="center">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">getCurrentContentTitle()</td>
+<td align="center">com.google.android.exoplayer2.Player player</td>
+<td><strong>CharSequence</strong></td>
+<td align="center">获得当前内容标题</td>
+</tr>
+<tr>
+<td align="center">createCurrentContentIntent()</td>
+<td align="center">com.google.android.exoplayer2.Player player</td>
+<td><strong>PendingIntent</strong></td>
+<td align="center">创建当前选项的意图</td>
+</tr>
+<tr>
+<td align="center">getCurrentContentText()</td>
+<td align="center">com.google.android.exoplayer2.Player player</td>
+<td><strong>CharSequence</strong></td>
+<td align="center">获取当前内容文本</td>
+</tr>
+<tr>
+<td align="center">getCurrentLargeIcon()</td>
+<td align="center">com.google.android.exoplayer2.Player player, PlayerNotificationManager.BitmapCallback callback</td>
+<td><strong>Bitmap</strong></td>
+<td align="center">获取当前大图标。当存在异步加载时可以返回占位符（或null），并且在 PlayerNotificationManager.BitmapCallback 加载后传递给它。由于在使用过程中适配器会多次被调用，因此图片由程序缓存，并尽可能在后续使用中同步返回。</td>
+</tr>
+</tbody></table>
 <p>引用：</p>
 <p><a href="https://juejin.im/post/6854573203994443789" target="_blank" rel="noopener">深入解读ExoPlayer 之 开发者指南全译-02 开始使用</a></p>
 <p><a href="https://exoplayer.dev/doc/reference/overview-summary.html" target="_blank" rel="noopener">DOC</a></p>

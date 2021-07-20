@@ -520,7 +520,7 @@
 <li>requestOptions:设置 RequestOptions 到加载的应用中。</li>
 </ol>
 </blockquote>
-<h4 id="RequestOptions类"><a href="#RequestOptions类" class="headerlink" title="RequestOptions类"></a>RequestOptions类</h4><blockquote>
+<h1 id="RequestOptions类"><a href="#RequestOptions类" class="headerlink" title="RequestOptions类"></a>RequestOptions类</h1><blockquote>
 <p>提供选项来给 Glide 自定义加载。</p>
 </blockquote>
 <ul>
@@ -553,7 +553,7 @@
 <li>diskCacheStrategy：使用DiskCacheStrategy类的常量作为缓存策略。</li>
 </ol>
 </blockquote>
-<h4 id="DiskCacheStrategy-类"><a href="#DiskCacheStrategy-类" class="headerlink" title="DiskCacheStrategy  类"></a>DiskCacheStrategy  类</h4><blockquote>
+<h1 id="DiskCacheStrategy-类"><a href="#DiskCacheStrategy-类" class="headerlink" title="DiskCacheStrategy  类"></a>DiskCacheStrategy  类</h1><blockquote>
 <p>缓存策略（Disk 、Cache 、Strategy）</p>
 <p>允许你加载过程中使用或者写入磁盘缓存，选择性的仅支持无修改的原声数据，或者变换过的缩略图，或者兼而有之。</p>
 <p>默认是<strong>AUTOMATIC</strong>，会尝试对本地和远程图片使用最佳策略。当你加载远程数据时，<strong>AUTOMATIC</strong>策略会存储维被你加载过程修改过的原始数据(例如，变换，裁剪)，因为下载远程数据相比调整磁盘上已经存在的数据要昂贵的多。对于本都数据，<strong>AUTOMATIC</strong> 策略会存储变换过的缩略图，因为即使你再次生成另一个尺寸或者类型的图片，取回原始数据也是很容易的。</p>
@@ -566,6 +566,37 @@
 <p>DiskCacheStrategy.ALL:表示既缓存原始图片，也缓存转换过后的图片。</p>
 <p>DiskCacheStrategy.AUTOMATIC: 表示让Gilde根据图片资源智能的选择一种缓存策略（默认）。</p>
 </blockquote>
+<h2 id="CustomTarget-类"><a href="#CustomTarget-类" class="headerlink" title="CustomTarget 类"></a>CustomTarget<T> 类</h2><blockquote>
+<p>用于加载图片资源。</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th align="center">方法名</th>
+<th align="center">参数</th>
+<th align="center">描述</th>
+<th align="center">返回值</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">onResourceReady</td>
+<td align="center">@NonNull  R resource, @Nullable Transition&lt;? super R&gt; transition</td>
+<td align="center">资源加载完成后调用的方法</td>
+<td align="center">void。返回加载的资源</td>
+</tr>
+<tr>
+<td align="center">onLoadCleared</td>
+<td align="center">@NonNull android.graphics.drawable.Drawable placeholder（可以选择的占位符，可为null）</td>
+<td align="center">取消加载并释放资源的生命周期回调。（在重新绘制容器时，你必须确保onResourceReady()方法不接受任何当前的Drawable）</td>
+<td align="center">void</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+</tbody></table>
 <p><strong>引用</strong></p>
 <p><a href="https://muyangmin.github.io/glide-docs-cn/doc/getting-started.html" target="_blank" rel="noopener">Glide</a></p>
 <p><a href="https://www.jianshu.com/p/4f457a124d67" target="_blank" rel="noopener">Android图片加载框架——Glide（Glide v4）</a></p>
