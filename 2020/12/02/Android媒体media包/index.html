@@ -519,10 +519,64 @@
     @NonNull result: MediaBrowserServiceCompat.Result&lt;MutableList&lt;MediaBrowserCompat.MediaItem!&gt;!&gt;
 ): Unit</code></pre>
 <blockquote>
-<p>来获取有关媒体项目的孩子的信息。</p>
+<p>来获取有关媒体项目的子信息。</p>
 <p>此方法中的 parentId 与上面的方法 onGetRoot 中返回的RootId没有关系，客户端连接后，它可以通过重复调用MediaBrowserCompat.subscribe()方法来发起数据请求。而每次调用subscribe()方法都会返回onLoadChildren()回调到该service中，然后返回MediaBrowser.MediaItem()对象列表</p>
 <p>每个MediaItem都有唯一的Id字符串，它其实是一个隐式的token。当客户想打开子菜单或者播放item时，它就将ID传入。</p>
 </blockquote>
+<h1 id="MediaBrowserServiceCompat-BrowserRoot-抽象类"><a href="#MediaBrowserServiceCompat-BrowserRoot-抽象类" class="headerlink" title="MediaBrowserServiceCompat.BrowserRoot 抽象类"></a>MediaBrowserServiceCompat.BrowserRoot 抽象类</h1><blockquote>
+<p>包含浏览器首次连接客户端的信息。</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th align="center">修饰符</th>
+<th align="center">（构造）方法</th>
+<th align="center">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"></td>
+<td align="center">MediaBrowserServiceCompat.BrowserRoot(String rootId,Bundle extras)</td>
+<td align="center">rootId：浏览的根ID。extras：浏览器的附加功能。</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+</tbody></table>
+<h1 id="MediaBrowserServiceCompat-Result-类"><a href="#MediaBrowserServiceCompat-Result-类" class="headerlink" title="MediaBrowserServiceCompat.Result 类"></a>MediaBrowserServiceCompat.Result 类</h1><blockquote>
+<p>异步回调方法的完成处理程序</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th align="center">修饰符</th>
+<th align="center">方法</th>
+<th align="center">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">void</td>
+<td align="center">sendResult(T result)</td>
+<td align="center">将结果发送给调用者</td>
+</tr>
+<tr>
+<td align="center">void</td>
+<td align="center">detach()</td>
+<td align="center">分离线程消息，并允许稍后进行sendResult(T)调用。</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+</tbody></table>
 <h1 id="MediaBrowserCompat"><a href="#MediaBrowserCompat" class="headerlink" title="MediaBrowserCompat"></a>MediaBrowserCompat</h1><h2 id="MediaBrowserCompat-MediaItem常量"><a href="#MediaBrowserCompat-MediaItem常量" class="headerlink" title="MediaBrowserCompat.MediaItem常量"></a>MediaBrowserCompat.MediaItem常量</h2><blockquote>
 <p>一个包含单个媒体项目信息的类，用于浏览媒体。</p>
 </blockquote>
@@ -754,6 +808,141 @@
 <td align="center"></td>
 <td align="center"></td>
 <td align="center"></td>
+</tr>
+</tbody></table>
+<h1 id="PlaybackStateCompat-类"><a href="#PlaybackStateCompat-类" class="headerlink" title="PlaybackStateCompat 类"></a>PlaybackStateCompat 类</h1><blockquote>
+<p>存放状态的常量类</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th align="center">类型</th>
+<th align="center">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><code>long</code></td>
+<td align="center"><code>ACTION_FAST_FORWARD</code>表示此会话支持快进命令。</td>
+</tr>
+<tr>
+<td align="center"><code>long</code></td>
+<td align="center"><code>ACTION_PAUSE</code>表示此会话支持暂停命令。</td>
+</tr>
+<tr>
+<td align="center"><code>long</code></td>
+<td align="center"><code>ACTION_PLAY</code>表示此会话支持播放命令。</td>
+</tr>
+<tr>
+<td align="center"><code>long</code></td>
+<td align="center"><code>ACTION_PLAY_FROM_MEDIA_ID</code>表示此会话支持从媒体id命令播放。</td>
+</tr>
+<tr>
+<td align="center"><code>long</code></td>
+<td align="center"><code>ACTION_PLAY_FROM_SEARCH</code>表示此会话支持来自搜索命令的播放。</td>
+</tr>
+<tr>
+<td align="center"><code>long</code></td>
+<td align="center"><code>ACTION_PLAY_FROM_URI</code>表示此会话支持来自URI命令的播放。</td>
+</tr>
+<tr>
+<td align="center"><code>long</code></td>
+<td align="center"><code>ACTION_PLAY_PAUSE</code>表示此会话支持播放/暂停切换命令。</td>
+</tr>
+<tr>
+<td align="center"><code>long</code></td>
+<td align="center"><code>ACTION_PREPARE</code>表示此会话支持prepare命令。</td>
+</tr>
+<tr>
+<td align="center"><code>long</code></td>
+<td align="center"><code>ACTION_PREPARE_FROM_MEDIA_ID</code>指示此会话支持从媒体id命令准备。</td>
+</tr>
+<tr>
+<td align="center"><code>long</code></td>
+<td align="center"><code>ACTION_PREPARE_FROM_SEARCH</code>表示此会话支持从搜索命令准备。</td>
+</tr>
+<tr>
+<td align="center"><code>long</code></td>
+<td align="center"><code>ACTION_PREPARE_FROM_URI</code>表示此会话支持从URI准备命令。</td>
+</tr>
+<tr>
+<td align="center"><code>long</code></td>
+<td align="center"><code>ACTION_REWIND</code>表示此会话支持倒带命令。</td>
+</tr>
+<tr>
+<td align="center"><code>long</code></td>
+<td align="center"><code>ACTION_SEEK_TO</code>表示此会话支持寻求命令。</td>
+</tr>
+<tr>
+<td align="center"><code>long</code></td>
+<td align="center"><code>ACTION_SET_RATING</code>表示此会话支持set rating命令。</td>
+</tr>
+<tr>
+<td align="center"><code>long</code></td>
+<td align="center"><code>ACTION_SKIP_TO_NEXT</code>表示此会话支持下一个命令。</td>
+</tr>
+<tr>
+<td align="center"><code>long</code></td>
+<td align="center"><code>ACTION_SKIP_TO_PREVIOUS</code>指示此会话支持上一个命令。</td>
+</tr>
+<tr>
+<td align="center"><code>long</code></td>
+<td align="center"><code>ACTION_SKIP_TO_QUEUE_ITEM</code>表示此会话支持跳转到队列项目命令。</td>
+</tr>
+<tr>
+<td align="center"><code>long</code></td>
+<td align="center"><code>ACTION_STOP</code>表示此会话支持停止命令。</td>
+</tr>
+<tr>
+<td align="center"><code>long</code></td>
+<td align="center"><code>PLAYBACK_POSITION_UNKNOWN</code>使用此值表示位置未知。</td>
+</tr>
+<tr>
+<td align="center"><code>int</code></td>
+<td align="center"><code>STATE_BUFFERING</code>指示此项目的状态当前正在缓冲，并且将在足够的数据已经缓冲时开始播放。</td>
+</tr>
+<tr>
+<td align="center"><code>int</code></td>
+<td align="center"><code>STATE_CONNECTING</code>指示正在进行回放的班级的状态当前正在连接到路线。</td>
+</tr>
+<tr>
+<td align="center"><code>int</code></td>
+<td align="center"><code>STATE_ERROR</code>指示此项目的状态当前处于错误状态。</td>
+</tr>
+<tr>
+<td align="center"><code>int</code></td>
+<td align="center"><code>STATE_FAST_FORWARDING</code>指示此项目的状态当前正在快进。</td>
+</tr>
+<tr>
+<td align="center"><code>int</code></td>
+<td align="center"><code>STATE_NONE</code>这是默认的播放状态，表示尚未添加媒体，或者表演者已重置且没有要播放的内容。</td>
+</tr>
+<tr>
+<td align="center"><code>int</code></td>
+<td align="center"><code>STATE_PAUSED</code>指示此项目的状态当前已暂停。</td>
+</tr>
+<tr>
+<td align="center"><code>int</code></td>
+<td align="center"><code>STATE_PLAYING</code>指示此项目正在播放的状态。</td>
+</tr>
+<tr>
+<td align="center"><code>int</code></td>
+<td align="center"><code>STATE_REWINDING</code>指示此项目的状态当前正在倒带。</td>
+</tr>
+<tr>
+<td align="center"><code>int</code></td>
+<td align="center"><code>STATE_SKIPPING_TO_NEXT</code>表示玩家正在跳到下一个项目的状态。</td>
+</tr>
+<tr>
+<td align="center"><code>int</code></td>
+<td align="center"><code>STATE_SKIPPING_TO_PREVIOUS</code>显示玩家当前正在跳到前一个项目的状态。</td>
+</tr>
+<tr>
+<td align="center"><code>int</code></td>
+<td align="center"><code>STATE_SKIPPING_TO_QUEUE_ITEM</code>指示玩家当前正在跳到队列中特定项目的状态。</td>
+</tr>
+<tr>
+<td align="center"><code>int</code></td>
+<td align="center"><code>STATE_STOPPED</code>指示此项目的状态当前已停止。</td>
 </tr>
 </tbody></table>
 <h1 id="ServiceCompat"><a href="#ServiceCompat" class="headerlink" title="ServiceCompat"></a>ServiceCompat</h1><p>Helper用于访问在向后兼容的API级别4之后引入的 <code>Service</code>功能。</p>

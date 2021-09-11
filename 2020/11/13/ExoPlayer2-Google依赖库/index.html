@@ -526,7 +526,7 @@ implementation &#39;com.google.android.exoplayer:exoplayer-ui:2.X.X&#39;</code><
         android:layout_width=&quot;match_parent&quot;
         android:layout_height=&quot;match_parent&quot; /&gt;</code></pre>
 <p><img src="https://raw.githubusercontent.com/TheCara/RepoPicture/master/image/20210621172138.png" alt=""></p>
-<h1 id="DOC"><a href="#DOC" class="headerlink" title="DOC"></a>DOC</h1><h2 id="AudioAttributes-Builder-类"><a href="#AudioAttributes-Builder-类" class="headerlink" title="AudioAttributes.Builder() 类"></a><strong>AudioAttributes.Builder() 类</strong></h2><blockquote>
+<h1 id="DOC"><a href="#DOC" class="headerlink" title="DOC"></a>DOC</h1><h1 id="AudioAttributes-Builder-类"><a href="#AudioAttributes-Builder-类" class="headerlink" title="AudioAttributes.Builder() 类"></a><strong>AudioAttributes.Builder() 类</strong></h1><blockquote>
 <p>用于音频回放的属性，用于配置平台下的AudioTrack。</p>
 <p>如果你要设置音频属性，需要创建一个 AudioAttributes实例。</p>
 </blockquote>
@@ -548,7 +548,7 @@ implementation &#39;com.google.android.exoplayer:exoplayer-ui:2.X.X&#39;</code><
 <blockquote>
 <p>构建器创建一个 AudioAttributes 实例。</p>
 </blockquote>
-<h2 id="C-类"><a href="#C-类" class="headerlink" title="C 类"></a>C 类</h2><blockquote>
+<h1 id="C-类"><a href="#C-类" class="headerlink" title="C 类"></a>C 类</h1><blockquote>
 <p>定义标准库的常量</p>
 </blockquote>
 <ul>
@@ -564,7 +564,7 @@ implementation &#39;com.google.android.exoplayer:exoplayer-ui:2.X.X&#39;</code><
 <blockquote>
 <p>当使用媒体是使用这个值(如音乐或者电影原声带)</p>
 </blockquote>
-<h2 id="SimpleExoPlayer-类"><a href="#SimpleExoPlayer-类" class="headerlink" title="SimpleExoPlayer 类"></a>SimpleExoPlayer 类</h2><blockquote>
+<h1 id="SimpleExoPlayer-类"><a href="#SimpleExoPlayer-类" class="headerlink" title="SimpleExoPlayer 类"></a>SimpleExoPlayer 类</h1><blockquote>
 <p>实现组件的外部播放。</p>
 <p>用SimpleExoPlayer.Build(context:Context)来实现</p>
 </blockquote>
@@ -595,7 +595,32 @@ implementation &#39;com.google.android.exoplayer:exoplayer-ui:2.X.X&#39;</code><
 <p><strong>Parameters:</strong></p>
 <p><code>handleAudioBecomingNoisy</code> - Whether the player should pause automatically when audio is rerouted from a headset to device speakers.</p>
 </blockquote>
-<h2 id="DefaultDataSourceFactory-类"><a href="#DefaultDataSourceFactory-类" class="headerlink" title="DefaultDataSourceFactory  类"></a>DefaultDataSourceFactory  类</h2><blockquote>
+<p><strong>方法</strong></p>
+<table>
+<thead>
+<tr>
+<th align="center">返回值类型</th>
+<th align="center">方法名</th>
+<th align="center">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">void</td>
+<td align="center">setPlayWhenReady(boolean playWhenReady)</td>
+<td align="center">playWhenReady:准备好后时候播放。如果播放器已处于就绪状态，则将暂停改为播放。</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+</tbody></table>
+<h1 id="DefaultDataSourceFactory-类"><a href="#DefaultDataSourceFactory-类" class="headerlink" title="DefaultDataSourceFactory  类"></a>DefaultDataSourceFactory  类</h1><blockquote>
 <p>创建工厂，将非文件的数据委托到 DetaultHttpDataSources。</p>
 <p>Factory that produces DefaultDataSource instances that delegate to DefaultHttpDataSources for non-file/asset/content URIs.</p>
 </blockquote>
@@ -621,7 +646,7 @@ implementation &#39;com.google.android.exoplayer:exoplayer-ui:2.X.X&#39;</code><
 </li>
 </ul>
 </blockquote>
-<h2 id="MediaSessionConnector-类"><a href="#MediaSessionConnector-类" class="headerlink" title="MediaSessionConnector 类"></a>MediaSessionConnector 类</h2><p><img src="https://raw.githubusercontent.com/TheCara/RepoPicture/master/image/20201204220725.png" alt="继承关系"></p>
+<h1 id="MediaSessionConnector-类"><a href="#MediaSessionConnector-类" class="headerlink" title="MediaSessionConnector 类"></a>MediaSessionConnector 类</h1><p><img src="https://raw.githubusercontent.com/TheCara/RepoPicture/master/image/20201204220725.png" alt="继承关系"></p>
 <blockquote>
 <p>介绍</p>
 <p>Connects a MediaSessionCompat to a <a href="https://exoplayer.dev/doc/reference/com/google/android/exoplayer2/Player.html" target="_blank" rel="noopener"><code>Player</code></a>.</p>
@@ -638,13 +663,119 @@ implementation &#39;com.google.android.exoplayer:exoplayer-ui:2.X.X&#39;</code><
 <p>Sets the player to be connected to the media session. Must be called on the same thread that is used to access the player.</p>
 <p>将播放器连接到媒体。主要只能在一条线程上。</p>
 </blockquote>
-<h2 id="MediaDescriptionCompat-类"><a href="#MediaDescriptionCompat-类" class="headerlink" title="MediaDescriptionCompat 类"></a>MediaDescriptionCompat 类</h2><p>适合显示的媒体项目的一组简单元数据。 这可以使用Builder创建，也可以使用<code>getDescription()</code>从现有元数据中<code>getDescription()</code> 。</p>
-<h2 id="MediaDescriptionCompat-Builder"><a href="#MediaDescriptionCompat-Builder" class="headerlink" title="MediaDescriptionCompat.Builder"></a>MediaDescriptionCompat.Builder</h2><h2 id="ConcatenatingMediaSource-类"><a href="#ConcatenatingMediaSource-类" class="headerlink" title="ConcatenatingMediaSource 类"></a>ConcatenatingMediaSource 类</h2><blockquote>
+<table>
+<thead>
+<tr>
+<th align="center">修饰符</th>
+<th align="center">方法</th>
+<th align="center">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">void</td>
+<td align="center">setQueueNavigator(MediaSessionConnector.QueueNavigator queueNavigator)</td>
+<td align="center">设置处理队列导航的操作。queueNavigator：队列编辑器。</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+</tbody></table>
+<h1 id="MediaSessionConnector-PlaybackPreparer-接口"><a href="#MediaSessionConnector-PlaybackPreparer-接口" class="headerlink" title="MediaSessionConnector.PlaybackPreparer 接口"></a>MediaSessionConnector.PlaybackPreparer 接口</h1><blockquote>
+<p>准备播放操作的接口</p>
+</blockquote>
+<p><strong>抽象方法</strong></p>
+<table>
+<thead>
+<tr>
+<th align="center">返回类型</th>
+<th align="center">方法名字</th>
+<th align="center">参数</th>
+<th align="center">描述</th>
+<th align="center">返回</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">long</td>
+<td align="center">getSupportedPrepareActions()</td>
+<td align="center">空</td>
+<td align="center">返回支持的媒体操作常量</td>
+<td align="center">媒体常量</td>
+</tr>
+<tr>
+<td align="center">void</td>
+<td align="center">onPrepare(boolean playWhenReady)</td>
+<td align="center">准备好后是否播放</td>
+<td align="center">准备完成时调用</td>
+<td align="center">空</td>
+</tr>
+<tr>
+<td align="center">void</td>
+<td align="center">onPrepareFromMediaId ( String  mediaId, boolean playWhenReady, @Nullable Bundle  extras)</td>
+<td align="center">mediaId：媒体项的Id，playWhenReady：准备好后是否播放，extras：媒体的控制器可为null</td>
+<td align="center">用以播放特定的媒体</td>
+<td align="center">空</td>
+</tr>
+<tr>
+<td align="center">void</td>
+<td align="center">onPrepareFromSearch(String query, boolean playWhenReady, @Nullable Bundle extras)</td>
+<td align="center">query：搜索，playWhenReady：准备好后是否播放，extras：媒体控制器可为null</td>
+<td align="center">搜索特定音乐</td>
+<td align="center">void</td>
+</tr>
+<tr>
+<td align="center">void</td>
+<td align="center">onPrepareFromUri( Uri  uri, boolean playWhenReady, @Nullable Bundle  extras)</td>
+<td align="center">uri：要播放的媒体项目，playWhenReady：准备完成后是否播放，extras：媒体控制器可为null</td>
+<td align="center">通过Uri处理特定媒体项目</td>
+<td align="center">void</td>
+</tr>
+<tr>
+<td align="center">void</td>
+<td align="center">onCommand(String command,Bundle extras,ResultReceiver cb)</td>
+<td align="center">command：命令名称，extras：命令的可选参数，cb，接收器命令发送到接收器，可为空</td>
+<td align="center">接口继承了 MediaSessionConnector.CommandReceiver 类中的方法。控制器发送自定义命令时调用</td>
+<td align="center">void</td>
+</tr>
+</tbody></table>
+<h1 id="MediaDescriptionCompat-类"><a href="#MediaDescriptionCompat-类" class="headerlink" title="MediaDescriptionCompat 类"></a>MediaDescriptionCompat 类</h1><p>适合显示的媒体项目的一组简单元数据。 这可以使用Builder创建，也可以使用<code>getDescription()</code>从现有元数据中<code>getDescription()</code> 。</p>
+<h1 id="MediaDescriptionCompat-Builder"><a href="#MediaDescriptionCompat-Builder" class="headerlink" title="MediaDescriptionCompat.Builder"></a>MediaDescriptionCompat.Builder</h1><h1 id="ConcatenatingMediaSource-类"><a href="#ConcatenatingMediaSource-类" class="headerlink" title="ConcatenatingMediaSource 类"></a>ConcatenatingMediaSource 类</h1><blockquote>
 <p><code>ConcatenatingMediaSource</code>允许播放期间动态的添加和删除<code>MediaSource</code></p>
 </blockquote>
-<h2 id="PlayerNotificationManager-类"><a href="#PlayerNotificationManager-类" class="headerlink" title="PlayerNotificationManager 类"></a>PlayerNotificationManager 类</h2><blockquote>
+<h1 id="PlayerNotificationManager-类"><a href="#PlayerNotificationManager-类" class="headerlink" title="PlayerNotificationManager 类"></a>PlayerNotificationManager 类</h1><blockquote>
 <p>用来启动、更新和取消播放器状态的媒体样式通知的。</p>
 </blockquote>
+<p><strong>内部方法</strong></p>
+<table>
+<thead>
+<tr>
+<th align="center">返回值类型</th>
+<th align="center">方法</th>
+<th align="center">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">void</td>
+<td align="center">setPlaybackPreparer(PlaybackPreparer playbackPreparer)</td>
+<td align="center">准备播放器</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+</tbody></table>
 <p><strong>嵌套类或方法</strong></p>
 <h4 id="public-static-interface-PlayerNotificationManager-NotificationListener"><a href="#public-static-interface-PlayerNotificationManager-NotificationListener" class="headerlink" title="public static interface PlayerNotificationManager.NotificationListener"></a>public static interface PlayerNotificationManager.NotificationListener</h4><blockquote>
 <p>监听状态的监听器。</p>
@@ -742,6 +873,93 @@ implementation &#39;com.google.android.exoplayer:exoplayer-ui:2.X.X&#39;</code><
 <td align="center">com.google.android.exoplayer2.Player player, PlayerNotificationManager.BitmapCallback callback</td>
 <td><strong>Bitmap</strong></td>
 <td align="center">获取当前大图标。当存在异步加载时可以返回占位符（或null），并且在 PlayerNotificationManager.BitmapCallback 加载后传递给它。由于在使用过程中适配器会多次被调用，因此图片由程序缓存，并尽可能在后续使用中同步返回。</td>
+</tr>
+</tbody></table>
+<h1 id="Player-接口"><a href="#Player-接口" class="headerlink" title="Player 接口"></a>Player 接口</h1><blockquote>
+<p>定义媒体播放器界面的高级功能常量、接口类型等，例如播放、暂停、搜索等属性能力。</p>
+</blockquote>
+<p><strong>常量</strong></p>
+<table>
+<thead>
+<tr>
+<th align="center">修饰类型</th>
+<th align="center">常量</th>
+<th align="center">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">static int</td>
+<td align="center">STATE_READY</td>
+<td align="center">移动到指定位置准备播放</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+</tbody></table>
+<h1 id="Player-EventListener-接口"><a href="#Player-EventListener-接口" class="headerlink" title="Player.EventListener 接口"></a>Player.EventListener 接口</h1><blockquote>
+<p>检测播放器的状态。</p>
+</blockquote>
+<p><strong>抽象方法</strong></p>
+<table>
+<thead>
+<tr>
+<th align="center">返回类型</th>
+<th align="center">方法名</th>
+<th align="center">描述</th>
+<th align="center">参数</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">void</td>
+<td align="center">onPlayerError(ExoPlaybackException error)。</td>
+<td align="center">发生错误时调用</td>
+<td align="center">error:错误参数。</td>
+</tr>
+<tr>
+<td align="center">void</td>
+<td align="center">onPlayerStateChanged(boolean playWhenReady,int playbackState)</td>
+<td align="center">检测媒体的状态</td>
+<td align="center">playWhenReady:是否准备好。playbackState：播放的状态。</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+</tbody></table>
+<h1 id="TimelineQueueNavigator-抽象类"><a href="#TimelineQueueNavigator-抽象类" class="headerlink" title="TimelineQueueNavigator 抽象类"></a>TimelineQueueNavigator 抽象类</h1><blockquote>
+<p>抽象类用来实现 MediaSessionConnector.QueueNavigator 窗口的映射Player，Timeline媒体会话的队列。</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th align="center">修饰符</th>
+<th align="center">(构造)方法</th>
+<th align="center">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"></td>
+<td align="center">TimelineQueueNavigator(MediaSessionCompat mediaSession)</td>
+<td align="center">创建一个实例MediaSessionCompat。</td>
+</tr>
+<tr>
+<td align="center">MediaDescriptionCompat</td>
+<td align="center">getMediaDescription(Player player,int windowIndex)</td>
+<td align="center">获得MediaDescriptionCompat给定窗口的索引。通常需要异步加载图标。</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
 </tr>
 </tbody></table>
 <p>引用：</p>

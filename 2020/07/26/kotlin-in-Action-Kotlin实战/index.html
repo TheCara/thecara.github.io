@@ -2885,7 +2885,235 @@ fun lookForAlice(people:List&lt;Person&gt;) {
 <p>因为传给listOf函数的两个值都是字符串，编译器推导出你正在创建一个List<String>。另一方面，如果你想创建一个空的列表，这样就没有任何可以推导处类型实参的线索，你就得显式指定它（类型形参）。就创建列表来说，即可以选择在变量声明中说明泛型的类型，也可以选择在创建列表的函数中说明类型实参。例子：</p>
 <pre><code class="kotlin">val readers :MutableList&lt;String&gt; = mutableListOf()
 val reader = mutableListOf&lt;String&gt;()</code></pre>
-<h3 id="9-1-1-泛型函数和属性"><a href="#9-1-1-泛型函数和属性" class="headerlink" title="9.1.1 泛型函数和属性"></a>9.1.1 泛型函数和属性</h3><h1 id="补充"><a href="#补充" class="headerlink" title="补充"></a>补充</h1><h3 id="字段和属性"><a href="#字段和属性" class="headerlink" title="字段和属性"></a>字段和属性</h3><p><a href="https://blog.csdn.net/chenchunlin526/article/details/71424844" target="_blank" rel="noopener">深入理解Java中的字段与属性的区别</a></p>
+<h3 id="9-1-1-泛型函数和属性"><a href="#9-1-1-泛型函数和属性" class="headerlink" title="9.1.1 泛型函数和属性"></a>9.1.1 泛型函数和属性</h3><p>如果你在编写一个使用列表的函数，希望它可以在任何列表上使用，而不是某个具体类型的元素列表，那么编写一个 <strong>泛型函数</strong>。</p>
+<blockquote>
+<p>泛型函数有它自己的类型形参。类型形参在每次函数调用时都必须替换成具体的类型实参。</p>
+</blockquote>
+<p>大部分使用集合的库函数都是泛型的。下面这个函数就返回一个只包含在指定下标区间内的元素。</p>
+<pre><code class="kotlin">fun &lt;T&gt; List&lt;T&gt;.slice(indeces: IntRange):List&lt;T&gt;    //接收者和返回类型使用了类型形参
+// &lt;T&gt;:类型形参声明</code></pre>
+<p>接收者和返回类型用到了函数的类型形参T，它们的类型都是List<T>。当你在一个具体的列表上调用这个函数时，可以显式地指定类型实参。</p>
+<blockquote>
+<p>多数情况下，编译器会推导出类型。</p>
+</blockquote>
+<pre><code class="kotlin">//调用泛型函数
+&gt;&gt;&gt; val letter = (&#39;a&#39;..&#39;z&#39;).toList()
+&gt;&gt;&gt; println(letter.slice&lt;Char&gt;(0..2))    //显式地指定类型实参
+[a, b, c]
+&gt;&gt;&gt; println(letter.slice&lt;Char&gt;(10..13))    
+[k, l, m, n]</code></pre>
+<p>调用的结果都是List<Char>。编译器把函数返回类型List<T>总的T替换成推导出来的类型Char</p>
+<h3 id="9-1-2-声明泛型类"><a href="#9-1-2-声明泛型类" class="headerlink" title="9.1.2 声明泛型类"></a>9.1.2 声明泛型类</h3><blockquote>
+<p><strong>和Java一样，Kotlin通过在内名称后加上一对尖括号，并把类型参数放在尖括号内来声明泛型类及接口。</strong></p>
+<p>一旦声明以后，就可以在类的主体内像其他类型一样使用类型参数。</p>
+</blockquote>
+<pre><code class="kotlin">interface List&lt;T&gt;{    //List 接口顶类类型参数T
+    operator fun get(index:Int):T    //在接口或类的内部，T可以当作普通类型使用。
+}</code></pre>
+<blockquote>
+<p><strong>如果你的类继承了泛型类（或者实现了泛型接口），你就得为<em>基础类型</em>的泛型形参提供一个类型实参。它可以是具体类型或一个类型形参：</strong></p>
+<pre><code class="kotlin">class StringList(override val size: Int) : List&lt;String&gt; {   //这个类实现了List，提供了具体类型实参：String
+    override fun get(index: Int): String {  //注意T被String替代
+        TODO(&quot;Not yet implemented&quot;)
+    }
+}
+
+class ArratList&lt;T&gt; : List&lt;T&gt; {  // 现在ArrayList泛型类型形参T就是List的类型实参。
+    override fun get(index: Int): T {
+        TODO(&quot;Not yet implemented&quot;)
+    }
+}</code></pre>
+<p>StringList类被声明成只能 <strong>只能包含String元素，所以它使用String作为基础类型的类型实参。</strong>之类中的任何函数都要用这个正确的类型换掉T，所以在StringList中你会得到函数签名get(Int):String ，而不是fun get(Int):T。</p>
+<p><strong>而类ArrayList定义了它自己的类型参数T并把它指定为父类的类型实参。</strong>注意ArrayList<T>中的T和LIst<T>中的T不一样，它是全新的类型形参，不必保留一样的名称。</p>
+<p><strong>一个类甚至可以把它自己作为类型实参应用。</strong>实现Comparable接口的类就是这种模式的经典例子。任何可以比较的元素都必须定义它如何与同样类型的对象进行比较：</p>
+<pre><code class="kotlin">interface Comparable&lt;T&gt; {
+    fun comparableTo(other: T): Int
+}
+
+class String : Comparable&lt;String&gt; {
+    override fun comparableTo(other: String): Int {
+        TODO(&quot;Not yet implemented&quot;)
+    }
+}
+</code></pre>
+<p>String 实现了Comparable接口的泛型接口，提供类型String给类型实参T。</p>
+</blockquote>
+<h3 id="9-1-3-类型参数约束"><a href="#9-1-3-类型参数约束" class="headerlink" title="9.1.3 类型参数约束"></a>9.1.3 类型参数约束</h3><blockquote>
+<p><strong>类型参数约束可以限制作为类和函数的类型实参的类型。</strong> 以计算列表元素之和的函数为例。它们可以在List<Int>和List<Double>上，当不可以用在LIst<String>这样的列表上。可以定义一个类型参数的约束，说明sum的类型形参必须是数字，来表达这个限制。</p>
+</blockquote>
+<blockquote>
+<p><strong>如果你把一个类型指定为泛型类型形参的上街约束</strong>，在泛型类型具体的初始化中，其对应的类型实参就必须这个具体类型或它的子类型（暂时子类型和子类的一样相同）。</p>
+</blockquote>
+<blockquote>
+<p><strong>你是这样定义约束的，把冒号放到类型参数名称之后，作为类型形参上界的类型紧跟其后，在Java中，用的关键词extends来表达一样的概念：<T extends Number> T sum(List<T> list)。</strong></p>
+<pre><code class="kotlin">// &lt;T: 类型参数
+// Number&gt; ：上界
+fun &lt;T:Number&gt; List&lt;T&gt;.sum():T</code></pre>
+</blockquote>
+<blockquote>
+<p><strong>一旦指定了类型形参T的上界，你就可以把类型T的值作为它的上界（类型）的值使用。</strong></p>
+<pre><code class="kotlin">fun &lt;T : Number&gt; oneHalf(value: T): Double {    //指定Number为类型形参上界
+    return value.toDouble() / 2.0
+}
+&gt;&gt;&gt; println(oneHalf(3))
+1.5</code></pre>
+</blockquote>
+<blockquote>
+<pre><code class="kotlin">// 声明带类型参数约束的函数
+fun &lt;T : Comparable&lt;T&gt;&gt; max(first: T, second: T): T {   //这个函数的实参必须是可比较元素
+    return if (first &gt; second) first else second
+}
+&gt;&gt;&gt; println(max(&quot;kotlin&quot;, &quot;java&quot;)) // 字符串按照字母表顺序比较</code></pre>
+<p><strong>T的上界是泛型类型Comparable<T> 。前面已经看到了，String累继承了Comparable<String> 这样使得String变成了max函数的有效类型实参。</strong></p>
+<p>记住，first&gt;second的简写形式会根据Kotlin的运算符约定被编译成first.compareTo(second) &gt; 0。这种比较之所以可行，是因为first的类型T继承自Comparable<T>,这样你就可以比较first和另外一个类型T的元素。</p>
+<p><strong>极少数情况下，需要在类型参数上指定多个约束</strong>。例如下面这个代码清单用泛型的饭是保证给定的CharSequence以句号结尾。</p>
+<pre><code class="kotlin">//为一个类型参数指定多个约束
+fun &lt;T&gt; ensureTrailingPeriod(seq: T) where T : CharSequence, T : Appendable {    //类型参数约束的列表
+    if (!seq.endsWith(&quot;.&quot;)) {    //调用为CharSequence接口定义的扩展函数
+        seq.append(&quot;.&quot;)    //调用Appendable接口的方法
+    }
+}
+&gt;&gt;&gt; val helloWorld = StringBuilder(&quot;Hello World&quot;)
+&gt;&gt;&gt; ensureTrailingPeriod(helloWorld)
+&gt;&gt;&gt; println(helloWorld)</code></pre>
+<p>这种情况下，可以说明作为类型实参的类型必须实现CharSequence和Appendable接口。这意味着该类型的值可以使用访问数据(endsWith)和修改数据(append) 两种操作。</p>
+</blockquote>
+<h3 id="9-1-4-让类型形参非空"><a href="#9-1-4-让类型形参非空" class="headerlink" title="9.1.4 让类型形参非空"></a>9.1.4 让类型形参非空</h3><blockquote>
+<pre><code class="kotlin">class Processor&lt;T&gt;{
+    fun process(value:T){
+        value?.hashCode()    //“value“是可空的，所以要安全调用
+    }
+}</code></pre>
+<p>如果你声明的是泛型类或者泛型函数，任何类型实参，包括哪些可空的类型实参，都可以替换它的类型形参。<strong>没有指定上界的类型形参将会使用Any?这个默认上界。</strong></p>
+<p>process函数中，参数value是可空的，尽管T并没有使用问好标记。下面这种情况是因为Processor类具体初始化T能使用可空类型。</p>
+</blockquote>
+<blockquote>
+<pre><code class="kotlin">val nullableStringProcessor = Processor&lt;String?&gt;()    //可空类型替换为String?被用来替换T
+nullableStringProcessor.process(null)    //使用“null”作为“value”实参的代码可以编译</code></pre>
+<p>如果你想保证替换类型形参的始终是非空类型，可以通过指定一个约定来实现。如果你除啦可空性之外没有任何限制，可以使用Any代替默认的Any?作为上界：</p>
+<pre><code class="kotlin">class Processor&lt;T:Any&gt;{    //指定非空上界。
+    fun process(value:T){
+        value.hashCode()    //类型T的值现在是非“空”的。
+    }
+}</code></pre>
+<p><strong>约束&lt;T:Any&gt;确保了类型T永远都是非空类型。编译器不会接收代码Processor&lt;String?&gt;,因为类型实参String?不是Any的子类型。（它是 Any? 的子类型）</strong></p>
+<p>可以通过指定任意非空类型作为上界，来让类型参数非空，不光是类型Any。</p>
+</blockquote>
+<h2 id="9-2-运行时的泛型：擦除和实例化参数"><a href="#9-2-运行时的泛型：擦除和实例化参数" class="headerlink" title="9.2 运行时的泛型：擦除和实例化参数"></a>9.2 运行时的泛型：擦除和实例化参数</h2><p>JVM上的泛型一般是通过<strong>类型擦除</strong>实现，就是说泛型类实例的类型实参在运行时是不保留的。可以声明一个inline函数，使其类型实参不被擦除（或者，Kotlin术语称为实化）。</p>
+<h3 id="9-2-1-运行时的泛型：类型检查和转换"><a href="#9-2-1-运行时的泛型：类型检查和转换" class="headerlink" title="9.2.1 运行时的泛型：类型检查和转换"></a>9.2.1 运行时的泛型：类型检查和转换</h3><p>和Java一样，Kotlin的泛型在运行时也被 <strong>擦除</strong> 了。这意味着泛型类实例不会携带用于创建它的类型实参的信息。例如，如果你创建了一个List<String>并将一堆字符串放到其中，在运行时你只能看到它是一个List，不能识别出列表本打算包含的是那种类型元素（当然，你可以获取一个元素然后检查它的类型，但即便检查通过了也不会有任何保证，因为其他元素可能拥有不同类型）。</p>
+<pre><code class="kotlin">val list1:List&lt;String&gt; = listOf(&quot;a&quot;,&quot;b&quot;)
+val list2:List&lt;Int&gt; = listOf(1,2,3)</code></pre>
+<p><img src="https://raw.githubusercontent.com/TheCara/RepoPicture/master/image/20210905153004.png" alt="在运行时，你不会知道list1和list2时候声明成字符串或者整数列表。它们每个都只是List    "></p>
+<p>即使编译器看到的是两种完全不同类型的列表，在执行的时候它们看起来却完全一样。即便如此，你通常可以确信List<String>在包含字符串，而List<Int>只包含整数。因为编译器知道类型实参，并确保每个列表只存储正确的元素。</p>
+<p><strong>因为类型实参没有被保留下来，你不能检查它们。</strong>例如，你不能判断一个列表是只包含字符串的列表还是包含其它对象的列表。一般而言，在is检查中不可能使用类型实参中的类型。</p>
+<pre><code class="kotlin">&gt;&gt;&gt; if (value is List&lt;String&gt;){...}
+ERROR:Cannot check for instance of erased type</code></pre>
+<p><strong>为什么擦除了泛型类型信息？</strong></p>
+<p>尽管在运行时可以完全断定这个值是一个List，但你依然无法判断它是一个含有字符串的列表，还是含有人，或者含有其他什么：这些信息被擦除了。<strong>注意擦除泛型类型信息是有好处的：应用程序使用的内存总量较小，因为要保存在内存中的类型信息更少。</strong></p>
+<p><strong>检查类型是否是个列表？</strong></p>
+<p>路上所述，Kotlin不允许使用没有指定类型实参的泛型类型。那么你可能想知道如何检查一个值是否是列表，而不是set或者其他对象。可以使用特殊的<strong>星号投影</strong>语法来做这种检查：</p>
+<pre><code class="kotlin">if (value is List&lt;*&gt;){... ...}</code></pre>
+<p>这里检查了value是否是一个List，而且并没有得到关于它的任何信息。</p>
+<blockquote>
+<p>注意，在as 和 as? 转换中仍然可以使用一般的泛型类型。但如果该类有正确的<strong>基础类型</strong>但<strong>类型实参</strong>是错误的，转换也不会失败，因为在运行时转换发生的时候类型实参是未知的。因此这样的转换会导致编译器发出“unchecked cast”（未受检转换）的警告。这仅仅是个警告，你仍然可以继续使用这个值，但它拥有必要的类型。</p>
+<pre><code class="kotlin">    // 对泛型类型做类型转换
+fun printSum(c: Collection&lt;*&gt;) {
+    val initList = c as? List&lt;Int&gt;
+        ?: throw IllegalArgumentException(&quot;List is expected&quot;)    //这里警告。Unchecked cast:List&lt;*&gt;to List&lt;Int&gt;
+    println(initList.sum())
+}
+
+&gt;&gt;&gt; printSum(listOf(1, 2, 3))
+6</code></pre>
+<p>编译一切正常：编译器只是发出了一个警告，这意味着代码是合法的。如果一个整型的列表或者set上调用printSum函数，一切都会如预期发生：一种情况会打印出元素之和，而第二种情况则会IllegalArgumentException。但如果你传递了一个错误类型的值，运行时会得到一个ClassCastException：</p>
+<pre><code class="kotlin">&gt;&gt;&gt; printSum(setOf(1,2,3))    //Set不是列表所以抛出了异常
+IllegalArgumentException:List is expected
+&gt;&gt;&gt; printSum(listOf(&quot;a&quot;,&quot;b&quot;,&quot;c&quot;))    //类型转换成功，但后面抛出了另外的异常
+ClassCastException:String cannot be cast to Number    </code></pre>
+<p>我们来讨论一下字符串列表上调用printSum函数时抛出的异常。你得到的并不是IllegalArgumentException，因为你没有办法判断实参是不是一个List<Int>。因此类型转换成功，无论如何函数sum都会在这个列表上调用。在这个函数执行期间，异常抛出了。这是因为sum函数试着从列表中读取Number值然后把它们加在一起。把String但Number用的尝试会导致运行时ClassCastException。</p>
+</blockquote>
+<blockquote>
+<pre><code class="kotlin">/*    对已知类型实参做类型转换    */
+fun printSum(c: Collection&lt;Int&gt;) {
+    if (c is List&lt;Int&gt;) {
+        println(c.sum())    //这次检查是合法的
+    }
+}
+
+&gt;&gt;&gt; printSum(listOf(1, 2, 3))
+6</code></pre>
+<p>c 时候拥有类型List<Int>的检查是否可行，因为在编译期就确定了集合（不管它是列表还是其他类型的集合）包含的都是整型数字。</p>
+<p>Kotlin有特殊的语法结构可以允许你在函数体中使用具体的类型实参，但是又inline函数可以。</p>
+</blockquote>
+<h3 id="9-2-2-声明带实化类型参数的函数"><a href="#9-2-2-声明带实化类型参数的函数" class="headerlink" title="9.2.2 声明带实化类型参数的函数"></a>9.2.2 声明带实化类型参数的函数</h3><blockquote>
+<p>Kotlin泛型在运行时会被擦除，这意味着如果你有一个泛型类的实例，你无法弄清楚在这个实例创建时你究竟用的是那个类型的实参。泛型类型的类型实参也是这样。在调用泛型函数的时候，在函数体中你不能决定函数调用它用的类型实参：</p>
+<pre><code class="kotlin">&gt;&gt;&gt; fun &lt;T&gt; isA(value:Any)=value is T    //表达式
+Error:Cannot check for instance of erased type:T</code></pre>
+<p>这种情况下只有<strong>内联函数</strong>能够使用，内联函数的类型形参能够被实化，意味着你可以在运行时应用实际的类型实参。</p>
+<p><strong>如果使用inline函数标记函数，编译器会把每次函数调用都换成函数实际的代码实现。使用内联函数还可以提升性能，如果该函数使用了lambda实参：lambda的代码会被内敛，所以不会创建任何匿名类。</strong>  <strong>inline函数使用时的另一种场景：它们的类型参数可以被实化。</strong></p>
+<p>把前面列子中的isA函数声明成inlie并且用reified标记类型参数，你能够用该函数检查value是不是T的实例。</p>
+<pre><code class="kotlin">/*  声明带实化类型参数的函数   */
+inline fun &lt;reified T&gt; isA(value: Any) = value is T
+&gt;&gt;&gt; println(isA&lt;String&gt;(&quot;abc&quot;))
+true
+&gt;&gt;&gt; println(isA&lt;String&gt;(123))
+false</code></pre>
+</blockquote>
+<blockquote>
+<p>一个实化类型参数能够发挥作用最简单的例子就是标准库函数filterIsInstance。<strong>这个函数接收一个集合，选择其中哪些指定类的实例，然后返回这些被选中的实例。</strong></p>
+<pre><code class="kotlin">/*  使用标准库函数filterIsInstance */
+&gt;&gt;&gt; val items = listOf(&quot;one&quot;, 2, &quot;three&quot;)
+&gt;&gt;&gt; println(items.filterIsInstance&lt;String&gt;())
+[one,three]</code></pre>
+<p>通过指定<String>作为函数的类型参数，你表明感兴趣的只是字符串。<strong>因此函数的返回类型时List<String>。这种情况下，<em>类型实参在运行时是已知的</em>函数filterIsInstance使用它来检查列表中的值是不是指定为该类型实参的类的实例。</strong></p>
+<pre><code class="kotlin">/*  filterIsTance声明的简化版本    */
+inline fun &lt;reified T&gt; Iterable&lt;*&gt;.filterIsTance(): List&lt;T&gt; {    //“reified”声明了类型参数不会在运行时被擦除
+    val destination = mutableListOf&lt;T&gt;()
+    for (element in this) {
+        if (element is T) {        //可以检查元素是不是指定为类型实参的类的实例
+            destination.add(element)
+        }
+    }
+    return destination
+}</code></pre>
+</blockquote>
+<p><strong>为什么实化只对内联函数有效？</strong></p>
+<p>为什么在inline函数中允许这样写 element is T ，而普通的类或者函数却不行？</p>
+<p>编译器把实现内联函数的字节码插入每一次调用发生的地方。每次你调用带实化类型参数的函数时，编译器都知道这次特定调用中用作实参的确切类型。因此，编译器可以生成应用作为类型实参的具体类的字节码。上述 filterIsInstance<String>调用来说，生成的代码和下面这段代码是等价的：</p>
+<pre><code class="kotlin">for (element in this){
+    if(element is String){    //引用具体类
+        destination.add(element)
+    }
+}</code></pre>
+<p>因为生成的字节码引用了具体类型，而不是类型参数，它不会被运行时发生的类型参数擦除影响。</p>
+<p><strong>注意reified类型参数的inline函数不能在java中调用。</strong>普通的内联函数可以像常规函数那样在Java中调用–它们可以被调用而不能被内联。带实化类型参数的函数需要额外的处理，来吧类型实参的值替换到字节码中，所以它们必须永远是内联的。所以不能在java中调用。</p>
+<p><strong>内联函数在什么情况下性能有势最有效？</strong></p>
+<p><strong>一个内联函数可以有多个实化类型参数，也可以同时拥有飞实化类型参数和实化类型参数。注意，filterIsInstance函数虽然被标记成了inline，而他并不期望lamdba作为实参。（决定何时将函数声明为内联函数）中，我们提到函数把函数标记成内联只有在一种情况下有性能优势，即函数拥有函数类型的形参并且其对应的实参–lambda–和函数一起被内联的实化。</strong></p>
+<p>为了保证良好的性能，你仍然需要追踪了解标记为inline的函数的大小。如果函数变的庞大，最好把不依赖实化类型参数的代码抽取到非内联函数中。</p>
+<h3 id="9-2-3-使用实化类型参数代替类引用"><a href="#9-2-3-使用实化类型参数代替类引用" class="headerlink" title="9.2.3 使用实化类型参数代替类引用"></a>9.2.3 使用实化类型参数代替类引用</h3><p>实化类型参数的常见使用场景是为接收java.lang.Class 类型参数的API构造适配器。这个API的例子是JDK中ServiceLoader，它接收一个代表接口或抽象类的java.long.Class，并返回实现了该接口（或继承了该抽象类）java.lang.Class，并返回实现了该接口（或继承了该抽象类）的类的实例。如何利用实化类型参数更容易地调用这些API。</p>
+<pre><code class="kotlin">/*    通过类引用 加载ServiceLoader    */
+val serviceImpl = ServiceLoader.load(Service::class.java)</code></pre>
+<p>::class.java 的语法展示了如何获取java.lang.Class对应的Kotlin类。</p>
+<p>这和Java中的Service.class是完全等同的。</p>
+<p><strong>使用实化类型参数的函数重写这个例子：</strong></p>
+<pre><code class="kotlin">val serviceImpl = loadService&lt;Service&gt;()</code></pre>
+<p>代码短了许多。</p>
+<p><strong>那么如何定义实化函数？</strong></p>
+<p>要加载的服务类现在被指定成了loadService函数的类型实参。把一个类要指定成类型实参要容易理解的多，因为它的代码比使用::class.java语法更短。</p>
+<p>看看loadService函数是如何定义的：</p>
+<pre><code class="kotlin">inline fun &lt;reified T&gt; loadService(){    //类型参数标记成了“reified”
+    return ServiceLoader.load(T::Class.java)    //把T::Class当成类型形参的类访问。
+}</code></pre>
+<p>这种用在类型上的::Class.java语法也可以用在实化类型参数上。使用这种语法会产生对应到指定为类型参数的类的java.lang.Class,你可以正常使用它。</p>
+<p><strong>简化 Android上的startActivity 函数</strong></p>
+<p>如果你是Android开发者，可以使用实化类型参数简化startActivity函数。实化类型参数用来代替传递作为java.lang.Class的Activity类。</p>
+<pre><code class="kotlin">inline fun &lt;reified T: Activity&gt; Context.startActivity(){    //类型参数标记为“reified”
+    val intent = Intent(this,T::Class.java)    //把T::Class当成类型参数的类访问
+    startActivity(intent)
+}
+startActivity(intent)    //调用方法显式Activity</code></pre>
+<h3 id="9-2-4-实化类型参数的限制"><a href="#9-2-4-实化类型参数的限制" class="headerlink" title="9.2.4 实化类型参数的限制"></a>9.2.4 实化类型参数的限制</h3><p>实化类型参数是有一些限制的。有一些实化是与生俱来的，另一些是现有的实现决定的，</p>
+<h1 id="补充"><a href="#补充" class="headerlink" title="补充"></a>补充</h1><h3 id="字段和属性"><a href="#字段和属性" class="headerlink" title="字段和属性"></a>字段和属性</h3><p><a href="https://blog.csdn.net/chenchunlin526/article/details/71424844" target="_blank" rel="noopener">深入理解Java中的字段与属性的区别</a></p>
 <h4 id="属性和字段的区别"><a href="#属性和字段的区别" class="headerlink" title="属性和字段的区别"></a>属性和字段的区别</h4><p>属性（property），通常可以理解为get 和 set 方法。</p>
 <p>字段（field），通常叫做 <strong>类成员</strong>，或者 <strong>类变量</strong> ，有时也叫 域 ，理解为 数据成员，用来承担数据的。</p>
 <h4 id="属性和字段详解"><a href="#属性和字段详解" class="headerlink" title="属性和字段详解"></a>属性和字段详解</h4><p><strong>字段（field）</strong></p>
@@ -2943,6 +3171,10 @@ applyOp(2, 3, sumLambda)</code></pre>
 <blockquote>
 <p>Java中泛型是在JDK1.5版本后引入的，但集合Collection实在JDK1.2版本时引入的，现在看到的List，是在泛型出现后加入的，那么JDK1.2之前就直接用LIst（java中俗称原生态类型）表示。在为了兼容之前的版本Java采用所谓的伪泛型，伪泛型有一个特征就是<strong>泛型擦除</strong>，表示泛型类型信息在编译时期会被抹除掉，包括你是List还是List在运行时它们都是一样，那都是List类型，泛型类型信息已经被抹除掉了。</p>
 </blockquote>
+<h2 id="Kotlin中的形参和实参"><a href="#Kotlin中的形参和实参" class="headerlink" title="Kotlin中的形参和实参"></a>Kotlin中的形参和实参</h2><p>ps：</p>
+<p><a href="https://juejin.cn/post/6844903694119485447#heading-6" target="_blank" rel="noopener">一个简单方式教你记住Kotlin的形参和实参</a></p>
+<h2 id="什么才是泛型擦除"><a href="#什么才是泛型擦除" class="headerlink" title="什么才是泛型擦除"></a>什么才是泛型擦除</h2><p>ps:</p>
+<p><a href="https://juejin.cn/post/6844904083199918093" target="_blank" rel="noopener">面试官问我：“泛型擦除是什么，会带来什么问题？”</a></p>
 <p><strong>引用：</strong></p>
 <p><a href="https://www.web3.xin/code/2606.html" target="_blank" rel="noopener">Kotlin this表达式</a></p>
 <p><a href="https://www.jianshu.com/p/10358883455c" target="_blank" rel="noopener">kotlin中的函数引用详解</a>    </p>
