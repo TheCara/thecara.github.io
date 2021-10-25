@@ -488,7 +488,7 @@
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h1 id="2-Kotlin-基础"><a href="#2-Kotlin-基础" class="headerlink" title="2 Kotlin 基础"></a>2 Kotlin 基础</h1><h3 id="2-1-基本要素-函数变量"><a href="#2-1-基本要素-函数变量" class="headerlink" title="2.1 基本要素: 函数变量"></a>2.1 基本要素: 函数变量</h3><h4 id="2-1-3-变量"><a href="#2-1-3-变量" class="headerlink" title="2.1.3 变量"></a>2.1.3 变量</h4><p><strong>可变变量和不可变变量</strong></p>
+                <h1 id="2-Kotlin-基础"><a href="#2-Kotlin-基础" class="headerlink" title="2 Kotlin 基础"></a>2 Kotlin 基础</h1><h2 id="2-1-基本要素-函数变量"><a href="#2-1-基本要素-函数变量" class="headerlink" title="2.1 基本要素: 函数变量"></a>2.1 基本要素: 函数变量</h2><h3 id="2-1-3-变量"><a href="#2-1-3-变量" class="headerlink" title="2.1.3 变量"></a>2.1.3 变量</h3><p><strong>可变变量和不可变变量</strong></p>
 <ul>
 <li>val–不可变引用。使用val声明的变量不能在初始化之后再次赋值。它对应的是java中的final变量</li>
 <li>var–可变引用。这种变量的值可以被改变。这种声明对应的是普通(非final)变量</li>
@@ -500,16 +500,19 @@
 <p>注意,尽管val引用自身是不可变的,但是它指向的对象<strong>`可能</strong>`是可变的。列如</p>
 <pre><code class="kotlin">val languages = arrayListOf(&quot;Java&quot;)
 lenguages.add(&quot;Kotlin&quot;)</code></pre>
-<h3 id="2-3-表示和处理选择：枚举和“when”"><a href="#2-3-表示和处理选择：枚举和“when”" class="headerlink" title="2.3 表示和处理选择：枚举和“when”"></a>2.3 表示和处理选择：枚举和“when”</h3><h4 id="2-3-1-声明枚举类"><a href="#2-3-1-声明枚举类" class="headerlink" title="2.3.1 声明枚举类"></a>2.3.1 声明枚举类</h4><p><strong>什么是枚举</strong></p>
+<h2 id="2-3-表示和处理选择：枚举和“when”"><a href="#2-3-表示和处理选择：枚举和“when”" class="headerlink" title="2.3 表示和处理选择：枚举和“when”"></a>2.3 表示和处理选择：枚举和“when”</h2><h3 id="2-3-1-声明枚举类"><a href="#2-3-1-声明枚举类" class="headerlink" title="2.3.1 声明枚举类"></a>2.3.1 声明枚举类</h3><p><strong>什么是枚举</strong></p>
 <p>为了让编译器能够自动检查某个值在枚举的集合中，并且，不同用途的枚举需要不同的类型来标记，不能混用，我们可以使用 <strong>enum</strong> 来定义枚举类。</p>
 <pre><code class="kotlin">enum class Color{
     RED,ORANGE,YELLOW,GREEN,BLUE,INDIGO,VIOLET
 }</code></pre>
 <p>kotlin 中 enum 是一个所谓的软关键词：只有当它出现在class前面时才会有特殊的意义，在其他地方可以把它当作普通的名称使用。</p>
-<h4 id="2-3-5-智能转换：合并类型检查和转换"><a href="#2-3-5-智能转换：合并类型检查和转换" class="headerlink" title="2.3.5 智能转换：合并类型检查和转换"></a>2.3.5 智能转换：合并类型检查和转换</h4><h5 id="kotlin智能转换的案例"><a href="#kotlin智能转换的案例" class="headerlink" title="kotlin智能转换的案例"></a>kotlin智能转换的案例</h5><h6 id="表达式类型层次"><a href="#表达式类型层次" class="headerlink" title="表达式类型层次"></a>表达式类型层次</h6><pre><code class="kotlin">interface Expr
+<h3 id="2-3-5-智能转换：合并类型检查和转换"><a href="#2-3-5-智能转换：合并类型检查和转换" class="headerlink" title="2.3.5 智能转换：合并类型检查和转换"></a>2.3.5 智能转换：合并类型检查和转换</h3><p><strong>kotlin智能转换的案例</strong> </p>
+<p><strong>表达式类型层次</strong></p>
+<pre><code class="kotlin">interface Expr
 class Num(val value: Int) : Expr    // 简单的值对象类，只有一个属性value，实现了Expr接口
 class Sum(val left: Expr, val right: Expr) : Expr   // Sum运算的实参可以是任何Expr:Num 或者 Sum</code></pre>
-<h6 id="对表达式求值"><a href="#对表达式求值" class="headerlink" title="对表达式求值"></a>对表达式求值</h6><pre><code class="kotlin">fun eval(e: Expr): Int {
+<p><strong>对表达式求值</strong></p>
+<pre><code class="kotlin">fun eval(e: Expr): Int {
     if (e is Num) {
 //        val n = e.value as Num //显示的转换为Num类型多余的
         return e.value
@@ -522,22 +525,29 @@ class Sum(val left: Expr, val right: Expr) : Expr   // Sum运算的实参可以�
 <p><img src="https://raw.githubusercontent.com/TheCara/RepoPicture/master/image/20200831171911.png" alt=""></p>
 <p>结果</p>
 <p><img src="https://raw.githubusercontent.com/TheCara/RepoPicture/master/image/20200831171248.png" alt=""></p>
-<h5 id="“is”-修饰符"><a href="#“is”-修饰符" class="headerlink" title="“is” 修饰符"></a>“is” 修饰符</h5><p>在 kotlin 中，你要使用 is 检查来判断一个变量是否是某个类型。</p>
-<h5 id="什么时候进行智能转换？"><a href="#什么时候进行智能转换？" class="headerlink" title="什么时候进行智能转换？"></a>什么时候进行智能转换？</h5><p>如果你检查过一个变量是某种类型，后面就不再需要转换它了，可以就把它当作你检查过的类型使用。事实上编译器为你执行了类型转换，我们把这种行为称为 <strong>智能转换。</strong></p>
-<h1 id="3-函数的订阅和调用"><a href="#3-函数的订阅和调用" class="headerlink" title="3 函数的订阅和调用"></a>3 函数的订阅和调用</h1><h2 id="3-3-给别人的类添加方法：扩展函数和属性"><a href="#3-3-给别人的类添加方法：扩展函数和属性" class="headerlink" title="3.3 给别人的类添加方法：扩展函数和属性"></a>3.3 给别人的类添加方法：扩展函数和属性</h2><h5 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h5><blockquote>
+<p><strong>“is” 修饰符</strong></p>
+<p>在 kotlin 中，你要使用 is 检查来判断一个变量是否是某个类型。</p>
+<p><strong>什么时候进行智能转换？</strong></p>
+<p>如果你检查过一个变量是某种类型，后面就不再需要转换它了，可以就把它当作你检查过的类型使用。事实上编译器为你执行了类型转换，我们把这种行为称为 <strong>智能转换。</strong></p>
+<h1 id="3-函数的订阅和调用"><a href="#3-函数的订阅和调用" class="headerlink" title="3 函数的订阅和调用"></a>3 函数的订阅和调用</h1><h2 id="3-3-给别人的类添加方法：扩展函数和属性"><a href="#3-3-给别人的类添加方法：扩展函数和属性" class="headerlink" title="3.3 给别人的类添加方法：扩展函数和属性"></a>3.3 给别人的类添加方法：扩展函数和属性</h2><p><strong>介绍</strong></p>
+<blockquote>
 <p>扩展函数非常简单，作为一个类的成员函数，不过它定义在类的外边。</p>
 </blockquote>
-<h1 id="4-类、对象和接口"><a href="#4-类、对象和接口" class="headerlink" title="4 类、对象和接口"></a>4 类、对象和接口</h1><h3 id="4-1-定义类继承结构"><a href="#4-1-定义类继承结构" class="headerlink" title="4.1 定义类继承结构"></a>4.1 定义类继承结构</h3><h4 id="4-1-1-Kotlin-中的接口"><a href="#4-1-1-Kotlin-中的接口" class="headerlink" title="4.1.1 Kotlin 中的接口"></a>4.1.1 Kotlin 中的接口</h4><h5 id="声明接口"><a href="#声明接口" class="headerlink" title="声明接口"></a>声明接口</h5><pre><code class="kotlin">interface Clickable{
+<h1 id="4-类、对象和接口"><a href="#4-类、对象和接口" class="headerlink" title="4 类、对象和接口"></a>4 类、对象和接口</h1><h2 id="4-1-定义类继承结构"><a href="#4-1-定义类继承结构" class="headerlink" title="4.1 定义类继承结构"></a>4.1 定义类继承结构</h2><h3 id="4-1-1-Kotlin-中的接口"><a href="#4-1-1-Kotlin-中的接口" class="headerlink" title="4.1.1 Kotlin 中的接口"></a>4.1.1 Kotlin 中的接口</h3><p><strong>声明接口</strong></p>
+<pre><code class="kotlin">interface Clickable{
     fun click()
 }</code></pre>
-<h5 id="实现接口"><a href="#实现接口" class="headerlink" title="实现接口"></a>实现接口</h5><pre><code>class Button : Clickble {
+<p><strong>实现接口</strong></p>
+<pre><code>class Button : Clickble {
     override fun click() {
         println(&quot;I was clicked&quot;)
     }
 }</code></pre><p><img src="https://raw.githubusercontent.com/TheCara/RepoPicture/master/image/20200826205307.png" alt=""></p>
 <p><img src="https://raw.githubusercontent.com/TheCara/RepoPicture/master/image/20200826205356.png" alt=""></p>
-<h5 id="Kotlin实现接口与-Java-有那些不同"><a href="#Kotlin实现接口与-Java-有那些不同" class="headerlink" title="Kotlin实现接口与 Java 有那些不同"></a>Kotlin实现接口与 Java 有那些不同</h5><p>Kotlin 在类后面使用冒号来代替 <strong>Java</strong> 中的 extends 和 implements 关键词。 和 Java 一样，<strong>一个类可以实现任意多个接口</strong>，但<strong>只能继承一个类型</strong>。</p>
-<h5 id="override-修饰符的作用"><a href="#override-修饰符的作用" class="headerlink" title="override 修饰符的作用"></a>override 修饰符的作用</h5><ul>
+<p><strong>Kotlin实现接口与 Java 有那些不同</strong></p>
+<p>Kotlin 在类后面使用冒号来代替 <strong>Java</strong> 中的 extends 和 implements 关键词。 和 Java 一样，<strong>一个类可以实现任意多个接口</strong>，但<strong>只能继承一个类型</strong>。</p>
+<p><strong>override 修饰符的作用</strong></p>
+<ul>
 <li>相同</li>
 </ul>
 <p>与 Java 中的 @Override 注解类似，<strong>override 修饰符用来标注被重写的父类或者接口的方法和属性</strong>。</p>
@@ -545,21 +555,27 @@ class Sum(val left: Expr, val right: Expr) : Expr   // Sum运算的实参可以�
 <li>不同</li>
 </ul>
 <p>在 Kotlin 中使用 override 修饰符是强制要求的。<strong>这会避免先写出实现方法再添加抽象方法造成的意外重写：</strong>你的代码将不能编译，除非你显式地将这个方法标注为 Override 或者重命名它。</p>
-<h5 id="如何给接口添加一个默认实现的方法"><a href="#如何给接口添加一个默认实现的方法" class="headerlink" title="如何给接口添加一个默认实现的方法"></a>如何给接口添加一个默认实现的方法</h5><p>接口的方法可以有一个默认实现的方法。</p>
+<p><strong>如何给接口添加一个默认实现的方法</strong></p>
+<p>接口的方法可以有一个默认实现的方法。</p>
 <pre><code class="kotlin">interface Clickable{
     fun click() // 普通的方法声明
     fun showOff() = println(&quot;I&#39;m clickable!&quot;) // 带默认实现的方法
 }</code></pre>
-<h5 id="实现一个带有默认实现的方法的接口要注意什么"><a href="#实现一个带有默认实现的方法的接口要注意什么" class="headerlink" title="实现一个带有默认实现的方法的接口要注意什么"></a>实现一个带有默认实现的方法的接口要注意什么</h5><p>如果你实现了这个接口，你需要为 click 提供一个实现。可以重新定义 showOff() 方法的行为，或者如果你对默认行为感到满意也可以直接省略它。（默认实现的方法也可以被重写）</p>
-<h5 id="定义实现了同样方法的接口"><a href="#定义实现了同样方法的接口" class="headerlink" title="定义实现了同样方法的接口"></a>定义实现了同样方法的接口</h5><pre><code class="kotlin">interface Focusable {
+<p><strong>实现一个带有默认实现的方法的接口要注意什么</strong></p>
+<p>如果你实现了这个接口，你需要为 click 提供一个实现。可以重新定义 showOff() 方法的行为，或者如果你对默认行为感到满意也可以直接省略它。（默认实现的方法也可以被重写）</p>
+<p><strong>定义实现了同样方法的接口</strong></p>
+<pre><code class="kotlin">interface Focusable {
     fun setFocus(b: Boolean) = println(&quot;I ${if (b) &quot;got&quot; else &quot;lost&quot;} focus.&quot;)
     fun showOff() = println(&quot;I&#39;m focusable!&quot;)
 }</code></pre>
-<h5 id="在类中实现两个有相同默认实现方法的接口会发生什么"><a href="#在类中实现两个有相同默认实现方法的接口会发生什么" class="headerlink" title="在类中实现两个有相同默认实现方法的接口会发生什么"></a>在类中实现两个有相同默认实现方法的接口会发生什么</h5><p>在这两个接口中都带有默认实现的 showOff() 方法：在没有显示的实现 showOff() ,会得到编译错误信息。</p>
+<p><strong>在类中实现两个有相同默认实现方法的接口会发生什么</strong></p>
+<p>在这两个接口中都带有默认实现的 showOff() 方法：在没有显示的实现 showOff() ,会得到编译错误信息。</p>
 <p><img src="https://raw.githubusercontent.com/TheCara/RepoPicture/master/image/20200827000446.png" alt=""></p>
 <p><img src="https://raw.githubusercontent.com/TheCara/RepoPicture/master/image/20200827000526.png" alt=""></p>
-<h6 id="解决办法"><a href="#解决办法" class="headerlink" title="解决办法"></a>解决办法</h6><p>必须显式的实现相同方法。</p>
-<h5 id="调用继承-接口-的默认实现方法"><a href="#调用继承-接口-的默认实现方法" class="headerlink" title="调用继承(接口)的默认实现方法"></a>调用继承(接口)的默认实现方法</h5><pre><code class="kotlin">class Button : Clickable, Focusable {
+<p><strong>解决办法</strong></p>
+<p>必须显式的实现相同方法。</p>
+<p><strong>调用继承(接口)的默认实现方法</strong></p>
+<pre><code class="kotlin">class Button : Clickable, Focusable {
     override fun click() {
         TODO(&quot;Not yet implemented&quot;)
     }
@@ -575,8 +591,10 @@ class Sum(val left: Expr, val right: Expr) : Expr   // Sum运算的实参可以�
 <p>通过调用继承的两个父类型中的实现来实现 showOff() 。</p>
 <p><img src="https://raw.githubusercontent.com/TheCara/RepoPicture/master/image/20200827005257.png" alt=""></p>
 <p><img src="https://raw.githubusercontent.com/TheCara/RepoPicture/master/image/20200827005432.png" alt=""></p>
-<h4 id="4-1-2-open、final-和-abstract-修饰符：默认为-final"><a href="#4-1-2-open、final-和-abstract-修饰符：默认为-final" class="headerlink" title="4.1.2 open、final 和 abstract 修饰符：默认为 final"></a>4.1.2 open、final 和 abstract 修饰符：默认为 final</h4><h5 id="kotlin-中如何继承一个类"><a href="#kotlin-中如何继承一个类" class="headerlink" title="kotlin 中如何继承一个类"></a>kotlin 中如何继承一个类</h5><p>如果你想要创建一个类的子类，需要使用 open 修饰符来标示这个类。此外<strong>需要给每个可以被重写的属性或者方法添加 open 属性</strong>。</p>
-<h5 id="声明一个带open-方法的-open-类"><a href="#声明一个带open-方法的-open-类" class="headerlink" title="声明一个带open 方法的 open 类"></a>声明一个带open 方法的 open 类</h5><pre><code class="kotlin">open class RichButton : Clickable {
+<h3 id="4-1-2-open、final-和-abstract-修饰符：默认为-final"><a href="#4-1-2-open、final-和-abstract-修饰符：默认为-final" class="headerlink" title="4.1.2 open、final 和 abstract 修饰符：默认为 final"></a>4.1.2 open、final 和 abstract 修饰符：默认为 final</h3><p><strong>kotlin 中如何继承一个类</strong></p>
+<p>如果你想要创建一个类的子类，需要使用 open 修饰符来标示这个类。此外<strong>需要给每个可以被重写的属性或者方法添加 open 属性</strong>。</p>
+<p><strong>声明一个带open 方法的 open 类</strong></p>
+<pre><code class="kotlin">open class RichButton : Clickable {
     fun disable() {}    // 这个函数是 final 的： 不能在子类中重写它。
     open fun animate() {} // 这个函数是 open 的： 可以在子类中重写它
 
@@ -586,10 +604,14 @@ class Sum(val left: Expr, val right: Expr) : Expr   // Sum运算的实参可以�
     }
 
 }</code></pre>
-<h5 id="默认-final-的好处"><a href="#默认-final-的好处" class="headerlink" title="默认 final 的好处"></a>默认 final 的好处</h5><p>类默认 final 带来了一个重要的好处就是这使得在大量的场景中的只能转换成为可能。</p>
-<h5 id="智能转换的前提"><a href="#智能转换的前提" class="headerlink" title="智能转换的前提"></a>智能转换的前提</h5><p><strong>智能转换只能在进行类型检查后没有改变过的变量上起的作用。</strong>对于一个类来说，这意味着<strong>智能转换在val类型并且没有自定义访问器的类属性上使用</strong>。 这个前提意味着属性必须是 final 的，否则如果一个子类可以重写属性并且定义一个自定义的访问器将会打破智能转换的关键前提。</p>
-<h5 id="抽象类的默认修饰符"><a href="#抽象类的默认修饰符" class="headerlink" title="抽象类的默认修饰符"></a>抽象类的默认修饰符</h5><p>抽象成员始终是open的，所以不需要显式地使用open修饰符。</p>
-<h5 id="声明一个抽象类"><a href="#声明一个抽象类" class="headerlink" title="声明一个抽象类"></a>声明一个抽象类</h5><pre><code class="kotlin">abstract class Animated {
+<p><strong>默认 final 的好处</strong></p>
+<p>类默认 final 带来了一个重要的好处就是这使得在大量的场景中的只能转换成为可能。</p>
+<p><strong>智能转换的前提</strong></p>
+<p><strong>智能转换只能在进行类型检查后没有改变过的变量上起的作用。</strong>对于一个类来说，这意味着<strong>智能转换在val类型并且没有自定义访问器的类属性上使用</strong>。 这个前提意味着属性必须是 final 的，否则如果一个子类可以重写属性并且定义一个自定义的访问器将会打破智能转换的关键前提。</p>
+<p><strong>抽象类的默认修饰符</strong></p>
+<p>抽象成员始终是open的，所以不需要显式地使用open修饰符。</p>
+<p><strong>声明一个抽象类</strong></p>
+<pre><code class="kotlin">abstract class Animated {
     abstract fun animate()  // 这个函数是抽象的：它没有实现必须被子类重写
 
     // 抽象类中的非抽象函数 并不是默认 open 的，但是可以标注为 open的
@@ -599,17 +621,20 @@ class Sum(val left: Expr, val right: Expr) : Expr   // Sum运算的实参可以�
 
     fun animateTwice() {}
 }</code></pre>
-<h4 id="4-1-4-内部类和嵌套类：默认嵌套类"><a href="#4-1-4-内部类和嵌套类：默认嵌套类" class="headerlink" title="4.1.4 内部类和嵌套类：默认嵌套类"></a>4.1.4 内部类和嵌套类：默认嵌套类</h4><p>内部类：非静态嵌套类，也被成为内部类。</p>
+<h3 id="4-1-4-内部类和嵌套类：默认嵌套类"><a href="#4-1-4-内部类和嵌套类：默认嵌套类" class="headerlink" title="4.1.4 内部类和嵌套类：默认嵌套类"></a>4.1.4 内部类和嵌套类：默认嵌套类</h3><p>内部类：非静态嵌套类，也被成为内部类。</p>
 <p>嵌套类：静态嵌套类，嵌套类多称为：静态嵌套类。</p>
-<h5 id="Kotlin中嵌套类和Java中的不同"><a href="#Kotlin中嵌套类和Java中的不同" class="headerlink" title="Kotlin中嵌套类和Java中的不同"></a>Kotlin中嵌套类和Java中的不同</h5><p>在Kotlin中的嵌套类不能访问外部类的实例，除非你特别的做出要求。 </p>
-<h5 id="在序列化时使用内部类"><a href="#在序列化时使用内部类" class="headerlink" title="在序列化时使用内部类"></a>在序列化时使用内部类</h5><p>在你定义一个 View 元素，它的状态时可序列化的。<strong>想要序列化一个视图可能并不容易，但是可以把所有需要的数据复制到另一个辅助类中去。</strong></p>
+<p><strong>Kotlin中嵌套类和Java中的不同</strong></p>
+<p>在Kotlin中的嵌套类不能访问外部类的实例，除非你特别的做出要求。 </p>
+<p><strong>在序列化时使用内部类</strong></p>
+<p>在你定义一个 View 元素，它的状态时可序列化的。<strong>想要序列化一个视图可能并不容易，但是可以把所有需要的数据复制到另一个辅助类中去。</strong></p>
 <pre><code class="kotlin">interface State : Serializable
 interface View {
     fun getCurrentState(): State
     fun restoreState(state: State) {}
 }</code></pre>
 <p>声明State接口去实现Serializable。View接口声明了可以用来保存视图状态的getCurrentState和restoreState方法。</p>
-<h5 id="用内部类的java代码来实现View"><a href="#用内部类的java代码来实现View" class="headerlink" title="用内部类的java代码来实现View"></a>用内部类的java代码来实现View</h5><pre><code class="java">public class Button implements View{
+<p><strong>用内部类的java代码来实现View</strong></p>
+<pre><code class="java">public class Button implements View{
     @Override
     public State getCurrentState(){
         return new ButtonState();
@@ -623,9 +648,12 @@ interface View {
     }
 }</code></pre>
 <p>问题：在运行时你会得到 java.io.NotSerializable.Exception:Button 异常，在你序列化声明的按钮状态时。这个可能看起来会很奇怪：你序列化的变量是ButtonState类型，为什么会有Button异常呢？</p>
-<h5 id="无法序列化的原因"><a href="#无法序列化的原因" class="headerlink" title="无法序列化的原因"></a>无法序列化的原因</h5><p>在java中，当你在另一个类中声明一个类时，它会默认变成内部类。案例中：ButtonState类隐示的存储了它的外部Button类的应用。从而解释了为什么ButtonState不能被序列化。</p>
-<h5 id="修复无法序列化"><a href="#修复无法序列化" class="headerlink" title="修复无法序列化"></a>修复无法序列化</h5><p><strong>需要声明ButtonState类是static的</strong>。将嵌套类声明为static会冲这个类中删除包围它的类的隐式引用。</p>
-<h5 id="在kotlin中使用嵌套类来实现-View"><a href="#在kotlin中使用嵌套类来实现-View" class="headerlink" title="在kotlin中使用嵌套类来实现 View"></a>在kotlin中使用嵌套类来实现 View</h5><pre><code class="kotlin">class Button : View {
+<p><strong>无法序列化的原因</strong></p>
+<p>在java中，当你在另一个类中声明一个类时，它会默认变成内部类。案例中：ButtonState类隐示的存储了它的外部Button类的应用。从而解释了为什么ButtonState不能被序列化。</p>
+<p><strong>修复无法序列化</strong></p>
+<p><strong>需要声明ButtonState类是static的</strong>。将嵌套类声明为static会冲这个类中删除包围它的类的隐式引用。</p>
+<p><strong>在kotlin中使用嵌套类来实现 View</strong></p>
+<pre><code class="kotlin">class Button : View {
     override fun getCurrentState(): State {
         TODO(&quot;Not yet implemented&quot;)
     }
@@ -641,10 +669,14 @@ interface View {
 
 }</code></pre>
 <p><strong>kotlin中默认行为是嵌套类。</strong></p>
-<h5 id="如何让默认嵌套类的类型变为内部类！"><a href="#如何让默认嵌套类的类型变为内部类！" class="headerlink" title="如何让默认嵌套类的类型变为内部类！"></a>如何让默认嵌套类的类型变为内部类！</h5><p>要把它（嵌套类）变成为一个内部类来持有一个外部类的引用的话需要使用 <strong>inner</strong> 修饰符。</p>
-<h5 id="kotlin中内部类访问外部类"><a href="#kotlin中内部类访问外部类" class="headerlink" title="kotlin中内部类访问外部类"></a>kotlin中内部类访问外部类</h5><p>在kotlin中引用外部类实例的语法与java不同。需要使用this@Outer从Inner类去访问Outer类。</p>
-<h4 id="4-1-5-密封类：定义受限的类继承结构"><a href="#4-1-5-密封类：定义受限的类继承结构" class="headerlink" title="4.1.5 密封类：定义受限的类继承结构"></a>4.1.5 密封类：定义受限的类继承结构</h4><h5 id="什么是密封类”sealed“"><a href="#什么是密封类”sealed“" class="headerlink" title="什么是密封类”sealed“"></a>什么是密封类”sealed“</h5><p>sealed 类。为父类添加了一个新的 sealed 修饰符，可对创建的子类做出严格的限制。<strong>所有的子类必须嵌套在父类中。</strong></p>
-<h5 id="为什么要使用密封类（定义受限的类继承结构）"><a href="#为什么要使用密封类（定义受限的类继承结构）" class="headerlink" title="为什么要使用密封类（定义受限的类继承结构）"></a>为什么要使用密封类（定义受限的类继承结构）</h5><p><strong>作为接口实现的表达式 👇</strong></p>
+<p><strong>如何让默认嵌套类的类型变为内部类！</strong></p>
+<p>要把它（嵌套类）变成为一个内部类来持有一个外部类的引用的话需要使用 <strong>inner</strong> 修饰符。</p>
+<p><strong>kotlin中内部类访问外部类</strong></p>
+<p>在kotlin中引用外部类实例的语法与java不同。需要使用this@Outer从Inner类去访问Outer类。</p>
+<h3 id="4-1-5-密封类：定义受限的类继承结构"><a href="#4-1-5-密封类：定义受限的类继承结构" class="headerlink" title="4.1.5 密封类：定义受限的类继承结构"></a>4.1.5 密封类：定义受限的类继承结构</h3><p><strong>什么是密封类”sealed“</strong></p>
+<p>sealed 类。为父类添加了一个新的 sealed 修饰符，可对创建的子类做出严格的限制。<strong>所有的子类必须嵌套在父类中。</strong></p>
+<p><strong>为什么要使用密封类（定义受限的类继承结构）</strong></p>
+<p><strong>作为接口实现的表达式 👇</strong></p>
 <pre><code class="kotlin">interface Expr
 class Num(val value: Int) : Expr
 class Sum(val left: Expr, val right: Expr):Expr
@@ -659,7 +691,8 @@ fun eval(e: Expr): Int =
 </code></pre>
 <p><strong>当使用 when 结构来执行表达式的时候，Kotlin 编译器会强制检查默认选项</strong>。在这个例子中，<strong>不能返回一个有意义的值，所以直接返回异常状态。</strong></p>
 <p>更重要的是，如果你添加了一个新的子类，编译器并不能发现你修改了。<strong>如果你忘记添加一个新的分支，就会选择默认选项，这又可能导致潜在的 bug。</strong></p>
-<h5 id="如何使用密封类-“sealed”"><a href="#如何使用密封类-“sealed”" class="headerlink" title="如何使用密封类 “sealed”"></a>如何使用密封类 “sealed”</h5><pre><code class="kotlin">sealed class Expr { //将基类标记为封闭的
+<p><strong>如何使用密封类 “sealed”</strong></p>
+<pre><code class="kotlin">sealed class Expr { //将基类标记为封闭的
     class Num(val value: Int) : Expr()
     class Sum(val left: Expr, val right: Expr) : Expr() // 将所有可能的类作为嵌套类列出
 }
@@ -671,11 +704,13 @@ fun eval(expr: Expr): Int =
         is Expr.Sum -&gt; eval(expr.left) + eval(expr.right)
     }</code></pre>
 <p><strong>如果你在 when 表达式中处理了所有的 sealed 类的子类，你就不再需要提供默认分支。</strong>注意，sealed 修饰符隐含的这个类是一个 open 类，你不再需要显式地添加 open 修饰符。</p>
-<h3 id="4-2-声明一个带默认构造方法或属性的类"><a href="#4-2-声明一个带默认构造方法或属性的类" class="headerlink" title="4.2 声明一个带默认构造方法或属性的类"></a>4.2 声明一个带默认构造方法或属性的类</h3><p><strong>kotlin中构造方法和java中有那些不同</strong></p>
+<h2 id="4-2-声明一个带默认构造方法或属性的类"><a href="#4-2-声明一个带默认构造方法或属性的类" class="headerlink" title="4.2 声明一个带默认构造方法或属性的类"></a>4.2 声明一个带默认构造方法或属性的类</h2><p><strong>kotlin中构造方法和java中有那些不同</strong></p>
 <p>与java中一个类可以声明一个或多个构造方法。kotlin也是类似的，只是做出了一些修改：区分了主构造方法（通常是主要而简洁的初始化类的方法，并且在类体外部声明）和从构造方法。</p>
-<h4 id="4-2-1-初始化类：主构造方法和初始化代码块"><a href="#4-2-1-初始化类：主构造方法和初始化代码块" class="headerlink" title="4.2.1 初始化类：主构造方法和初始化代码块"></a>4.2.1 初始化类：主构造方法和初始化代码块</h4><h5 id="什么是主构造方法。"><a href="#什么是主构造方法。" class="headerlink" title="什么是主构造方法。"></a>什么是主构造方法。</h5><pre><code class="kotlin">class User(val nickname:String)</code></pre>
+<h3 id="4-2-1-初始化类：主构造方法和初始化代码块"><a href="#4-2-1-初始化类：主构造方法和初始化代码块" class="headerlink" title="4.2.1 初始化类：主构造方法和初始化代码块"></a>4.2.1 初始化类：主构造方法和初始化代码块</h3><p><strong>什么是主构造方法。</strong></p>
+<pre><code class="kotlin">class User(val nickname:String)</code></pre>
 <p>这段被括号围起来的代码块就叫<strong>做主构造方法</strong>。它有两个目的：表明构造方法的<strong>参数</strong>，以及定义使用这个<strong>参数</strong>的属性。</p>
-<h5 id="明确的主构造方法声明"><a href="#明确的主构造方法声明" class="headerlink" title="明确的主构造方法声明"></a>明确的主构造方法声明</h5><pre><code class="kotlin">class User constructor(_nickname: String) {   // 带一个参数的主构造方法
+<p><strong>明确的主构造方法声明</strong></p>
+<pre><code class="kotlin">class User constructor(_nickname: String) {   // 带一个参数的主构造方法
     val nickname: String
 
     init {  // 初始化代码块
@@ -686,21 +721,27 @@ fun eval(expr: Expr): Int =
 <blockquote>
 <p>两个关键词 <strong>construtor</strong> 和 <strong>init</strong>。 constructor 关键词用来开始一个<strong>构造方法</strong>或者<strong>从构造方法</strong>的声明。init 关键词用来引入初始化代码块。这种代码块包含了类在创建时执行的代码，并且会和主构造方法一起使用。<strong>因为主构造方法有语法限制，不能包含初始化代码，这就是需要初始化代码块（init）的原因。</strong>同时可以创建多个初始化代码块。</p>
 </blockquote>
-<h5 id="用参数来初始化属性"><a href="#用参数来初始化属性" class="headerlink" title="用参数来初始化属性"></a>用参数来初始化属性</h5><pre><code class="kotlin">class User(_nickname: String) { // 带一个参数的构造方法
+<p><strong>用参数来初始化属性</strong></p>
+<pre><code class="kotlin">class User(_nickname: String) { // 带一个参数的构造方法
     val nickname: String = _nickname    // 用参数来初始化属性
 
 }</code></pre>
 <blockquote>
 <p>在例子中，不需要把初始化代码放在初始化代码块中，因为它可以与nickname属性声明结合。如果主构造方法没有注解或可见性修饰符，同样可以去除 constructor 关键词。</p>
 </blockquote>
-<h5 id="用最简洁的方法再次初始化类"><a href="#用最简洁的方法再次初始化类" class="headerlink" title="用最简洁的方法再次初始化类"></a>用最简洁的方法再次初始化类</h5><pre><code class="kotlin">class User(val nickname:String)    // “val” 意味相对应的属性会用构造方法的参数来初始化。</code></pre>
+<p><strong>用最简洁的方法再次初始化类</strong></p>
+<pre><code class="kotlin">class User(val nickname:String)    // “val” 意味相对应的属性会用构造方法的参数来初始化。</code></pre>
 <p>前几个案例用 val 关键词声明了属性。如果属性用相对应的构造方法参数来初始化，<strong>代码可以通过把 val 关键词加载参数前的方法来简化它</strong>。可以用来代替类中的属性定义了。</p>
-<h5 id="为构造方法提供默认值"><a href="#为构造方法提供默认值" class="headerlink" title="为构造方法提供默认值"></a>为构造方法提供默认值</h5><pre><code class="kotlin">class User(val nickname: String, val isSubscribed: Boolean = true) // 为构造方法提供一个默认值    </code></pre>
+<p><strong>为构造方法提供默认值</strong></p>
+<pre><code class="kotlin">class User(val nickname: String, val isSubscribed: Boolean = true) // 为构造方法提供一个默认值    </code></pre>
 <p>可以像函数参数一样为构造方法声明默认值。</p>
-<h5 id="如何让一个类不被其他代码实例化"><a href="#如何让一个类不被其他代码实例化" class="headerlink" title="如何让一个类不被其他代码实例化"></a>如何让一个类不被其他代码实例化</h5><p>如果想要你的类不被其他代码实例化，必须把构造方法标记为 private。</p>
+<p><strong>如何让一个类不被其他代码实例化</strong></p>
+<p>如果想要你的类不被其他代码实例化，必须把构造方法标记为 private。</p>
 <pre><code class="kotlin">class Secretive private constructor()   // 这个类有 private 构造方法</code></pre>
-<h4 id="4-2-2-构造方法：用不同的方法来初始化方法"><a href="#4-2-2-构造方法：用不同的方法来初始化方法" class="headerlink" title="4.2.2 构造方法：用不同的方法来初始化方法"></a>4.2.2 构造方法：用不同的方法来初始化方法</h4><h5 id="为什么要使用多种方法初始化父类"><a href="#为什么要使用多种方法初始化父类" class="headerlink" title="为什么要使用多种方法初始化父类"></a><strong>为什么要使用多种方法初始化父类</strong></h5><p>最常见的一种就是当你需要扩展一个框架类来提供多个构造方法，以便于通过不同的方法来初始化类的时候。</p>
-<h5 id="父类使用从构造方法"><a href="#父类使用从构造方法" class="headerlink" title="父类使用从构造方法"></a><strong>父类使用从构造方法</strong></h5><pre><code class="kotlin">open class View {
+<h3 id="4-2-2-构造方法：用不同的方法来初始化方法"><a href="#4-2-2-构造方法：用不同的方法来初始化方法" class="headerlink" title="4.2.2 构造方法：用不同的方法来初始化方法"></a>4.2.2 构造方法：用不同的方法来初始化方法</h3><p><strong>为什么要使用多种方法初始化父类</strong></p>
+<p>最常见的一种就是当你需要扩展一个框架类来提供多个构造方法，以便于通过不同的方法来初始化类的时候。</p>
+<p><strong>父类使用从构造方法</strong></p>
+<pre><code class="kotlin">open class View {
     constructor(ctx: Context) { // 从构造方法
         //some code
     }
@@ -709,7 +750,8 @@ fun eval(expr: Expr): Int =
         //some code
     }
 }</code></pre>
-<h5 id="扩展父类"><a href="#扩展父类" class="headerlink" title="扩展父类"></a>扩展父类</h5><pre><code class="kotlin">class MyButton : View {
+<p><strong>扩展父类</strong></p>
+<pre><code class="kotlin">class MyButton : View {
     constructor(ctx: Context) : super(ctx) {
         // 调用父类构造方法
     }
@@ -718,7 +760,8 @@ fun eval(expr: Expr): Int =
 
     }
 }</code></pre>
-<h5 id="调用父类的另一个构造方法"><a href="#调用父类的另一个构造方法" class="headerlink" title="调用父类的另一个构造方法"></a>调用父类的另一个构造方法</h5><pre><code class="kotlin">class MyButton : View {
+<p><strong>调用父类的另一个构造方法</strong></p>
+<pre><code class="kotlin">class MyButton : View {
     constructor(ctx: Context) : this(ctx, My_SYTLE) {
         // 委托给这个类的另一个构造方法
     }
@@ -730,12 +773,14 @@ fun eval(expr: Expr): Int =
 <p>从<strong>构造方法</strong>中调用你自己类的另一个<strong>构造方法</strong>。</p>
 <p>可以修改 MyButton类 <strong>使得一个构造方法委托给同一个类的另一个构造方法</strong>，为参数传入默认值，图下👇。第二个方法继续调用super()。</p>
 <p><img src="https://raw.githubusercontent.com/TheCara/RepoPicture/master/image/20200906113216.png" alt=""></p>
-<h4 id="4-2-3-实现在接口中声明的属性"><a href="#4-2-3-实现在接口中声明的属性" class="headerlink" title="4.2.3 实现在接口中声明的属性"></a>4.2.3 实现在接口中声明的属性</h4><h5 id="在接口中声明一个属性"><a href="#在接口中声明一个属性" class="headerlink" title="在接口中声明一个属性"></a>在接口中声明一个属性</h5><pre><code class="kotlin">interface User {
+<h3 id="4-2-3-实现在接口中声明的属性"><a href="#4-2-3-实现在接口中声明的属性" class="headerlink" title="4.2.3 实现在接口中声明的属性"></a>4.2.3 实现在接口中声明的属性</h3><p><strong>在接口中声明一个属性</strong></p>
+<pre><code class="kotlin">interface User {
     val nickname: String
 }</code></pre>
 <p>接口可以包含抽象属性声明。</p>
 <p>这意味这<strong>实现User接口的类需要</strong>提供一个取得nickname值的方式。</p>
-<h5 id="实现接口中的属性-三种"><a href="#实现接口中的属性-三种" class="headerlink" title="实现接口中的属性 三种"></a>实现接口中的属性 三种</h5><p>第一种</p>
+<p><strong>实现接口中的属性 三种</strong></p>
+<p>第一种</p>
 <pre><code class="kotlin">// 主构造方法属性
 class PrivateUser(override val nickname: String) : User {
 
@@ -763,7 +808,7 @@ class PrivateUser(override val nickname: String) : User {
 <p><img src="https://raw.githubusercontent.com/TheCara/RepoPicture/master/image/20200908104646.png" alt=""></p>
 <p><img src="https://raw.githubusercontent.com/TheCara/RepoPicture/master/image/20200908111027.png" alt=""></p>
 <p>运行结果</p>
-<h4 id="4-2-4-通过-getter或setter访问支持字段"><a href="#4-2-4-通过-getter或setter访问支持字段" class="headerlink" title="4.2.4 通过 getter或setter访问支持字段"></a>4.2.4 通过 getter或setter访问支持字段</h4><p>关于两种属性的例子：存储值的属性和具有自定义访问器在每次访问时的属性。<strong>现在让我们来看看怎么结合这两种来实现一个既可以存储值又可以被值访问和修改时提供额外逻辑的属性。</strong>要支持这种情况，需要能够从属性的访问器中访问它的支持字段。</p>
+<h3 id="4-2-4-通过-getter或setter访问支持字段"><a href="#4-2-4-通过-getter或setter访问支持字段" class="headerlink" title="4.2.4 通过 getter或setter访问支持字段"></a>4.2.4 通过 getter或setter访问支持字段</h3><p>关于两种属性的例子：存储值的属性和具有自定义访问器在每次访问时的属性。<strong>现在让我们来看看怎么结合这两种来实现一个既可以存储值又可以被值访问和修改时提供额外逻辑的属性。</strong>要支持这种情况，需要能够从属性的访问器中访问它的支持字段。</p>
 <p>假设在任何适合对存储的属性中的数据进行修改时输出日志，你声明了一个可变属性并且在每次 setter 访问时执行额外的代码。</p>
 <pre><code class="kotlin">/*    在 setter 中访问支持字段    */
 class User(val name:String) {
@@ -782,7 +827,7 @@ Address was changed for Alice:
 <p>可以像平常一样通过使用 user.address = “new value” 来修改一个属性的值，这其实在底层调用了setter。在这个例子中，setter 被重新定义了，所以额外的输出日志的代码被执行了（简单起见，这里直接将其打印出来）。</p>
 <p>在 setter 的函数体中，使用了特殊的标识符 field来访问支持字段的值。在 getter 中，只能读取值：而在 setter 中，既能读取它也能修改它。</p>
 </blockquote>
-<h3 id="4-3-编译器生成的方法-数据类和委托"><a href="#4-3-编译器生成的方法-数据类和委托" class="headerlink" title="4.3 编译器生成的方法:数据类和委托"></a>4.3 编译器生成的方法:数据类和委托</h3><h4 id="4-3-2-数据类-自动生成通用方法的实现"><a href="#4-3-2-数据类-自动生成通用方法的实现" class="headerlink" title="4.3.2 数据类:自动生成通用方法的实现."></a>4.3.2 数据类:自动生成通用方法的实现.</h4><p>实现一个数据类需要重写方法:toString、equals和hashcode。</p>
+<h2 id="4-3-编译器生成的方法-数据类和委托"><a href="#4-3-编译器生成的方法-数据类和委托" class="headerlink" title="4.3 编译器生成的方法:数据类和委托"></a>4.3 编译器生成的方法:数据类和委托</h2><h3 id="4-3-2-数据类-自动生成通用方法的实现"><a href="#4-3-2-数据类-自动生成通用方法的实现" class="headerlink" title="4.3.2 数据类:自动生成通用方法的实现."></a>4.3.2 数据类:自动生成通用方法的实现.</h3><p>实现一个数据类需要重写方法:toString、equals和hashcode。</p>
 <p><strong>数据类</strong></p>
 <pre><code class="kotlin">data class Client(val name:String,val postalCode:Int)</code></pre>
 <p>这是一个数据类,重写了所有标准的Java方法:</p>
@@ -791,16 +836,20 @@ Address was changed for Alice:
 <li>hashCode用来作为例如HashMap这种基于哈希容器的键</li>
 <li>toString用来为类生成按声明顺序排列的所有字段的字符串表达形式</li>
 </ul>
-<h3 id="4-4-“object”-关键字：-将声明一个类与创建一个实例结合起来"><a href="#4-4-“object”-关键字：-将声明一个类与创建一个实例结合起来" class="headerlink" title="4.4 “object” 关键字： 将声明一个类与创建一个实例结合起来"></a>4.4 “object” 关键字： 将声明一个类与创建一个实例结合起来</h3><p>这个关键词定义一个类并同时创建一个实例（换句话说就是一个对象）。</p>
+<h2 id="4-4-“object”-关键字：-将声明一个类与创建一个实例结合起来"><a href="#4-4-“object”-关键字：-将声明一个类与创建一个实例结合起来" class="headerlink" title="4.4 “object” 关键字： 将声明一个类与创建一个实例结合起来"></a>4.4 “object” 关键字： 将声明一个类与创建一个实例结合起来</h2><p>这个关键词定义一个类并同时创建一个实例（换句话说就是一个对象）。</p>
 <ul>
 <li><strong>对象声明</strong>是定义一个单例的一种方式。</li>
 <li><strong>伴生对象</strong>可以持有<strong>工场方法</strong>和其他与这个类的相关，但是在调用时并不依赖类实例方法。<strong>它们的成员可以通过类名来访问</strong>。</li>
 <li><strong>对象表达式用来代替Java的匿名内部类</strong></li>
 </ul>
-<h4 id="4-4-1-对象声明：创建单例易如反掌"><a href="#4-4-1-对象声明：创建单例易如反掌" class="headerlink" title="4.4.1 对象声明：创建单例易如反掌"></a>4.4.1 对象声明：创建单例易如反掌</h4><h5 id="为什么使用对象声明？"><a href="#为什么使用对象声明？" class="headerlink" title="为什么使用对象声明？"></a>为什么使用对象声明？</h5><p>在面向对象系统中一个相当常见的情形就是只需要一个实例的类。例如，可以使用一个对象声明来表示一个组织的工资单。</p>
-<h5 id="在Java中是如何实现单例模式？"><a href="#在Java中是如何实现单例模式？" class="headerlink" title="在Java中是如何实现单例模式？"></a>在Java中是如何实现单例模式？</h5><p>定义一个使用private构造方法并且用静态字段来持有这个类仅有的实例。</p>
-<h5 id="什么是对象声明"><a href="#什么是对象声明" class="headerlink" title="什么是对象声明"></a>什么是对象声明</h5><p>Kotlin通过使用对象声明功能为这一切提供了最高级的语言支持。<strong>对象声明将类声明与该类的单一实例声明结合到了一起。</strong></p>
-<h5 id="对象声明使用"><a href="#对象声明使用" class="headerlink" title="对象声明使用"></a>对象声明使用</h5><pre><code>object Payroll {
+<h3 id="4-4-1-对象声明：创建单例易如反掌"><a href="#4-4-1-对象声明：创建单例易如反掌" class="headerlink" title="4.4.1 对象声明：创建单例易如反掌"></a>4.4.1 对象声明：创建单例易如反掌</h3><p><strong>为什么使用对象声明？</strong></p>
+<p>在面向对象系统中一个相当常见的情形就是只需要一个实例的类。例如，可以使用一个对象声明来表示一个组织的工资单。</p>
+<p><strong>在Java中是如何实现单例模式？</strong></p>
+<p>定义一个使用private构造方法并且用静态字段来持有这个类仅有的实例。</p>
+<p><strong>什么是对象声明</strong></p>
+<p>Kotlin通过使用对象声明功能为这一切提供了最高级的语言支持。<strong>对象声明将类声明与该类的单一实例声明结合到了一起。</strong></p>
+<p><strong>对象声明使用</strong></p>
+<pre><code>object Payroll {
     val allEmployees = arrayListOf&lt;Person&gt;()
     fun calculateSalary() {
         for (person in allEmployees){
@@ -3112,7 +3161,346 @@ val serviceImpl = ServiceLoader.load(Service::class.java)</code></pre>
     startActivity(intent)
 }
 startActivity(intent)    //调用方法显式Activity</code></pre>
-<h3 id="9-2-4-实化类型参数的限制"><a href="#9-2-4-实化类型参数的限制" class="headerlink" title="9.2.4 实化类型参数的限制"></a>9.2.4 实化类型参数的限制</h3><p>实化类型参数是有一些限制的。有一些实化是与生俱来的，另一些是现有的实现决定的，</p>
+<h3 id="9-2-4-实化类型参数的限制"><a href="#9-2-4-实化类型参数的限制" class="headerlink" title="9.2.4 实化类型参数的限制"></a>9.2.4 实化类型参数的限制</h3><p>实化类型参数是有一些限制的。有一些实化是与生俱来的，另一些是现有的实现决定的，而且可能在未来的Kotlin版本中放开这些限制。</p>
+<p><strong>可以按下面的方式使用实化类型参数：</strong></p>
+<ul>
+<li>用在类型检查和类型转换中(is、!is、as、as?)</li>
+<li>使用Kotlin反射API（::Class)</li>
+<li>获取相应的java.lang.Class（::Class.java)</li>
+<li>作为调用其他函数的类型实参</li>
+</ul>
+<p><strong>不能做的事情：</strong></p>
+<ul>
+<li>创建指定为类型参数的类的实例</li>
+<li>调用类型参数类的伴生对象的方法</li>
+<li>调用带实化类型参数函数的时候使用 <strong>非实化类型形参作为实参</strong></li>
+<li><em>把类、属性或者非内联函数的类型参数标记</em>成reified</li>
+</ul>
+<p><strong>最后一条限制的后果：因为实化类型参数只能用于在内联函数上，使用实化类型参数意味着函数和所有给它的lambda都会被内联。如果内联函数使用lambda的方式导致lambda不能被内联，或者你不想lambda因为性能的关系被内联，<em>可以使用noinline修饰符把它们标记成非内联的。</em></strong></p>
+<h2 id="9-3-变型：泛型和子类型化"><a href="#9-3-变型：泛型和子类型化" class="headerlink" title="9.3 变型：泛型和子类型化"></a>9.3 变型：泛型和子类型化</h2><p><strong>变型的概念描述了拥有相同基础类型和不同<em>类型实参</em>的（泛型）类型之间是如何关联的。</strong>例如：List<String>和List<Any>之间如何关联。当编写自己的泛型类或者泛型函数时，理解变型的概念十分重要：它有助于你创建出，既不会以不方便的方式限制用户，也不会破坏用户所期望的类型安全。</p>
+<h3 id="9-3-1-为什么存在变型：给函数传递实参"><a href="#9-3-1-为什么存在变型：给函数传递实参" class="headerlink" title="9.3.1 为什么存在变型：给函数传递实参"></a>9.3.1 为什么存在变型：给函数传递实参</h3><p><strong>假如你有一个接收List<Any>作为实参的函数。</strong>把List<String>类型的变量传给这个函数是否安全？把一个字符串传给一个期望Any的函数是安全的，因为String类型继承自Any。<em>但是当String和Any变成List接口的类型实参后，情况就没有这么简单了。</em></p>
+<p><strong>考虑一个打印出列表内容的函数。</strong></p>
+<pre><code class="kotlin">fun printContents(list: List&lt;Any&gt;) {
+    println(list.joinToString())
+}
+&gt;&gt;&gt; printContents(listOf(&quot;aaa&quot;, &quot;bbb&quot;))
+aaa,bbb</code></pre>
+<p>看起来这些字符串列表可以正常工作。函数把每个元素都当成Any对待，而且因为每个字符串都是Any，这完全是安全的。</p>
+<p><strong>来看另一个函数它会修改列表（因此它接收一个MutableList作为参数）：</strong></p>
+<pre><code class="kotlin">fun addAnswer(list: MutableList&lt;Any&gt;) {
+    list.add(42)
+}
+&gt;&gt;&gt; val strings = mutableListOf(&quot;abc&quot;, &quot;bac&quot;)
+&gt;&gt;&gt; addAnswer(strings)  //如果这一行编译通过了
+&gt;&gt;&gt; println(strings.maxBy { it.length })    //运行时就会产生异常
+ClassCaseException:Integer connot be cast to String</code></pre>
+<p>你声明了一个类型为MutableList<String>的变量Strings，然后尝试把它传递给这个函数。假如编译器接收了，你就能在字符串中添加一个整数，这会导致你在运行时尝试访问列表中的字符串的时候出现异常。正因如此，这次调用不会通过编译。这个例子展示了当期望的是MutableList<Any>的时候把一个MutableList<String>当作实参是不安全的，Kotlin编译时阻止拉它。</p>
+<blockquote>
+<p>现在可以回答，把一个字符串列表传给期望Any对象列表的函数是否安全。如果<strong>函数添加或者更换了列表中的元素就是不安全的，因为这样会产生类型不一致的可能性。否则它就是安全的。</strong>可以通过是否可变选择合适的接口来轻易的控制。如果函数接收的是可读列表，可以传递具有更具体的元素类型的列表。如果列表是可变的，不能这样做。</p>
+</blockquote>
+<blockquote>
+<p>这些问题可以推广到任何泛型类，而不仅仅是List。接下来会看到为什么两种接口List和MutableList会因为它们的类型参数产生差异。</p>
+</blockquote>
+<h3 id="9-3-2-类、类型和子类型"><a href="#9-3-2-类、类型和子类型" class="headerlink" title="9.3.2 类、类型和子类型"></a>9.3.2 类、类型和子类型</h3><p>变量的类型规定了该变量的可能值。有时候我们会把类型和类当成相同的概念使用，当它们不一样，现在来看看它们的区别。</p>
+<blockquote>
+<p>例子非泛型类，<strong>类</strong>的名称可以当作<strong>类型</strong>使用。例如，如果你这样些 var x : String，就是声明一个可以保存String类的实例的变量。但是注意，同样的类名称也可以用来声明可空类型：var x:String?。这意味着每个Kotlin类都可以用于构造至少两种类型。</p>
+</blockquote>
+<p>泛型类的情况就变得更加复杂了。要得到一个合法的类型，<strong>需要用一个作为类型实参的具体类型替换（泛型）类的类型形参。</strong>List不是一个类型（它是一个类），但是下面列举出所有的替代品都是合法类型：List<Int>、List<String>、List&lt;List<String>&gt;等。每个泛型类都可能生成潜在无限数量的类型。</p>
+<p><strong>子类型</strong></p>
+<blockquote>
+<p>为了讨论类型之间的关系，需要熟悉子类型这个术语。任何时候如果需要的是类型A的值，你都能使用类型B的值（当作A的值），类型B就称为类型A的子类型。</p>
+</blockquote>
+<p><img src="https://raw.githubusercontent.com/TheCara/RepoPicture/master/image/20210914222218.png" alt="如果期望A的时候可以使用B，B就是A的子类型"></p>
+<p><strong>超类型</strong>是子类型的反义词。如果B是A的子类型，那A就是B的超类型。</p>
+<p><strong>类型是否是另一个子类型的子类型为什么如此重要？</strong></p>
+<pre><code class="kotlin">/*    检查一个类型是否是另一个的子类型    */
+fun test(i: Int) {
+    val n: Number = i   //编译通过，因为Int是Number的子类型
+    fun f(s: String) {
+        /*...*/
+    }
+    f(i)    //不能编译，因为Int不是String的子类型
+}</code></pre>
+<p><strong>只有值的类型是变量类型的子类型时，才允许变量存储该值。</strong></p>
+<p><strong>简单情况下，子类型和子类本质上意味着一样的事务。</strong>例如，Int类型是Number的子类，因此Int类型是Number类型的子类型。如果一个类实现了一个接口，它的类型就是该接口类型的子类型：String是CharSequence的子类型。</p>
+<p><img src="https://raw.githubusercontent.com/TheCara/RepoPicture/master/image/20210914234123.png" alt="非空类型A是可空的A?的子类型，反过来却不是"></p>
+<p>这个例子说明，子类型和子类不是同一事务。</p>
+<p><strong>一个非空类型是它的可空类型的子类型，当它们都对应这同一个类。</strong>你始终能在可空类型的变量中存储非空类型的值，当反过来却不行（null不是非空类型变量接收的值）：</p>
+<pre><code class="kotlin">val s:String = &quot;abc&quot;
+val t:String ? = s    //这次赋值是合法的，因为String是String?的子类型</code></pre>
+<p><strong>泛型类</strong></p>
+<p>当涉及到泛型类时，子类型和子类之间的差异显的格外重要。前面的几个问题，把List<String>类型的变量传给期望List<Any>的函数是否安全，现在可以使用子类型话术语来重新组织：List<String>是List<Any>的子类型吗？你已经了解了为什么把MutableList<String>当成MutableList<Any>的子类型对待是不安全的。显然反过来也是不成立的：MutableList<Any>肯定不是MutableList<String>的子类型。</p>
+<p><strong>一个泛型类–例如，MutableList–如果对任意两种类型A和B，MutableList<A>既不是MutableList<B>的子类型也不是它的超类型，它就被称为在该类型参数上是 <em>不变型</em>。</strong>    其中 Java中所有类都是不变型的（尽管那些内具体使用可以标记成可变的）。</p>
+<p><strong>什么是协变。</strong></p>
+<blockquote>
+<p>对于这样一个类，List，对它来说，子类型化规则不一样。Kotlin中的List接口表示的是只读集合。如果A是B的子类型，那么List<A>就是List<B>的子类型。这样的类或者接口被称为 <strong>协变</strong>。</p>
+</blockquote>
+<h3 id="9-3-3-协变：保留子类型化关系"><a href="#9-3-3-协变：保留子类型化关系" class="headerlink" title="9.3.3 协变：保留子类型化关系"></a>9.3.3 协变：保留子类型化关系</h3><p><strong>协变</strong></p>
+<blockquote>
+<p>一个协变类是泛型类，对这个类来说，下面的描述是成立的：如果A是B的子类，那么Producer<A>就是Producer<B>的子类。<strong>我们说子类型化被保留了。</strong>例如，Producer<Cat>是Producer<Animal>的子类型，因为Cat是Animal的子类型。</p>
+</blockquote>
+<p><strong>在声明类时如何说明某个类型参数是可以协变的！</strong></p>
+<blockquote>
+<p>你需要在该类型参数上加上 out 关键词：</p>
+<pre><code>interface Producer&lt;out T&gt;{    //类被声明在T上的协变
+    fun producer():T
+}</code></pre><p>将一个类的类型参数标记为协变的，<strong>在该类型实参没有精确匹配到函数中定于的类型形参时，可以让该类的值作为这个函数的实际参数，也可以作为这个函数的返回值。</strong></p>
+</blockquote>
+<p><strong>不使用协变的例子会出现的问题：</strong></p>
+<blockquote>
+<p>函数 feedAll 用来负责喂养用类Herd代表的一群动物，Herd类的类型参数确定了畜群中动物的类。</p>
+<pre><code class="kotlin">/*    定义一个不变型的类似集合的类    */
+open class Animal {
+    fun feed() {
+        /**/
+    }
+}
+
+class Herd&lt;T : Animal&gt; {   // 类型参数没有声明为协变的。
+    val size: Int
+        get() =
+            operator
+
+    fun get(i: Int): T {
+        /*...*/
+    }
+}
+
+fun feedAll(animals: Herd&lt;Animal&gt;) {
+    for (i in 0 until animals.size) {
+        animals[i].feed
+    }
+}</code></pre>
+<p>现在需要添加一群猫照顾。</p>
+<pre><code class="kotlin">/*  使用一个不变型的类似集合的类  */
+class Cat : Animal() { //Cat是一个Animal
+    fun cleanLitter() {
+        ...
+    }
+}
+
+fun takeCareOfCats(cats: Herd&lt;Cat&gt;) {
+    for (i in 0 until cats.size) {
+        cats[i].cleanLitter()   //
+        //feedAll(cats
+    }
+}</code></pre>
+<p>这时会出现问题，如果你尝试把Cat猫群类传给feedAll函数，在编译器你就会得到类型不匹配的错误。因为Herd类中的类型参数T没有用任何变形修饰符，猫群不是畜群的子类（子类型化没有被保留）。可以使用显式的类型转化来绕过这个问题，但是这种函数啰嗦，易出错，而且从来不是解决类型不匹配问题的正确方法。</p>
+<p>Herd类中有一类似List的API，并且不允许它的调用者添加和修改畜群中的动物，可以把它变成协变的并相应修改带用代码。</p>
+<pre><code class="kotlin">/*使用一个协变的类似集合的类*/
+class Herd&lt;out T : Animal&gt; {//
+
+}
+
+fun takeCaraOfCats(cats: Herd&lt;Cat&gt;) {
+    for (i in 0 until cats.size) {
+        cats[i].cleanLitter()
+    }
+    feedALl(cats)   //不需要转换
+}</code></pre>
+</blockquote>
+<p>你不能把任何类都变成协变的：这样不安全。让类在某个类型参数变为协变，限制了该类中对该类参数使用的可能性。要保证类型安全，它只能用在out位置，意味着这个类只能生产（返回）T 的值而不能消费（）</p>
+<blockquote>
+<p>在类成员的声明中类型参数的使用可以分为in位置和out位置。<strong>考虑怎样一个类，它声明一个类型参数T并包含了一个使用T的函数。</strong>如果函数把T当成返回类型，我们说它在out位置，这种情况下，该函数生产类型为T的值。如果T用作函数参数的类型，它就在in位置。这样的函数消费类型为T的值。</p>
+<p><img src="https://raw.githubusercontent.com/TheCara/RepoPicture/master/image/20211009171605.png" alt="函数参数的类型叫做in文字，函数返回类型叫作out位置"></p>
+</blockquote>
+<p><strong>约束使用T的位置</strong></p>
+<p>类的类型参数前的out关键字要求所有使用T的方法只能把T放在out位置而不能放在in位置。这个关键字约束了使用T的可能性，这保证了对应子类型关系的安全性。</p>
+<blockquote>
+<p>例子</p>
+<p>以Herd类为例，它只能在一个地方使用类型参数T:get方法的返回值。</p>
+<pre><code class="kotlin">class Herd(out T: Animal) {
+    val size: Int
+        get() =
+            operator
+
+    fun get(i: Int): T {}//把T作为返回类型使用
+
+}</code></pre>
+<p>这是一个out位置，可以安全的把类声明成协变的。如果Herd<Animal>类的get方法返回的是Cat，任何调用该方法的代码都可以正常工作，因为Cat是Animal的子类型。</p>
+<p>类型参数T上的关键字out有两层含义：</p>
+<ul>
+<li>子类型化会被保留（Producer<Cat>是Producer<Animal>的子类型）</li>
+<li>T只能用在out位置</li>
+</ul>
+</blockquote>
+<p><strong>类型形参可以作为另一个类的类型实参</strong></p>
+<p>例</p>
+<p>看这个List<Interface>接口。Kotlin中List是只读的，所以它只有一个返回类型为T的元素的方法get，而没有定义任何一个把类型为T的元素存储到列表中的方法。因此它是协变的。</p>
+<pre><code class="kotlin">interface List&lt;Out T&gt;:Collection&lt;T&gt;{
+    operator fun get(index: Int):T    //只读接口自定义了返回T的方法（所以T在out的位置）
+}</code></pre>
+<p>类型形参不光可以直接当作参数类型或者返回类型使用，<strong>还可以当作另一个类型的类型实参</strong>。例，List接口包含了一个返回List<T>的subList方法。</p>
+<pre><code class="kotlin">interface List&lt;Out T&gt;:Collection&lt;T&gt;{
+    fun subList(fromIndex: Int, toIndex: Int): List&lt;T&gt;   //这里的T在out的位置
+}</code></pre>
+<p>函数subList中的T也用在out位置。</p>
+<p><strong>Mutable不能在类型参数上声明成协变的</strong></p>
+<p>因为即含有接受类型为T的值作为参数的方法，也含有返回这种值的方法（因此，T出现在in和out两种位置上）。</p>
+<pre><code class="kotlin">interface MutableList&lt;T&gt; : List&lt;T&gt;, MutableCollection&lt;T&gt; {  //MutableList不能在T上声明成协变的...
+    override fun add(element: T): Boolean {//...因为T用在了“in”位置
+        TODO(&quot;Not yet implemented&quot;)
+    }
+}</code></pre>
+<p>编译器强制限制了这次协变。如果这个类被声明成了协变，编译器会报告错误:Type parameter T is declared as ‘out’ but occurs in ‘in’ position（类型参数T声明为“out”但出现在“in”位置）。</p>
+<p><strong>构造方法</strong></p>
+<p>注意，构造方法的参数既不在in位置，也不在out位置。即使类型参数声明成了out，仍然可以在构造方法参数的声明中使用它：</p>
+<pre><code class="kotlin">class Herd&lt;Out T:Animal&gt;(vararg animals:T){
+    ...
+}</code></pre>
+<p>如果 把类的实例当成一个类泛化的类型的实例使用，变型会防止该实例被误用：不能调用存在潜在危险的方法。<strong>构造方法在实例创建后不会被调用，因此就不会有危险。</strong></p>
+<p>然而，如果你在构造方法的参数上使用了关键字val和var，同时就会声明一个getter和setter（如果属性是可变的）。<strong>因此对只读属性来说，类型参数用在了out位置， 可变属性在out位置的in位置都是用它：</strong></p>
+<pre><code class="kotlin">class Herd&lt;T:Animal&gt;(var leadAnimal:T,vararg animals:T){...}</code></pre>
+<p>这里 T不能用out标记，因为类包装属性leadAnimal的setter，它在in位置用到了T。</p>
+<p><strong>关于设置修饰符</strong></p>
+<p>这里位置规则只覆盖了类外部可见的（public、protected、和internal）API。私有方法的参数既不在in位置也不在out位置。变形规则只会防止外部使用者对类的误用但不会对类自己的实现起作用：</p>
+<pre><code class="kotlin">class Herd&lt;out T:Animal&gt;(private var leadAnimal:T,vararg animals:T){...}</code></pre>
+<p><strong>现在可以安全地让Herd在T上协变，因为属性leadAnimal变成了私有的。</strong></p>
+<p>如果类型参数在in的位置使用，类和接口会怎样。这是就要有逆变关系成立。</p>
+<h3 id="9-3-4-逆变：反转子类型化的关系"><a href="#9-3-4-逆变：反转子类型化的关系" class="headerlink" title="9.3.4 逆变：反转子类型化的关系"></a>9.3.4 逆变：反转子类型化的关系</h3><p><strong>概念</strong></p>
+<p>逆变的概念可以被看作是协变的镜像：对一个逆变类来说，它的子类型化关系与用作类型实参的类的子类型化关系是相反的。</p>
+<p><strong>逆变例子</strong></p>
+<blockquote>
+<p>我们从Comparator接口的例子开始，这个接口定义了一个方法compare类，用于比较两个给定的对象：</p>
+<pre><code class="kotlin">interface Comparator&lt;in T&gt; {
+    fun compare(e1: T, e2: T): Int {    //在in位置使用T
+    }
+}</code></pre>
+<p>这个接口方法只是消费类型为T的值。这说明T只在in位置使用，因此它的声明致歉用了in关键字。一个为特定类型的值定义的比较器显然可以比较该类型任意子类型的值。例如，如果有一个Comparator<Any>，<strong>可以用它比较任意具体类型的值。</strong></p>
+<pre><code class="kotlin">&gt;&gt;&gt; val anyComparator = Comparator&lt;Ant&gt; { e1, e2 -&gt;
+    e1.hashCode() - e2.hashCode()
+}
+&gt;&gt;&gt; val strings: List&lt;String&gt;=...
+&gt;&gt;&gt; strings.sortedWith(anyConparator)   // 可以用任意对象的比较器比较具体对象，比如字符串</code></pre>
+<p>sortedWith函数期望一个Comparator<String>(一个可以比较字符串的比较器)，传给它一个能比较跟一般的类型的比较器是安全的。如果你在特定类型的对象上执行比较，<strong>可以使用能处理该类型或者它的超类型的比较器。这说明Comparator<Any>是Comparator<String>的子类型，其中Any是String的超类型。</strong>不同类型之间的子类型关系和这些类型的比较器之间的子类型化关系截然相反。</p>
+</blockquote>
+<p><strong>描述一个逆变类</strong></p>
+<blockquote>
+<p>在 <strong>类型参数</strong> 上逆变的类是这样的一个泛型类（我们以Consumber<T>为例），对这个类来说，下边的描述是成立的：</p>
+<p><strong>如果B是A的子类型，那么Consumer<A>就是Consumer<B>的子类型。类型参数A和B交换了位置，所以我们说子类型化被反转了。例如，Consumer<Animal>就是Consumer<Cat>的子类型。</strong></p>
+</blockquote>
+<p><img src="https://raw.githubusercontent.com/TheCara/RepoPicture/master/image/20211011233756.png" alt="对协变类型Producer&lt;T&gt;来说，子类型化保留了，但对逆变类型来说，子类型化反转了"></p>
+<p>展示了类型参数上协变和逆变的类之间子类型化关系的差异。可以看到对Producer类来说，子类型化关系复制了它的类型实参的子类型化关系，而对Consumer类来说，关系反转了。</p>
+<p><strong>in 关键字声明逆变</strong></p>
+<p>in 关键字的意思是，对应类型的值是传递进来给这个类的方法的，并且被这些方法消费。和协变的情况类似，约束类型参数的使用将导致特定的子类型化关系。<strong>在类型参数T上的in关键字意味着子类型化被反转了，而且T只能用在in位置。</strong></p>
+<table>
+<thead>
+<tr>
+<th align="center">协变（方法名称为案例）</th>
+<th>逆变</th>
+<th>不变型</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">Producer<out T></td>
+<td>Consumer<in T></td>
+<td>MutableList<T></td>
+</tr>
+<tr>
+<td align="center">类的子类型化保留了：Producer<Cat>是Producer<Animal>的子类型</td>
+<td>子类型化反转了：Consumer<Animal>是Consumer<Cat>的子类型</td>
+<td>没有子类型化</td>
+</tr>
+<tr>
+<td align="center">T只能在out位置</td>
+<td>T只能在in位置</td>
+<td>T可以在任何位置</td>
+</tr>
+</tbody></table>
+<p><strong>一个类可以在一个类型参数上协变，同时在另一个类型参数上逆变。Function接口的例子。</strong></p>
+<pre><code class="kotlin">interface Function1&lt;in P, out R&gt; {
+    operator fun invoke(p: P): R
+}</code></pre>
+<p>Kotlin的表示法(P)-&gt;是表达Function&lt;P,R&gt;的另一种可读性的形式。可以发现用in关键字标记P（参数类型）只用在in位置，而用out关键字标记的R（返回类型）只用在out位置。这意味着对这个函数类型的第一个类型参数来说，子类型化反转了，而对第二个类型参数来说，子类型化保留了。</p>
+<p><strong>例，你有一个高阶函数，该函数尝试对里所有的猫进行迭代，你可以把一个接收任意动物的lambda传给它。</strong></p>
+<pre><code class="kotlin">fun enumerateCats(f: (Cat) -&gt; Number) {
+    ...
+}
+
+fun Animal.getIndex(): Int = ...
+&gt;&gt;&gt; enumerateCats(Animal::getIndex) //在Kotlin中这段代码是合法的。Animal是Cat的超类型，而Int是Number的子类型</code></pre>
+<p><img src="https://raw.githubusercontent.com/TheCara/RepoPicture/master/image/20211012002918.png" alt="函数(P)-&gt;R在它的参数类型上逆变而在返回类型上协变"></p>
+<h3 id="9-3-5-使用点变形：在类型出现的地方指定变型"><a href="#9-3-5-使用点变形：在类型出现的地方指定变型" class="headerlink" title="9.3.5 使用点变形：在类型出现的地方指定变型"></a>9.3.5 使用点变形：在类型出现的地方指定变型</h3><p><strong>声明点变型</strong></p>
+<p>在类声明的时候就能够指定变形修饰符是很方便的，因为这些修饰符会应用到所有类被使用的地方。所以被称为<strong>声明点变型</strong></p>
+<p><strong>使用点变型</strong></p>
+<p>如果你熟悉Java的通配符类型（? extends 和 ? super），你会意识到Java用完全不同的方式处理类型。在Java中，每一次使用带类型参数的类型的时候，还可以指定这个类型参数是否可以用它的子类型或者超类型替换。这叫做 <strong>使用点变型</strong></p>
+<p><strong>Kotlin 支持使用，使用点变型</strong></p>
+<blockquote>
+<p>Kotlin支持使用点变型，允许在类型参数出现的具体位置指定变型，即使在类型声明时不能被声明成协变或逆变的。</p>
+</blockquote>
+<p><strong>看看使用点变型是如何工作的</strong></p>
+<blockquote>
+<p>许多MutableList这样的接口，通常情况下既不是协变也不是逆变的，因为它同时生产和消费指定为它们类型参数的类型的值。但是对于这个类型的变量来说，在某个特定函数中只被当成其中一种角色使用的情况很常见：要么是生产者要么是消费者。例如</p>
+<pre><code class="kotlin">/*    带不变型类型参数的 数据拷贝函数    */
+fun &lt;T&gt; copyData(source: MutableList&lt;T&gt;, destination: MutableList&lt;T&gt;) {
+ for (item in source) {
+     destination.add(item)
+ }
+}</code></pre>
+<p>这个函数从一个集合中把元素拷贝到另一个集合中。尽管两个集合都拥有不变型的类型，来源集合只是用于读取，而目标集合只是用于写入。这种情况下，集合元素的类型不需要精确匹配。例如，把一个字符串集合拷贝到可以包含任何集合中一点问题没有。</p>
+<p>让函数支持不同类型的列表，<strong>引入第二泛型参数</strong></p>
+<pre><code class="kotlin">/*    9.15 带不变型类型参数的数据拷贝函数    */
+fun &lt;T : R, R&gt; copyData(source: MutableList&lt;T&gt;, destination: MutableList&lt;R&gt;) {  //来源的元素类型应该是目标元素类型的子类型
+ for (item in source) {
+     destination.add(item)
+ }
+}
+&gt;&gt;&gt; val ints = mutableListOf(1, 2, 3)
+&gt;&gt;&gt; val anyItems = mutableListOf&lt;Any&gt;()
+&gt;&gt;&gt; copyData(ints,anyItems) //可以调用这个函数，因为Int是Any的子类型
+&gt;&gt;&gt; println(anyItems)
+[1,2,3]</code></pre>
+<p>你声明了两个泛型参数代表 来源列表和目标列表中的元素类型。为了能够把一个列表中的元素拷贝到另一个列表中，来源元素类型应该是目标列表中的元素的子类型，例如 9.15中的Int是Any的子类型。</p>
+<p>另一种方式支持不同列表。</p>
+<p>Kotlin提供了更优雅的表达方式。当函数的实现调用了那些类型参数只出现在out位置（或只出现在in位置）的方法时，可以充分利用这一点，在函数定义中给特定用途的类型参数用上<strong>变型修饰符</strong></p>
+<pre><code class="kotlin">/*    9.16 带out投影类型参数的数据拷贝函数    */
+fun &lt;T&gt; copyData(
+ source: MutableList&lt;out T&gt;,
+ destination: MutableList&lt;T&gt;
+) {
+ for (item in source) {
+     destination.add(item)
+ }
+}</code></pre>
+<p>可以为类型声明中类型参数任意的用法指定变型修饰符，用法包括：形参类型、局部变量类型、函数返回类型、等。<strong>这发生的一切都叫做 类型投影：我们说source不是一个常规的MutableList，而是一个投影受限的MutableList。</strong>只能调用返回类型是泛型类型参数的那些方法。编译器禁止调用使用类型参数做实参（类型）的哪些方法（在in位置使用类型参数）：</p>
+<pre><code class="kotlin">&gt;&gt;&gt; val list: MutableList&lt;out Number&gt; = ...
+&gt;&gt;&gt; list.add(42)
+Error:Out-projectedType &#39;MutableList&lt;out NUmber&gt;&#39; prohibits
+the use of &#39;fun add(element:E):Boolean&#39;</code></pre>
+<p>（在in位置使用类型参数后调用类型参数方法是不可取的。）</p>
+<p><strong>不要为使用投影类型参数后不能调用某些方法而吃惊。如果需要调用那些方法，你需要的是常规类型而不是投影。</strong>这可能要求你声明第二类型参数，它依赖的是原本要进行投影的类型，例 9.15 中那样。</p>
+<p>因为我们只用了声明在List中的方法，并没有用到MutableList中的方法，而且List类型参数的变型在声明时就指定了。所以实现copyData函数的正确方式应该是使用List<T>作为source实参的类型。<strong>这个例子展示这种概念依然十分重要，尤其是要记住大多数的类并没想List和MutableLIst这样分开两个接口，一个是协变的读取接口，一个是不变型的读取/写入接口。</strong></p>
+<p><strong>在类型参数有out变型时投影没有意义</strong></p>
+<p>如果类型阐述已经有out变型，获取它的out投影没有任何意义。就像List<out T> 这样。它和List<T>是同一个意思，因为List已经声明成了class List<out T>。Kotlin编译器会发出警告，表明这些投影是多余的。</p>
+<p>同理，对类型参数的用法使用in修饰符，来表明这个特定的地方，相应的值担当的是消费者，而且类型参数可以任意使用它的子类型替换。</p>
+<p>用in来重写部分代码（9.16).</p>
+<pre><code class="kotlin">fun &lt;T&gt; copyData(source: MutableList&lt;T&gt;, destination: MutableList&lt;in T&gt;) {//允许目标元素的类型是来源类型的超类型
+    for (item in source) {
+        destination.add(item)    
+    }
+}</code></pre>
+<blockquote>
+<p>注意：Kotlin的使用点变型直接对应Java的限界通配符。Kotlin 中的MutableList<out T> 和Java 中的MutableList&lt;? extends T&gt;是一个意思。in投影是一个意思。in 投影的MutableList<in T>对应到Java的MutableList&lt;? super T&gt;。</p>
+</blockquote>
+</blockquote>
+<p><strong>（优点）使用点变型有助于放宽可接受的类型范围。</strong>讨论另一种极端情况：这种情况下（泛型）类型使用所有可能的类型实参。（泛型要使用所有可能的类型）</p>
+<h3 id="9-3-6-星号投影：-代替类型参数"><a href="#9-3-6-星号投影：-代替类型参数" class="headerlink" title="9.3.6 星号投影：* 代替类型参数"></a>9.3.6 星号投影：* 代替类型参数</h3><p>在提到类型检测和转换的时候，我们提到了一种特殊的 <strong>星号投影</strong> 语法，可以用它来表明你不知道关于泛型实参的任何信息。</p>
+<p>List&lt;*&gt;表示为一个未知类型的元素的列表用这种语法表示。</p>
+<p><strong>星号投影的含义</strong></p>
+<p>首先 ，<strong>需要注意的是MutableList&lt;*&gt;和MutableList&lt;Any?&gt;不一样（这里MutableList<T>在T上是不变型的。）</strong>。你确信MutableList&lt;Any?&gt;这种列表包含的是 <strong>任意类型的元素。</strong>另一方面，MutableList&lt; * &gt;是包含某种 <strong>特定类型的元素的列表</strong>，但是你不知道是那个类型。这种列表被创建成一个 <strong>包含某种特定类型元素的列表</strong>， 比如String（你无法创建一个ArrayList&lt; * &gt;),而且创建它的代码期望只包含特定那种类型的元素。因为不知道是那种类型，你不能向列表中写入任何东西，因为你写入的任何值都可能会违反调用代码的期望。但是从列表中 <strong>读取元素是可行的，</strong> <strong>所有存储在列表中的值都能匹配所有Kotlin类型的超类型Any?</strong></p>
+<pre><code class="kotlin">&gt;&gt;&gt; val list: MutableList&lt;Any?&gt;=mutableListOf(&#39;a&#39;, 1, &#39;qwe&#39;)
+&gt;&gt;&gt; val chars = mutableListOf(&#39;a&#39;, &#39;b&#39;, c)
+&gt;&gt;&gt; val unknownElements: MutableLIst&lt;*&gt; = // MutableList&lt;*&gt;和MutableList&lt;Any?&gt;不一样。
+    if (Random().nextBoolean())
+        list
+    else
+        chars
+
+&gt;&gt;&gt; unknownElements.add(42) //编译器禁止调用这个方法
+Error: Out-projected type &#39;MutableList&lt;*&gt;&#39; prohibits the use of &#39;fun add(element:E): Boolean&#39;
+&gt;&gt;&gt; println(unknownElements.first())    // 读取元素是安全的：first.(）返回一个类型为Any?的元素。
+3</code></pre>
+<p>为什么编译器会吧 MutableList&lt;<em>&gt; *</em>当成out投影的类型？（out-projected）。<strong>在这个例子的上下文中， **MutableList&lt;  *  &gt;投影成了MutableList&lt;Any?&gt;:</strong> 当你没有任何元素类型信息的时候，读取Any?类型的元素仍然是安全的， <strong>但是向列表中写入元素是不安全的。</strong></p>
 <h1 id="补充"><a href="#补充" class="headerlink" title="补充"></a>补充</h1><h3 id="字段和属性"><a href="#字段和属性" class="headerlink" title="字段和属性"></a>字段和属性</h3><p><a href="https://blog.csdn.net/chenchunlin526/article/details/71424844" target="_blank" rel="noopener">深入理解Java中的字段与属性的区别</a></p>
 <h4 id="属性和字段的区别"><a href="#属性和字段的区别" class="headerlink" title="属性和字段的区别"></a>属性和字段的区别</h4><p>属性（property），通常可以理解为get 和 set 方法。</p>
 <p>字段（field），通常叫做 <strong>类成员</strong>，或者 <strong>类变量</strong> ，有时也叫 域 ，理解为 数据成员，用来承担数据的。</p>
