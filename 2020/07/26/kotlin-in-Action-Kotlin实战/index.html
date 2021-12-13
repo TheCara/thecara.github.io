@@ -2919,7 +2919,7 @@ fun lookForAlice(people:List&lt;Person&gt;) {
 </blockquote>
 <h1 id="9-泛型"><a href="#9-泛型" class="headerlink" title="9 泛型"></a>9 泛型</h1><p><strong>Kotlin中引入了新的概念，例如实化类型参数和声明点变型。</strong></p>
 <p><strong>实化类型参数允许你在运行时的内联函数调用中引用作为类型实参的具体类型（对普通的类和函数来说，这样行不通，因为类型实参在运行时会被消除）</strong></p>
-<p><strong>声明点变型可以说明一个带类型参数的泛型类型，时候是另一个泛型类型的之类或者超类型，它们的基础类型相同但类型参数不同。</strong>例如它可以调节是否可以把List<Int>类型的参数传给期望List<Any>的函数。<strong>使用点变型在具体使用一个泛型时做同样的事，达到和Java通配符一样的效果。</strong></p>
+<p><strong>声明点变型可以说明一个带类型参数的泛型类型，是否是另一个泛型类型的之类或者超类型，它们的基础类型相同但类型参数不同。</strong>例如它可以调节是否可以把List<Int>类型的参数传给期望List<Any>的函数。<strong>使用点变型在具体使用一个泛型时做同样的事，达到和Java通配符一样的效果。</strong></p>
 <blockquote>
 <p>类型参数：</p>
 <p>在计算机编程语言中，TypeParameter是用于泛型编程的通用标签，用于引用未知的数据类型，数据结构或类。TypeParameter最常用于C ++模板和Java泛型。TypeParameter与元语法变量相似，但有所不同。</p>
@@ -3366,17 +3366,17 @@ fun takeCaraOfCats(cats: Herd&lt;Cat&gt;) {
  fun compare(e1: T, e2: T): Int {    //在in位置使用T
  }
 }</code></pre>
-<p>这个接口方法只是消费类型为T的值。这说明T只在in位置使用，因此它的声明致歉用了in关键字。一个为特定类型的值定义的比较器显然可以比较该类型任意子类型的值。例如，如果有一个Comparator<Any>，<strong>可以用它比较任意具体类型的值。</strong></p>
-<pre><code class="kotlin">&gt;&gt;&gt; val anyComparator = Comparator&lt;Ant&gt; { e1, e2 -&gt;
+<p>这个接口方法只是消费类型为T的值。这说明T只在in位置使用，因此它的声明之前用了in关键字。一个为特定类型的值定义的比较器显然可以比较该类型任意子类型的值。例如，如果有一个Comparator<Any>，<strong>可以用它比较任意具体类型的值。</strong></p>
+<pre><code class="kotlin">&gt;&gt;&gt; val anyComparator = Comparator&lt;Any&gt; { e1, e2 -&gt;
  e1.hashCode() - e2.hashCode()
 }
 &gt;&gt;&gt; val strings: List&lt;String&gt;=...
 &gt;&gt;&gt; strings.sortedWith(anyConparator)   // 可以用任意对象的比较器比较具体对象，比如字符串</code></pre>
-<p>sortedWith函数期望一个Comparator<String>(一个可以比较字符串的比较器)，传给它一个能比较跟一般的类型的比较器是安全的。如果你在特定类型的对象上执行比较，<strong>可以使用能处理该类型或者它的超类型的比较器。这说明Comparator<Any>是Comparator<String>的子类型，其中Any是String的超类型。</strong>不同类型之间的子类型关系和这些类型的比较器之间的子类型化关系截然相反。</p>
+<p>sortedWith函数期望一个Comparator&lt; String &gt;(一个可以比较字符串的比较器)，传给它一个能比较跟一般的类型的比较器是安全的。如果你在特定类型的对象上执行比较，<strong>可以使用能处理该类型或者它的超类型的比较器。这说明Comparator&lt; Any &gt;是Comparator&lt; String &gt;的子类型，其中Any是String的超类型。</strong>不同类型之间的子类型关系和这些类型的比较器之间的子类型化关系截然相反。</p>
 </blockquote>
 <p><strong>描述一个逆变类</strong></p>
 <blockquote>
-<p>在 <strong>类型参数</strong> 上逆变的类是这样的一个泛型类（我们以Consumber<T>为例），对这个类来说，下边的描述是成立的：</p>
+<p>在 <strong>类型参数</strong> 上逆变的类是这样的一个泛型类（我们以Consumber&lt; T &gt;为例），对这个类来说，下边的描述是成立的：</p>
 <p><strong>如果B是A的子类型，那么Consumer&lt; A &gt;就是Consumer&lt; B &gt;的子类型。类型参数A和B交换了位置，所以我们说子类型化被反转了。例如，Consumer&lt; Animal &gt;就是Consumer&lt; Cat &gt;的子类型。</strong></p>
 </blockquote>
 <p><img src="https://raw.githubusercontent.com/TheCara/RepoPicture/master/image/20211011233756.png" alt="对协变类型Producer&lt;T&gt;来说，子类型化保留了，但对逆变类型来说，子类型化反转了"></p>
@@ -3500,7 +3500,50 @@ the use of &#39;fun add(element:E):Boolean&#39;</code></pre>
 Error: Out-projected type &#39;MutableList&lt;*&gt;&#39; prohibits the use of &#39;fun add(element:E): Boolean&#39;
 &gt;&gt;&gt; println(unknownElements.first())    // 读取元素是安全的：first.(）返回一个类型为Any?的元素。
 3</code></pre>
-<p>为什么编译器会吧 MutableList&lt;<em>&gt; *</em>当成out投影的类型？（out-projected）。<strong>在这个例子的上下文中， **MutableList&lt;  *  &gt;投影成了MutableList&lt;Any?&gt;:</strong> 当你没有任何元素类型信息的时候，读取Any?类型的元素仍然是安全的， <strong>但是向列表中写入元素是不安全的。</strong></p>
+<p>为什么编译器会把 MutableList&lt; * &gt; <strong>当成out投影的类型？（out-projected）</strong>。 在这个例子的上下文中， <strong>MutableList&lt;  *  &gt;投影成了MutableList&lt;Any?&gt;:</strong> 当你没有任何元素类型信息的时候，读取Any?类型的元素仍然是安全的， <strong>但是向列表中写入元素是不安全的。</strong></p>
+<blockquote>
+<p><strong>注意：</strong></p>
+<p>对于Consumber<in T> 这样的逆变类型参数来说，星号投影等价于<in Nothing>。实际上这种星号投影无法调用任何签明中有T的方法。如果类型参数是逆变的，它就只能表现为一个消费者，你不知道它消费的到底是什么。</p>
+</blockquote>
+<p><strong>场景</strong></p>
+<blockquote>
+<p>当类型实参的信息并不重要的时候，可以使用星号投影的语法：不需要使用任何在签名中引用类型参数的方法，或者只是读取数据而不关心它的具体类型。列入，可以实现一个接收List&lt;*&gt;做参数的printFirst函数：</p>
+<pre><code class="kotlin">fun printFirst(list: List&lt;*&gt;) {   // 每一种列表都可能是实参。
+    if (list.isNotEmpty()) {  // isNotEmpty()没有使用泛型类型参数
+        println(list.first())   // fist()现在返回的是Any?,但在这里足够了
+    }
+}
+&gt;&gt;&gt; printFirst(listOf(&#39;Svetlana&#39;,&#39;Dmitry&#39;))
+Svetlana</code></pre>
+<p>使用点变型的情况下，有一个代替方案–引入一个泛型类型参数：</p>
+<pre><code class="kotlin">fun &lt;T&gt; printlnFirst(list: List&lt;T&gt;) { // 每一种列表都是可能的实参
+    if (list.isNotEmpty()) {
+        println(list.first())   //first()现在返回的是T的值。
+    }
+}</code></pre>
+<p>星号投影的语法很简洁，但只能用在对泛型类型实参的确切值不感兴趣的地方：只是使用生产值的方法，而且不关心那些值的类型。</p>
+</blockquote>
+<p><strong>场景</strong></p>
+<blockquote>
+<p>另一个使用星号投影的日子，以及使用这种方法时会困扰你的陷阱。</p>
+<p>假如你需要验证用户的输入，并声明一个接口FieldValidator。它只包含在in位置的类型参数，所以声明成了逆变的。事实上，当期望的是字符串验证器时使用可验证任意元素的验证器也是没有问题的（这就是声明成逆变带来的效果）。同时还声明了两个验证器来分别处理String和Int。</p>
+<pre><code class="kotlin">/*     9.18 输入验证的接口 */
+interface FieldValidator(in T) { //接口定义成 在 T 上的逆变。
+    fun validete(input: T): Boolean   // T只在“in&quot;位置使用（这个方法只消费T的值）。
+}
+
+object DefaultStringValidator : FieldValidator&lt;String&gt; {
+    override fun validate(input: String) = input.isNotEmpty()
+}
+
+object DefaultIntValidator : FieldValidator&lt;Int&gt; {
+    override fun validate(input: int) = input &gt;= 0
+}</code></pre>
+<p>现在假设你想要把所有的验证器都存储到同一个容器中，并根据输入的类型来选出正确的验证器。首先会用到map来存储它们。你存储的是任意类型的验证器，所以你声明了KClass（代表一个Kotlin类，10章会详细介绍KClass）到FiledValidator&lt;*&gt;（可以指向任意类型的验证器）的map：</p>
+<pre><code class="kotlin">&gt;&gt;&gt; validators = mutableMapOf&lt;KClass&lt;*&gt;，FieldValidator&lt;*&gt;&gt;()
+&gt;&gt;&gt; validators[String::class] = DefaultStringValidator
+&gt;&gt;&gt; validators[Int::class] = DefaultIntValidator</code></pre>
+</blockquote>
 <h1 id="补充"><a href="#补充" class="headerlink" title="补充"></a>补充</h1><h3 id="字段和属性"><a href="#字段和属性" class="headerlink" title="字段和属性"></a>字段和属性</h3><p><a href="https://blog.csdn.net/chenchunlin526/article/details/71424844" target="_blank" rel="noopener">深入理解Java中的字段与属性的区别</a></p>
 <h4 id="属性和字段的区别"><a href="#属性和字段的区别" class="headerlink" title="属性和字段的区别"></a>属性和字段的区别</h4><p>属性（property），通常可以理解为get 和 set 方法。</p>
 <p>字段（field），通常叫做 <strong>类成员</strong>，或者 <strong>类变量</strong> ，有时也叫 域 ，理解为 数据成员，用来承担数据的。</p>
