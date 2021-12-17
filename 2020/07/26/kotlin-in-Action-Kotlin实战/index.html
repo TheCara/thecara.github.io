@@ -3529,20 +3529,30 @@ Svetlana</code></pre>
 <p>假如你需要验证用户的输入，并声明一个接口FieldValidator。它只包含在in位置的类型参数，所以声明成了逆变的。事实上，当期望的是字符串验证器时使用可验证任意元素的验证器也是没有问题的（这就是声明成逆变带来的效果）。同时还声明了两个验证器来分别处理String和Int。</p>
 <pre><code class="kotlin">/*     9.18 输入验证的接口 */
 interface FieldValidator(in T) { //接口定义成 在 T 上的逆变。
-    fun validete(input: T): Boolean   // T只在“in&quot;位置使用（这个方法只消费T的值）。
+ fun validete(input: T): Boolean   // T只在“in&quot;位置使用（这个方法只消费T的值）。
 }
 
 object DefaultStringValidator : FieldValidator&lt;String&gt; {
-    override fun validate(input: String) = input.isNotEmpty()
+ override fun validate(input: String) = input.isNotEmpty()
 }
 
 object DefaultIntValidator : FieldValidator&lt;Int&gt; {
-    override fun validate(input: int) = input &gt;= 0
+ override fun validate(input: int) = input &gt;= 0
 }</code></pre>
 <p>现在假设你想要把所有的验证器都存储到同一个容器中，并根据输入的类型来选出正确的验证器。首先会用到map来存储它们。你存储的是任意类型的验证器，所以你声明了KClass（代表一个Kotlin类，10章会详细介绍KClass）到FiledValidator&lt;*&gt;（可以指向任意类型的验证器）的map：</p>
-<pre><code class="kotlin">&gt;&gt;&gt; validators = mutableMapOf&lt;KClass&lt;*&gt;，FieldValidator&lt;*&gt;&gt;()
+<pre><code class="kotlin">&gt;&gt;&gt; validators = mutableMapOf&lt;KClass&lt;*&gt;，FieldValidator&lt;*&gt;&gt;() //key ,value
 &gt;&gt;&gt; validators[String::class] = DefaultStringValidator
 &gt;&gt;&gt; validators[Int::class] = DefaultIntValidator</code></pre>
+<p>如果你这样做了，尝试使用验证器的时候就会遇到困难。不能用类型为FieldValidator&lt;*&gt;的验证器来验证字符串。这是不安全的，因为编译器不知道它是那种验证器：</p>
+<pre><code class="kotlin">&gt;&gt;&gt; validators[String::class]!!.validate(&quot;&quot;)    //存储在map中的值的类型是FieldValidator&lt;*&gt;。
+Error:Out-projected type &#39;FieldValidator&lt;*&gt;&#39; prohibits the use of &#39;fun validate(intput: T):Boolean&#39;</code></pre>
+<p>（写入时会报错）在前面尝试向MutableList&lt;<em>&gt;中写入元素的时候，你已经见过这种错误了。这种情况下，这个错误的意思是把具体类型的值传给未知类型的验证器是否安全的。*</em>一种修正方法是把验证器显式地转换成需要的类型。<strong>这样做是不安全的，也是不推荐的。</strong>但我们还是把他作为让代码快速通过编译的技巧展示在这里，这样可以在后面重构它。**</p>
+<pre><code class="kotlin">/*    9.19 使用显式的转换获取验证器    */
+&gt;&gt;&gt; val stringValidator = validators[String::class] as FieldValidator&lt;String&gt;   //警告未受检的转换
+&gt;&gt;&gt; println(stringValidator.validate(&quot;&quot;))
+false
+</code></pre>
+<p>编译器发出了未受检转换的警告。注意，尽管如此，这段代码只有在验证时可以失败，而不是在转换时，因为运行时所有的泛型信息都被擦除了。</p>
 </blockquote>
 <h1 id="补充"><a href="#补充" class="headerlink" title="补充"></a>补充</h1><h3 id="字段和属性"><a href="#字段和属性" class="headerlink" title="字段和属性"></a>字段和属性</h3><p><a href="https://blog.csdn.net/chenchunlin526/article/details/71424844" target="_blank" rel="noopener">深入理解Java中的字段与属性的区别</a></p>
 <h4 id="属性和字段的区别"><a href="#属性和字段的区别" class="headerlink" title="属性和字段的区别"></a>属性和字段的区别</h4><p>属性（property），通常可以理解为get 和 set 方法。</p>
