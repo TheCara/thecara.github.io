@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="kotlin in Action-Kotlin实战, TheCara">
+    <meta name="keywords" content="kotlin, TheCara">
     <meta name="description" content="">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>kotlin in Action-Kotlin实战 | TheCara</title>
+    <title>kotlin | TheCara</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -326,7 +326,7 @@
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">kotlin in Action-Kotlin实战</h1>
+                    <h1 class="description center-align post-title">kotlin</h1>
                 </div>
             </div>
         </div>
@@ -441,17 +441,9 @@
             <div class="row tag-cate">
                 <div class="col s7">
                     
-                    <div class="article-tag">
-                        
-                            <a href="/tags/Android/">
-                                <span class="chip bg-color">Android</span>
-                            </a>
-                        
-                            <a href="/tags/Kotlin/">
-                                <span class="chip bg-color">Kotlin</span>
-                            </a>
-                        
-                    </div>
+                          <div class="article-tag">
+                            <span class="chip bg-color">无标签</span>
+                          </div>
                     
                 </div>
                 <div class="col s5 right-align">
@@ -3529,15 +3521,15 @@ Svetlana</code></pre>
 <p>假如你需要验证用户的输入，并声明一个接口FieldValidator。它只包含在in位置的类型参数，所以声明成了逆变的。事实上，当期望的是字符串验证器时使用可验证任意元素的验证器也是没有问题的（这就是声明成逆变带来的效果）。同时还声明了两个验证器来分别处理String和Int。</p>
 <pre><code class="kotlin">/*     9.18 输入验证的接口 */
 interface FieldValidator(in T) { //接口定义成 在 T 上的逆变。
- fun validete(input: T): Boolean   // T只在“in&quot;位置使用（这个方法只消费T的值）。
+fun validete(input: T): Boolean   // T只在“in&quot;位置使用（这个方法只消费T的值）。
 }
 
 object DefaultStringValidator : FieldValidator&lt;String&gt; {
- override fun validate(input: String) = input.isNotEmpty()
+override fun validate(input: String) = input.isNotEmpty()
 }
 
 object DefaultIntValidator : FieldValidator&lt;Int&gt; {
- override fun validate(input: int) = input &gt;= 0
+override fun validate(input: int) = input &gt;= 0
 }</code></pre>
 <p>现在假设你想要把所有的验证器都存储到同一个容器中，并根据输入的类型来选出正确的验证器。首先会用到map来存储它们。你存储的是任意类型的验证器，所以你声明了KClass（代表一个Kotlin类，10章会详细介绍KClass）到FiledValidator&lt;*&gt;（可以指向任意类型的验证器）的map：</p>
 <pre><code class="kotlin">&gt;&gt;&gt; validators = mutableMapOf&lt;KClass&lt;*&gt;，FieldValidator&lt;*&gt;&gt;() //key ,value
@@ -3553,7 +3545,53 @@ Error:Out-projected type &#39;FieldValidator&lt;*&gt;&#39; prohibits the use of 
 false
 </code></pre>
 <p>编译器发出了未受检转换的警告。注意，尽管如此，这段代码只有在验证时可以失败，而不是在转换时，因为运行时所有的泛型信息都被擦除了。</p>
+<pre><code class="kotlin">/*   9.20 错误的获取验证器   */
+&gt;&gt;&gt; val stringValidator = validators[Int::class]// 得到一个错误的验证器（可能为不小心0，但代码可以编译。(获取一个Int强制转换为String)
+        as FieldValidator&lt;String&gt;  // 仅仅一个警告
+&gt;&gt;&gt; stringValidator.validate(&quot;&quot;)    //直到使用验证器才发现错误。
+java.lang.ClassCastException:
+java.lang.String cannot be cast to java.lang.Number at DefaultIntValidator.validate</code></pre>
+<p>这两段代码在两种情景下是相似的，都只会发出警告。这些强制转换导致类型不安全，也容易出错。如果想要把不同类型的验证器存储在同一个地方，我们要研究一下其他的选择。</p>
 </blockquote>
+<p>代码 9.21 中使用解决方法 map validators，<strong>但是把所有对它的访问封装到了两个泛型方法中，它们负责保证只有正确的验证器被注册和返回。</strong>这段代码依然会发出未受捡转换的警告（这之前的一样），但这里的Validators对象控制了所有对map的访问，保证了没有任何人会错误的改变map。</p>
+<pre><code class="kotlin">/*  9.21 封装对验证器集合的访问  */
+object Validators {
+    private val validators = = mutableMapOf&lt;KClass&lt;*&gt;, FieldValidator&lt;*&gt;&gt;()  //使用和之前一样的map，但现在无法在外部访问他
+    fun &lt;T : Any&gt; registerValidator(
+        kCLass: KClass&lt;T&gt;, fieldValidator: FieldValidator&lt;T&gt;
+    ) {
+        validators[kClass] = fieldValidator // 只有正确的键值对被写入map，即但验证器正好对应到类的时候。
+    }
+
+    @Suppress(&quot;UNCHECKED_CAST&quot;) // 禁止关于未受检的转换到FieldValidator&lt;T&gt; 的警告
+    operator fun &lt;T : Any&gt; get(kClass: KClass&lt;T&gt;): FieldValidator&lt;T&gt; =
+    validators[kCLass] as? FieldValidator&lt;T&gt; ?: throw IllegalArgumentException(
+    &quot;No validator for ${kClass.simpleName}&quot;
+    )
+}
+&gt;&gt;&gt; Validators.registerValidator(String::class, DefaultStringValidator)
+&gt;&gt;&gt; Validators.registerValidator(Int::class,DefaultIntValidator)
+&gt;&gt;&gt; println(Validators[String::class].validate(&quot;Kotlin&quot;))
+true
+&gt;&gt;&gt; println(Validators[Int::class].validate(42))
+true</code></pre>
+<p>你拥有了一个类似安全的API。所有不安全的逻辑都被隐藏在类的主体中，通过把这些逻辑局部化，保证了它不会被错误的使用。编译器禁止使用错误的验证器，因为Validatos对象始终都会给出正确的验证器实现。</p>
+<pre><code class="kotlin">&gt;&gt;&gt; println(Validators[String::class].validate(42))
+Error:The integer literal does not conform to the expected type String</code></pre>
+<p>通过封装验证器集合的模式可以轻松的推广到任意自定义泛型类的存储。把不安全的代码局部化到一个分开的位置预防了误用，而且让容器的使用变的安全。这个模式并不是只针对Kotlin，Java中也可以使用同样的方法。</p>
+<h2 id="9-4-小结"><a href="#9-4-小结" class="headerlink" title="9.4 小结"></a>9.4 小结</h2><ul>
+<li>Kotlin的泛型同Java的泛型接近它们使用同样的方式声明泛型函数和泛型类。</li>
+<li>同Java一样，泛型类型的类型实参只在编译器存在。</li>
+<li>不能把带类型实参的类型和is运算符一起使用，因为类型实参在运行时不被擦除。</li>
+<li>内联函数的类型参数可以标记成实化的，允许你在运行时对它们使用is检查，以及获得java.lang.Class实例</li>
+<li>变型是一种说明两种拥有相同基础类型和不同类型参数的泛型类型之间子类型化关系的方式，<strong>它说明了如果其中一个泛型类型的类型参数是另一个的类型参数的子类型，这个泛型类型就是另外一个泛型类型的子类型或者超类型。</strong></li>
+<li>声明一个类在某个类型上是协变的，该参数只能用在out位置。</li>
+<li>逆变情况相反:可以声明一个类在某个类型参数上是逆变的，如果该参数只是用在in位置。</li>
+<li>Kotlin中只读接口List声明成了逆变，这意味着List&lt; String &gt; 是 List&lt; Any &gt;的子类型</li>
+<li>函数接口声明成了在第一个类型参数上逆变而在第二个接口上协变，使(Animal)-&gt;Int称为(Cat)-&gt;Number的子类型。</li>
+<li>在Kotlin中即可以为整个泛型类指定变型（声明点变型），也可以为泛型类型特定的使用指定变型（使用点变型）。</li>
+<li>当确切的类型实参是未知的或者不重要时，可以使用星号投影语法。</li>
+</ul>
 <h1 id="补充"><a href="#补充" class="headerlink" title="补充"></a>补充</h1><h3 id="字段和属性"><a href="#字段和属性" class="headerlink" title="字段和属性"></a>字段和属性</h3><p><a href="https://blog.csdn.net/chenchunlin526/article/details/71424844" target="_blank" rel="noopener">深入理解Java中的字段与属性的区别</a></p>
 <h4 id="属性和字段的区别"><a href="#属性和字段的区别" class="headerlink" title="属性和字段的区别"></a>属性和字段的区别</h4><p>属性（property），通常可以理解为get 和 set 方法。</p>
 <p>字段（field），通常叫做 <strong>类成员</strong>，或者 <strong>类变量</strong> ，有时也叫 域 ，理解为 数据成员，用来承担数据的。</p>
@@ -3620,6 +3658,8 @@ applyOp(2, 3, sumLambda)</code></pre>
 <p><a href="https://www.web3.xin/code/2606.html" target="_blank" rel="noopener">Kotlin this表达式</a></p>
 <p><a href="https://www.jianshu.com/p/10358883455c" target="_blank" rel="noopener">kotlin中的函数引用详解</a>    </p>
 <p><a href="http://c.biancheng.net/view/6559.html" target="_blank" rel="noopener">Lambda表达式与匿名内部类的联系和区别</a></p>
+<p>Kotlin 实战 </p>
+<p> 著(Dmitry Jemerov ,Svetlana Isakova)</p>
 <p><img src="https://raw.githubusercontent.com/TheCara/RepoPicture/master/image/2020-8-3-1.gif" alt="如果有些方法没有详细说明你可以自行搜索查看"></p>
 
             </div>
@@ -3683,15 +3723,7 @@ applyOp(2, 3, sumLambda)</code></pre>
                 <div class="post-meta__tag-list" style="display: inline-block;">
                     
                         <div class="article-tag">
-                            
-                                <a href="/tags/Android/">
-                                    <span class="chip bg-color">Android</span>
-                                </a>
-                            
-                                <a href="/tags/Kotlin/">
-                                    <span class="chip bg-color">Kotlin</span>
-                                </a>
-                            
+                            <span class="chip bg-color">无标签</span>
                         </div>
                     
                 </div>
