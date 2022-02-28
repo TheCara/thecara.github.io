@@ -3592,12 +3592,131 @@ Error:The integer literal does not conform to the expected type String</code></p
 <li>在Kotlin中即可以为整个泛型类指定变型（声明点变型），也可以为泛型类型特定的使用指定变型（使用点变型）。</li>
 <li>当确切的类型实参是未知的或者不重要时，可以使用星号投影语法。</li>
 </ul>
+<h1 id="10-注解和反射"><a href="#10-注解和反射" class="headerlink" title="10 注解和反射"></a>10 注解和反射</h1><p>要调用一个函数，你需要知道定义在哪个类中，还有它的名称和参数的类型。 <strong>注解和反射</strong>给你超越这个规则的能力，并让你编写出使用事先未知的任意类的代码。可以使用注解赋予这些类库特定的语义，而反射允许你在运行时分析这些类的结构。</p>
+<p>应用注解非常直接了当。但编写你的注解尤其是编写处理它们的代码，就没有这么简单了。使用注解的语法鱼Java完全相同，而声明自己注解类的语法却略有不同。  反射API的大体结构与Java相仿，但细节存在差异。</p>
+<p><strong>作为注解和反射用法的演示，我们将会带你浏览一个真实项目的实现：一个叫做JKid的库，用来序列化和反序列化JSON。这个库在运行时用反射访问任意的Kotlin对象，同时还根据JSON文件中提供的数据创建对象。注解则可以让你定制具体的类和属性是如何被这个库序列化和反序列化的。</strong></p>
+<h2 id="10-1-声明并应用注解"><a href="#10-1-声明并应用注解" class="headerlink" title="10.1 声明并应用注解"></a>10.1 声明并应用注解</h2><p>Kotlin 中的核心概念是一样的。一个注解允许你把额外的元数据关联到一个声明上。然后元数据就可以被相关的源代码工具访问，同个编译好的类文件或是在运行时，取决于这个注解是如何配置的。</p>
+<h3 id="10-1-1-应用注解"><a href="#10-1-1-应用注解" class="headerlink" title="10.1.1 应用注解"></a>10.1.1 应用注解</h3><p>​        在Kotlin中使用注解的方法和Java中一样。要应用一个注解，以@字符作为（注解）名字的前戳，并放在要注解的声明最前面。可以注解不同的代码元素，比如函数和类。</p>
+<p>​        例如，使用框架JUnit（<a href="http://junit.org/junit4)，可以用@Test标记一个测试方法：" target="_blank" rel="noopener">http://junit.org/junit4)，可以用@Test标记一个测试方法：</a></p>
+<pre><code class="kotlin">import org.junit.*
+
+class MyTest {
+    @Test
+    fun testTrue() {    //@Test注解指引Junit框架把这个方法当测试调用
+        Assert.assertTrue(true)
+    }
+}</code></pre>
+<p>另一个更有趣的例子：@Deprecated注解。它在Kotlin总的含义与java一样（@Deprecated 注解含义：意思为此方法已过时，因为有了新的API代替它。）但是Kotlin用replaceWith参数增强了它，让你可以提供 一个替代者的（匹配）模式，以支持平滑的过渡到API的新版本。</p>
+<p>如何给一个注解提供实参（一条 不推荐使用 的信息和一个 替代者 的模式：</p>
+<pre><code class="kotlin">@Deprecated(&quot;Use removeAt(index) instead.&quot;,RepalceWith(&quot;removeAt(Index)&quot;))
+fun remove(index:Int){ ... }</code></pre>
+<p>实参在括号中传递，就和常规函数的调用一样。用了这个声明之后，如果有人使用了remove函数，IntelliJ IDEA 不仅会提示应该使用哪个函数来使用它（这个例子中removeAt），还会提供一个自动的快速修正。</p>
+<p>注解只能拥有如下类型的参数：基本数据类型、字符串、枚举、类引用、其他的注解类，以及前面这些类型的数组。指定注解的实参与Java有微小差别：</p>
+<ul>
+<li>要把一个类指定为注解实参，在类名后加上 ::class :@MyAnnotation(MyClass::class) 。</li>
+<li>要把另一个注解指定为一个实参，去掉注解名称前的@。例如，前面例子中的ReplaceWith是一个注解，但是你把它指定为Deprecated注解的实参时没有用@。</li>
+<li>要把一个数组指定为一个实参，使用arrayOf函数：@RequestMapping（path=arrayOf(“/foo”,”/bar”))。如果注解类是在Java中声明的，命名为value的形参按需自动地被转换成可变长度的形参，所以不用arrayOf函数就可以提供多个实参。</li>
+</ul>
+<p><strong>注解实参</strong>需要在编译期就是已知的，所以你不能引用任意的属性作为实参。要把属性当作注解实参使用，你需要用const修饰符标记它，来告知编译器这个属性是 <strong>编译期常量</strong>。</p>
+<p>下面一个JUnit@Test注解的例子，使用timeout参数测试超时时长，单位为毫秒：</p>
+<pre><code class="kotlin">const val TEST_TIMEOUT = 100L
+@Test(timeout = TEST_TIMEOUT) fun testMethod(){    ...    }</code></pre>
+<p>在使用const标注的属性可以声明在一个文件的顶层或者一个object之中，<strong>而却必须初始化为基本数据类型或者String类型的值。</strong>如果你尝试使用普通属性作为注解实参，将会得到一个错误“Only ‘const val’ can be used in constant expressions.”（只有‘const val’才能用在常量表达式中）。</p>
+<h3 id="10-1-2-注解目标"><a href="#10-1-2-注解目标" class="headerlink" title="10.1.2 注解目标"></a>10.1.2 注解目标</h3><p> 多数情况下，Kotlin源代码中的单个声明会对应多个Java声明，而且它们每个都能携带注解。例如，一个Kotlin 属性就对应了一个Java字段，getter，以及一个潜在的setter和它的参数。而一个在主构造方法中声明的属性还多拥有一个对应的元素：<strong>构造方法的参数</strong>。因此，说明这些元素中那些需要注解十分必要。</p>
+<p>​    <strong>使用点目标声明</strong>被用来说明要注解的元素。<strong>使用点目标被放在@符号和注解名称之间，并用冒号和注解名分开。下列单词get导致注解@Rule被应用到了属性的getter上。</strong></p>
+<pre><code class="kotlin">@get:Rule
+// get（使用点目标） Rule（注解目标）</code></pre>
+<p>下面看一个使用这个注解的例子。在JUnit中可以指定一个每个测试方法被执行之前都会执行的规则。例，标准的TemporaryFolder规则用来创建文件和文件夹，并在测试结束后删除它们。</p>
+<p><strong>使用 ”使用点目标声明“ 以及注意事项！</strong></p>
+<p>要指定一个规则，<em>在Java中需要声明一个用@Rule的注解的public字段或者方法</em>。如果在你的Kotlin测试类中只是用@Rule注解了属性folder（包含字段folder？）你会得到一个JUnit一场：“The(???)’folder’ must be public.”（(???)’folder’必须是公有的。）这是因为@Rule被应用到了字段上，而字段是默认是私有的。要把它应用到（公有的）getter上，要显式的写出来，@get:Rule 如下：</p>
+<pre><code class="kotlin">class HasTempFolder {
+    @get:Rule   // 注解的是getter，而不是属性
+    val folder = TemporaryFolder()
+
+    @Test
+    fun testUsingTempFolder() {
+        val createFile = folder.newFile(&quot;myfile.txt&quot;)
+        val createFolder = folder.newFolder(&quot;subfolder&quot;)
+        // ...
+    }
+}</code></pre>
+<p>如果你使用Java中声明的注解来注解一个属性，它会被默认的应用到相应的字段上。Kotlin 也可以让你声明被直接对应到属性上的注解。</p>
+<p>Kotlin支持的使用点目标的完整列表如下：</p>
+<ul>
+<li>property——Java的注解不能应用这种使用点目标。</li>
+<li>field——为属性生成字段。</li>
+<li>get——属性的getter。</li>
+<li>set——属性的setter。</li>
+<li>receiver——扩展函数或者扩展属性的接收者参数。</li>
+<li>param——构造方法的参数。</li>
+<li>setparam——属性的setter的参数。</li>
+<li>delegate——为委托属性存储委托实例的字段。</li>
+<li>file——包含在文件中声明的顶层函数和属性的类。</li>
+</ul>
+<p>任何应用到file目标的注解都必须放在文件的顶层，放在package指令之前。@JvmName是常见的应用到文件的注解之一，它改变了对应类的名称。</p>
+<p>和Java不一样的是，Kotlin允许你对任意的表达式应用注解，而不仅仅是类和函数的声明以及类型。最常见的例子就是@Suppress注解，可以用它遏制被注解的表达式的上下文中的特定的编译器警告。下面就是一个注解的局部变量声明的例子，抑制了未受捡转换的警告：</p>
+<pre><code class="kotlin">fun test(list: List&lt;*&gt;) {
+    @Suppress(&quot;UNCHECKED_CAST&quot;)
+    val string = list as List&lt;String&gt;
+    // ...
+}</code></pre>
+<blockquote>
+<p><strong>用注解控制JavaAPI</strong></p>
+<p>Kotlin 提供了各种注解来控制Kotlin编写的声明如何编译成字节码并暴露给Java调用者。其中一些注解代替了Java语言中对应的关键字：比如，注解@Volatile和@Strictfp直接充当了Java的关键字volatile和strictfp的替身。其他的注解则被用来改变Kotlin声明对Java调用者的可见性：</p>
+<ul>
+<li>@JvmName将改变由Kotlin生成的Java方法或字段名称。</li>
+<li>@JvmStatic能被用在对象声明或者伴生对象的方法上，把它们暴露成Java的静态方法。</li>
+<li>@JvmOverloads，指导Kotlin编译器为带默认参数值的函数生成多个重载（函数）。</li>
+<li>@JvmField可以应用于一个属性，把这个属性暴露成一个没有访问器的公有Java字段。</li>
+</ul>
+</blockquote>
+<h3 id="10-1-3-使用注解定制JSON序列化"><a href="#10-1-3-使用注解定制JSON序列化" class="headerlink" title="10.1.3 使用注解定制JSON序列化"></a>10.1.3 使用注解定制JSON序列化</h3><p>注解的典型用法之一就是定制化对象的序列化。<strong>序列化</strong> 是一个过程，把对象转换成可以存储或者在网络上可以传输的二进制或者文本的表达式。它的逆向工程可以 <strong>反序列化</strong> ，把这种表达法转换回对象。而最常见的一种用来序列化的格式计算JSON。 有很多广泛使用的库可以把Java对象序列化成JSON，包括Jackson和GSON。这些对Kotlin完全兼容。</p>
+<p>将会讨论一个满足此用途的名为JKid的纯Kotlin库。它足够小巧，可以轻松的读完它的全部源代码。</p>
+<blockquote>
+<p><strong>JKid 库源代码和练习</strong></p>
+<p>JKid 地址：<a href="https://github.com/yole/jkid。要学习库的实现和例子，在IDE中把文件" target="_blank" rel="noopener">https://github.com/yole/jkid。要学习库的实现和例子，在IDE中把文件</a> ch10/jkid/build.gradle 作为Gradle项目打开。在项目的 src/test/kotlin/examples 目录下可以找到这些例子。它并不像GSON或者Jackson那样完善灵活，但它的性能足够使用。</p>
+</blockquote>
+<p>先从简单的例子开始，测试这个库：序列化和反序列化一个Person类的实例。<em>把实例传递给serialize函数，然后它就会返回一个包含该实例JSON表示法的字符串：</em></p>
+<pre><code class="kotlin">data class Person(val name:String,val age:Int)
+
+&gt;&gt;&gt; val person = Person(&quot;Alice&quot;,29)
+&gt;&gt;&gt; println(serialize(person))
+{&quot;age&quot;:29,&quot;name&quot;:&quot;Alice&quot;}</code></pre>
+<p>一个对象的JSON表达法由键值对组成：具体实例的属性名称和它们的值之间的键值对，比如：“age”:29 。</p>
+<p><strong>要从JSON表达法中取回一个对象，</strong>要调用deserialize函数：</p>
+<pre><code class="kotlin">&gt;&gt;&gt; val json=&quot;&quot;&quot;{&quot;name&quot;:&quot;Alice&quot;,&quot;age&quot;:29}&quot;&quot;&quot;
+&gt;&gt;&gt; println(deserialize&lt;Person&gt;(json))
+Person(name=Alice,age = 29)</code></pre>
+<p><strong>当你从JSON数据中创建实例的时候，必须显式的指定一个类作为类型参数，因为JSON没有存储对象的类型，</strong>这种情况下，你要传递Person类。</p>
+<p>下图，展示了一个对象和它的JSON表示法之间的关系。注意序列化之后的类能包含的不仅是图中展示的这些基本数据类型或者字符串类型的值，还可以是集合，以及其他值对象类的实例。</p>
+<p><img src="https://raw.githubusercontent.com/TheCara/RepoPicture/master/image/Snipaste_2022-02-20_19-56-13.jpg" alt="Person实例的序列化和反序列化"></p>
+<p>你可以使用注解来定制对象序列化和反序列化的方式。当把一个对象序列化成JOSN的时候，默认情况下这个库尝试序列化的所有属性，并使用属性名称作为键。注解允许你改变默认的行为，两个注解，@JsonExclude和@JsonName，稍后查看它们的实现：</p>
+<ul>
+<li>@JsonExclude注解用来标记一个属性，这个属性应该排除在序列化和反序列化之外。</li>
+<li>@JsonName注解让你说明代表这个属性的（JSON）<strong>键值对中的键应该是一个给定的字符串，而不是属性的名称。</strong></li>
+</ul>
+<p>参考一个例子：</p>
+<pre><code class="kotlin">data class Person {
+    @JsonName(&quot;alias&quot;)
+    val firstName: String,
+    @JsonExclude
+    val age: Int? = null
+}</code></pre>
+<p>你注解了属性firstName，来改变JSON中用来表示它的键。<strong>而属性age也被注解了，在序列化和反序列化时会排除它。注意你必须指定age的默认值。否则，在反序列化时你无法创建一个Person的新实例。</strong> 如下展示了Person内实例的表示法发生了怎样的变化。</p>
+<p><img src="https://raw.githubusercontent.com/TheCara/RepoPicture/master/image/20220228145204.png" alt="应用注解之后Person实例的序列化和反序列化"></p>
+<blockquote>
+<p>键名是@JsonName注解的字符串“alias”。</p>
+</blockquote>
+<p>已经见过了JKid中出现的大多数功能：serialize()、deserialize()、@JsonName和@JsonExclude。讨论如何实现它们吧。</p>
+<h3 id="10-1-4-声明注解"><a href="#10-1-4-声明注解" class="headerlink" title="10.1.4 声明注解"></a>10.1.4 声明注解</h3><p>这次你会以<strong>JKid库中的注解为例学习怎样声明他们</strong>。注解@JsonExclude有着最简单的形式，因为它没有任何参数：</p>
+<pre><code class="kotlin">annotation class JsonExclude</code></pre>
+<p>语法看起来和普通类的声明很像，只是在class关键词之前加上了annotation修饰符。<strong>因为注解类只是用来定义关联到声明和表达式的元数据的结构，它们不能包含任何代码。</strong>因此，编译器禁止为一个注解类指定主体。</p>
 <h1 id="补充"><a href="#补充" class="headerlink" title="补充"></a>补充</h1><h3 id="字段和属性"><a href="#字段和属性" class="headerlink" title="字段和属性"></a>字段和属性</h3><p><a href="https://blog.csdn.net/chenchunlin526/article/details/71424844" target="_blank" rel="noopener">深入理解Java中的字段与属性的区别</a></p>
 <h4 id="属性和字段的区别"><a href="#属性和字段的区别" class="headerlink" title="属性和字段的区别"></a>属性和字段的区别</h4><p>属性（property），通常可以理解为get 和 set 方法。</p>
 <p>字段（field），通常叫做 <strong>类成员</strong>，或者 <strong>类变量</strong> ，有时也叫 域 ，理解为 数据成员，用来承担数据的。</p>
 <h4 id="属性和字段详解"><a href="#属性和字段详解" class="headerlink" title="属性和字段详解"></a>属性和字段详解</h4><p><strong>字段（field）</strong></p>
 <p>类成员（字段field），通常在类中定义成员变量例如：</p>
-<p><img src="https://raw.githubusercontent.com/TheCara/RepoPicture/master/image/20200909213136.png" alt=""></p>
+<p><img src="https://raw.githubusercontent.com/TheCara/RepoPicture/master/image/20200909213136.png" alt=""> </p>
 <p>解释为：<strong>FacebookUser类拥有成员变量nickname，有一个字段 nickname。</strong></p>
 <p>字段一般用于承担数据，所以为了数据的安全性，一般设置为私有的。</p>
 <p>字段和常量描述的类的数据（域），当这些数据的某些部分不运行外界访问时，<strong>根据”对象封装“原则，应该尽量避免将类的字段以公有方式提供给外部</strong>。除啦final修饰的常量。</p>
