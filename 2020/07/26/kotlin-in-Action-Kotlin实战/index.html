@@ -3711,7 +3711,33 @@ Person(name=Alice,age = 29)</code></pre>
 <h3 id="10-1-4-声明注解"><a href="#10-1-4-声明注解" class="headerlink" title="10.1.4 声明注解"></a>10.1.4 声明注解</h3><p>这次你会以<strong>JKid库中的注解为例学习怎样声明他们</strong>。注解@JsonExclude有着最简单的形式，因为它没有任何参数：</p>
 <pre><code class="kotlin">annotation class JsonExclude</code></pre>
 <p>语法看起来和普通类的声明很像，只是在class关键词之前加上了annotation修饰符。<strong>因为注解类只是用来定义关联到声明和表达式的元数据的结构，它们不能包含任何代码。</strong>因此，编译器禁止为一个注解类指定主体。</p>
-<h1 id="补充"><a href="#补充" class="headerlink" title="补充"></a>补充</h1><h3 id="字段和属性"><a href="#字段和属性" class="headerlink" title="字段和属性"></a>字段和属性</h3><p><a href="https://blog.csdn.net/chenchunlin526/article/details/71424844" target="_blank" rel="noopener">深入理解Java中的字段与属性的区别</a></p>
+<p><strong>对拥有参数的注解来说，在类的主构造方法中声明这些参数：</strong></p>
+<pre><code class="kotlin">annotation class JsonName(val name:String)</code></pre>
+<p>你用的是常规的主构造方法的声明语法。对一个注解类的所有参数来说，val关键字是强制的。</p>
+<pre><code class="kotlin">/*    Java    */
+public @interface JsonName{
+    String value();
+}</code></pre>
+<p>注意，Java注解拥有一个叫做value的方法，而Kotlin注解拥有一个name属性。Java中value方法很特殊：当你应用一个注解时，你需要提供value以外所有指定特性的显式名称。而另一方面，在Kotlin中应用注解就是常规的构造方法调用。可以使用命名实参语法让实参的名称变成显式的，或者可以省略掉这些实参的名称：@JsonName(name = “first_name”) 和 @JsonName(“first_name”)含义一样。因为name是JsonName构造方法的第一个形参（它的名称可以省略）。（<strong>Kotlin中如何使用Java中声明的注解？</strong>）然而，如果你需要把Java中声明的注解应用到Kotlin元素上，必须对除啦value以外的所有实参使用命名实参语法，而value也会被kotlin特殊对待。</p>
+<p>如何控制注解的使用，以及如何把注解应用到其他注解上。</p>
+<h3 id="10-1-5-元注解：控制如何处理一个注解"><a href="#10-1-5-元注解：控制如何处理一个注解" class="headerlink" title="10.1.5 元注解：控制如何处理一个注解"></a>10.1.5 元注解：控制如何处理一个注解</h3><p>和Java一样，一个Kotlin注解类自己也可以被注解。可以应用到注解类上的注解被称为<strong>元注解</strong>。标准库中定义了一些元注解，它们会控制编译器如何处理注解。其他一些框架也会用到元注解——<em>例如，许多依赖注入库使用了元注解来标记其他注解，表示这些注解用来识别拥有同样类型的不用的可注入对象。</em></p>
+<p>标准库定义的<strong>元注解</strong>中最常见的就是@Target。<strong>JKid</strong>中@JsonExclude和@JsonName的声明中使用它为这些注解指定有效的目标。下面展示它们是如何应用到这些注解上的。</p>
+<pre><code class="kotlin">@Traget(AnnotationTarget.PROPERTY)
+annotation class JsonExclude</code></pre>
+<p>@Target <strong>元注解说明了注解可以被应用到元素类型</strong>。<strong>如果不使用它，所有的声明都可以应用这个注解</strong>。这并不是JKid想要的，因为它只处理属性的注解。</p>
+<p>AnnotationTarget枚举的值列出了可以应用注解的全部可能目标。例如：类、文件、函数、属性、属性访问器、所有的表达式，等等。如果需要，你还可以声明多个目标：@Target(AnnotationTarget.CLASS,AnnotationTarget.METHOD)。</p>
+<p>要声明你自己的元注解，使用ANNOTATION_CLASS作为目标就好了</p>
+<pre><code class="kotlin">@Target(AnotationTarget.ANNOTATION_CLASS)
+annotation class BindingAnnotation
+
+@BindingAnnotation
+annotation class MyBinding</code></pre>
+<p><em>在Java代码中无法使用目标PROPERTY的注解：要让这样的注解在Java中使用，可以给它添加第二个目标AnnotationTarget.FIELD。这样注解既可以应用到Kotlin中的属性上，也可以应用到Java中的字段上。</em></p>
+<blockquote>
+<p>@Retention 注解</p>
+<p>你也许在Java中见过另一个重要的元注解：<strong>@Retention。它被用来说明你声明的注解时候会存储到.class文件，以及在运行时是否可以通过反射来访问它。</strong>Java默认会在.class文件中保留注解但不会让它们在运行期间被访问到。大多数注解确实需要在运行时存在，所以Kotlin的默认行为不同：注解拥有RUNTIME保留期。因此JKid中的注解没有显示地指定保留期。</p>
+</blockquote>
+<h3 id="10-1-6-使用类做注解参数"><a href="#10-1-6-使用类做注解参数" class="headerlink" title="10.1.6 使用类做注解参数"></a>10.1.6 使用类做注解参数</h3><h1 id="补充"><a href="#补充" class="headerlink" title="补充"></a>补充</h1><h3 id="字段和属性"><a href="#字段和属性" class="headerlink" title="字段和属性"></a>字段和属性</h3><p><a href="https://blog.csdn.net/chenchunlin526/article/details/71424844" target="_blank" rel="noopener">深入理解Java中的字段与属性的区别</a></p>
 <h4 id="属性和字段的区别"><a href="#属性和字段的区别" class="headerlink" title="属性和字段的区别"></a>属性和字段的区别</h4><p>属性（property），通常可以理解为get 和 set 方法。</p>
 <p>字段（field），通常叫做 <strong>类成员</strong>，或者 <strong>类变量</strong> ，有时也叫 域 ，理解为 数据成员，用来承担数据的。</p>
 <h4 id="属性和字段详解"><a href="#属性和字段详解" class="headerlink" title="属性和字段详解"></a>属性和字段详解</h4><p><strong>字段（field）</strong></p>
