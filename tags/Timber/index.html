@@ -338,7 +338,9 @@
 
 <script>
     // 每天切换 banner 图.  Switch banner image every day.
-    var bannerUrl = "/medias/banner/" + new Date().getDate() + '.jpg';
+    // var bannerUrl = "/medias/banner/" + new Date().getDate() + '.jpg';
+    var bannerUrl = "https://raw.githubusercontent.com/TheCara/RepoPicture/master/img/" + new Date().getDate() + '.jpg';
+    // var bannerUrl = "https://raw.githubusercontent.com/TheCara/RepoPicture/master/img/tumblr_05840db60fc3bef1b981043915d30899_9f0f9b40_1280.jpg";
     $('.bg-cover').css('background-image', 'url(' + bannerUrl + ')');
 </script>
 
