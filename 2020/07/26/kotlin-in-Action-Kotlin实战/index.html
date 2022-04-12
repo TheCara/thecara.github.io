@@ -951,7 +951,7 @@ Computing the sum of 1 and 2...
 <p>而在使用 lambda 声明的时候，也可以做同样的事情。如果在函数内部使用 lambda 也可以访问这个函数的参数，还有在 lambda 之前定义的局部变量。</p>
 </blockquote>
 <p><strong>forEach 函数</strong></p>
-<p> 用 forEach 函数展示 上述行为。</p>
+<p> 用 forEach 函数展示 上述行为。<code>便利字符串操作。</code></p>
 <p>它是最基本集合操作函数之一；它所作的全部事情就是在集合中的每个元素上都调用给定的 lambda。forEach 函数比普通for 函数循环更简洁，除此之外没有其它优势，所以并不急于把所有的循环更改为  lambda。</p>
 <pre><code class="kotlin">/*    在 lambda 中使用函数参数    */
 fun printMessageWithPrefix(message : Collection&lt;String&gt;,prefix:String){
@@ -1690,6 +1690,7 @@ Sending email to yole@example.com
 <blockquote>
 <p>所以说只有这段表达式不为空时才会执行代码块里的代码</p>
 </blockquote>
+<p><img src="https://raw.githubusercontent.com/TheCara/RepoPicture/master/image/20220411183210.png" alt="安全调用“let”只在表达式不为null时执行"></p>
 <h3 id="6-1-8-延迟初始化的属性"><a href="#6-1-8-延迟初始化的属性" class="headerlink" title="6.1.8 延迟初始化的属性"></a>6.1.8 延迟初始化的属性</h3><p><strong>使用延迟初始化属性的原因</strong></p>
 <blockquote>
 <p>Kotlin 通常要求你在构造方法中初始化所有属性，如果某个属性是可空类型，你就必须提供一个非空的初始化值。否则，你就必须使用可空类型。如果你这样做，该属性的每一次访问都需要null检查或者”!!”运算符</p>
@@ -4333,6 +4334,102 @@ it --  返回了生成的it形参</code></pre>
     println(replaceString)
 }</code></pre>
 <p><img src="https://raw.githubusercontent.com/TheCara/RepoPicture/master/image/20220331160940.png" alt=""></p>
+<h2 id="run函数"><a href="#run函数" class="headerlink" title="run函数"></a>run函数</h2><p><strong>场景</strong></p>
+<p>用于let，with函数的场景中。run函数弥补了let函数在函数体中必须使用it参数代替对象，run函数可以同with函数一样省略，直接访问公有属性和方法，同时弥补了with传入对象判空问题，在run函数中又可以像let函数一样判空处理。</p>
+<p>run函数只接受一个lambda函数作为参数，以闭包形式返回，并以最后一行或者指定return的表达式作为返回值。</p>
+<pre><code class="kotlin">object.run{
+//    函数体    
+}.run{
+//    以上条返回值作为参
+}</code></pre>
+<h2 id="内联函数also"><a href="#内联函数also" class="headerlink" title="内联函数also"></a>内联函数also</h2><p><strong>描述</strong></p>
+<p>let函数用来处理不为空的场景。</p>
+<p>结构上同let一样区别是返回值不一样，let以闭包形式返回，以返回函数体最后一行的值，为空时返回Unit类型为默认值。而also函数返回调用对象本身。</p>
+<pre><code class="kotlin">object.also{
+//    函数体
+}</code></pre>
+<h2 id="takeIf-函数"><a href="#takeIf-函数" class="headerlink" title="takeIf 函数"></a>takeIf 函数</h2><p><strong>描述</strong></p>
+<p>对一个对象进行判断，使用判断表达式在表达式为true时返回对象本身，false时返回null。可以对返回的对象进行链式调用。</p>
+<pre><code class="kotlin">fun main() {
+    val test = &quot;testString&quot;
+//    false时返回null
+    println(test.takeIf { it.length &gt; 20 }.apply { println(&quot;判断字符串对象test为false时返回null&quot;) })
+    println()
+//    表达式true时返回对象本身
+    println(test.takeIf { it.length &gt; 0 }.apply { println(&quot;判断字符串对象test为true时返回字符串本身&quot;) })
+}</code></pre>
+<p><img src="https://raw.githubusercontent.com/TheCara/RepoPicture/master/image/20220412154629.png" alt=""></p>
+<h2 id="takeUnless-函数"><a href="#takeUnless-函数" class="headerlink" title="takeUnless 函数"></a>takeUnless 函数</h2><p><strong>描述</strong></p>
+<p>对一个对象判断，表达式为true时返回null，不为true为false时返回对象本身。可以对返回对象进行链式调用。</p>
+<pre><code class="kotlin">fun main() {
+    val test = &quot;testString&quot;
+//    false时返回对象本身
+    println(test.takeUnless { it.length &gt; 20 }.apply { println(&quot;使用takeUnless时判断为false时执行&quot;) })
+    println()
+//    表达式true时返回null
+    println(test.takeUnless { it.length &gt; 0 }.apply { println(&quot;使用takeUnless时判断为true时执行&quot;) })
+}</code></pre>
+<p><img src="https://raw.githubusercontent.com/TheCara/RepoPicture/master/image/20220412154356.png" alt=""></p>
+<h2 id="List集合的getOrElse函数与getOrNull函数"><a href="#List集合的getOrElse函数与getOrNull函数" class="headerlink" title="List集合的getOrElse函数与getOrNull函数"></a>List集合的getOrElse函数与getOrNull函数</h2><p><strong>描述</strong></p>
+<p>返回给定位置的元素，如果超过超出范围调用getOrNull函数的defaultValue函数参数返回结果。</p>
+<p><strong>源码</strong></p>
+<pre><code class="java">/**
+ * Returns an element at the given [index] or the result of calling the [defaultValue] function if the [index] is out of bounds of this list.
+ */
+@kotlin.internal.InlineOnly
+public inline fun &lt;T&gt; List&lt;T&gt;.getOrElse(index: Int, defaultValue: (Int) -&gt; T): T {
+    return if (index &gt;= 0 &amp;&amp; index &lt;= lastIndex) get(index) else defaultValue(index)
+}</code></pre>
+<pre><code class="kotlin">fun main() {
+    val listTest = listOf&lt;String&gt;(&quot;one&quot;, &quot;twp&quot;, &quot;three&quot;)
+//    打印第一个位置
+    println(listTest.getOrElse(0, defaultValue = { &quot;超出边界时发送&quot; }))
+//    超出范围的
+    println(listTest.getOrElse(4, defaultValue = { &quot;超出边界时发送&quot; }))
+}</code></pre>
+<p><img src="https://raw.githubusercontent.com/TheCara/RepoPicture/master/image/20220412183027.png" alt=""></p>
+<p><strong>getOrNull描述</strong></p>
+<p>返回给定位置的元素，超出边界返回“null”</p>
+<p><strong>源码</strong></p>
+<pre><code class="java">/**
+ * Returns an element at the given [index] or `null` if the [index] is out of bounds of this list.
+ * 
+ * @sample samples.collections.Collections.Elements.getOrNull
+ */
+public fun &lt;T&gt; List&lt;T&gt;.getOrNull(index: Int): T? {
+    return if (index &gt;= 0 &amp;&amp; index &lt;= lastIndex) get(index) else null
+}</code></pre>
+<pre><code class="kotlin">fun main() {
+    val listTest = listOf&lt;String&gt;(&quot;one&quot;, &quot;twp&quot;, &quot;three&quot;)
+//    打印第一个位置
+    println(listTest.getOrNull(0))
+//    超出范围的返回空，并判断打印输出
+    println(listTest.getOrNull(4))
+    println(listTest.getOrNull(4) ?: &quot;返回为null超出了边界&quot;)
+}
+</code></pre>
+<p><img src="https://raw.githubusercontent.com/TheCara/RepoPicture/master/image/20220412183554.png" alt=""></p>
+<h2 id="List集合中mutator函数和contains函数、Predicate类"><a href="#List集合中mutator函数和contains函数、Predicate类" class="headerlink" title="List集合中mutator函数和contains函数、Predicate类"></a>List集合中mutator函数和contains函数、Predicate类</h2><p><strong>mutator函数</strong></p>
+<p>能够修改可变列表的函数有统一的名字：mutator函数</p>
+<p><strong>contains函数</strong></p>
+<p>如果字符串中包含[other]字符串作为子字符串，则返回 ‘true’。</p>
+<p><strong>Predicate接口</strong></p>
+<p>函数时接口。此接口用于筛选数据，通过给定的若干项的流作为满足的项。</p>
+<p><strong>removeIf函数</strong></p>
+<p>删除当前项目中满足Predicate接口条件的所有元素。在抛出错误时将异常返回给调用者。删除成功时返回‘true’。</p>
+<pre><code class="kotlin">import java.util.function.Predicate
+
+fun main() {
+    val mutableList = mutableListOf&lt;String&gt;(&quot;one&quot;, &quot;two&quot;, &quot;three&quot;)
+//    mutator函数
+    mutableList += &quot;添加&quot;
+    println(mutableList)
+//    removeIf删除满足条件的元素
+    mutableList.removeIf(Predicate { it.contains(&quot;one&quot;) })
+    println(mutableList)
+}
+</code></pre>
+<p><img src="https://raw.githubusercontent.com/TheCara/RepoPicture/master/image/20220412191310.png" alt=""></p>
 <p><strong>引用：</strong></p>
 <p><a href="https://www.web3.xin/code/2606.html" target="_blank" rel="noopener">Kotlin this表达式</a></p>
 <p><a href="https://www.jianshu.com/p/10358883455c" target="_blank" rel="noopener">kotlin中的函数引用详解</a>    </p>
