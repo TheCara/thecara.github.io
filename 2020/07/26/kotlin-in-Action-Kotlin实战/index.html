@@ -521,10 +521,226 @@ class Sum(val left: Expr, val right: Expr) : Expr   // Sum运算的实参可以�
 <p>在 kotlin 中，你要使用 is 检查来判断一个变量是否是某个类型。</p>
 <p><strong>什么时候进行智能转换？</strong></p>
 <p>如果你检查过一个变量是某种类型，后面就不再需要转换它了，可以就把它当作你检查过的类型使用。事实上编译器为你执行了类型转换，我们把这种行为称为 <strong>智能转换。</strong></p>
-<h1 id="3-函数的订阅和调用"><a href="#3-函数的订阅和调用" class="headerlink" title="3 函数的订阅和调用"></a>3 函数的订阅和调用</h1><h2 id="3-3-给别人的类添加方法：扩展函数和属性"><a href="#3-3-给别人的类添加方法：扩展函数和属性" class="headerlink" title="3.3 给别人的类添加方法：扩展函数和属性"></a>3.3 给别人的类添加方法：扩展函数和属性</h2><p><strong>介绍</strong></p>
-<blockquote>
-<p>扩展函数非常简单，作为一个类的成员函数，不过它定义在类的外边。</p>
+<h1 id="3-函数的定义与调用"><a href="#3-函数的定义与调用" class="headerlink" title="3 函数的定义与调用"></a>3 函数的定义与调用</h1><blockquote>
+<ul>
+<li><p>用于处理集合、字符串和正则表达式的函数</p>
+</li>
+<li><p>使用命名参数、默认参数，以及中辍调用语法</p>
+</li>
+<li><p>通过扩展函数和属性来适配Java库</p>
+</li>
+<li><p>使用顶层函数、局部函数和属性架构代码</p>
+</li>
+</ul>
 </blockquote>
+<p>至此，就像使用Java一样，你应该可以自如地使用Kotlin了。可以看到，从Java到Kotlin，它们的很多概念是相似的，而往往Kotlin可以让它们更加简洁并易读。</p>
+<p>在这一章中，你将看到Kotlin改进每个程序的一个重要环节：函数的声明与调用。我们还将研究，如何通过扩展函数将Java库转换为Kotlin风格，以在混合语言的项目中获得Kotlin的全部好处。</p>
+<p>为了让讨论更有用和具体，我们将把Kotlin集合、字符串和正则表达式作为重点问题领域。作为例子，我们来看看如何在Kotlin中创建集合。</p>
+<h2 id="3-1-在Kotlin中创建集合"><a href="#3-1-在Kotlin中创建集合" class="headerlink" title="3.1 在Kotlin中创建集合"></a>3.1 在Kotlin中创建集合</h2><p>在开始学习对集合的各种有趣的操作之前，需要先学习会怎样创建它们。之前使用setOf函数创建了set。当时创建了一组颜色，现在，让我们保持它简单的同时，也支持数字。</p>
+<pre><code class="kotlin">val set = hashSetOf(1,7,53)</code></pre>
+<p>可以用类似的方法创建一个list或者map：</p>
+<p>val list = arrayListOf</p>
+<pre><code class="kotlin">val list = arrayListOf(1,7,53)
+val map = hashMapOf(1 to &quot;one&quot;,7 to &quot;seven&quot;,53 to &quot;fifty-three&quot;)</code></pre>
+<p>这里的同并不是特殊的结构，而是普通的函数。稍后会探讨它。你能猜到这里创建的对象类型吗？</p>
+<pre><code class="kotlin">println(set.javaClass)  //等价于Java中的getClass()
+println(list.javaClass)
+println(map.javaClass)
+/*     本章代码都按照这种形式运行    */
+fun main() {
+    val set = hashSetOf(1, 7, 53)
+    val list = arrayListOf(1, 7, 53)
+    val map = hashMapOf(1 to &quot;one&quot;, 7 to &quot;seven&quot;, 53 to &quot;fifty-three&quot;)
+    println(set.javaClass)  //等价于Java中的getClass()
+    println(list.javaClass)
+    println(map.javaClass)
+}
+</code></pre>
+<p><img src="https://raw.githubusercontent.com/TheCara/RepoPicture/master/img/20220416001329.png" alt=""></p>
+<p>如你所见，Kotlin没有采用它自己的集合类，而是采用的标准的Java集合类，这对Java开发者是一个好消息。你现在所掌握的所有Java集合的知识在这里依然使用。</p>
+<p>为什么Kotlin没有自己专门的集合类呢？那是因为使用标准的Java集合类，Kotlin可以更容易与Java代码交互。当从Kotlin中调用Java函数的时候，不用转换它的集合类来匹配Java的类，反之亦然。</p>
+<p>尽管Kotlin的集合类和Java的集合类完全一致，但kotlin还不止于此。举个例子，可以通过以下方式来获取一个列表中的最后一个元素，或者是得到一个数字列表的最大值：</p>
+<pre><code class="kotlin">    val strings = listOf(&quot;first&quot;, &quot;second&quot;, &quot;fourteenth&quot;)
+    println(strings.last())
+    val number = setOf(1, 14, 2)
+    println(number.max())</code></pre>
+<p><img src="https://raw.githubusercontent.com/TheCara/RepoPicture/master/img/20220416003710.png" alt=""></p>
+<p>本章将会仔细研究它的工作原理，以及Java类上新增的方法从何而来。</p>
+<p>在后续的章节中，我们开始讨论lambda时，你将会见识到更多的对于集合的操作，但是目前，就继续保持采用Java标准的集合类。6.3章节中会学习到集合类在Kotlin类型系统中的表示。</p>
+<h2 id="3-2-让函数更好调用"><a href="#3-2-让函数更好调用" class="headerlink" title="3.2 让函数更好调用"></a>3.2 让函数更好调用</h2><p>现在你已经知道了如何创建一个集合，让我们再来做点别的：打印它的内容。</p>
+<p>Java的集合都有一个默认的toString实现，但是它格式化的输出是固定的，而且往往不是你需要的样子：</p>
+<pre><code class="kotlin">fun main() {
+    val list = listOf(1, 2, 3)
+//    出发toString
+    println(list) 
+}</code></pre>
+<p><img src="https://raw.githubusercontent.com/TheCara/RepoPicture/master/image/20220416200251.png" alt=""></p>
+<p>假设你需要用分号来分割每一个元素，然后用括号括起来，而不是采用默认实现用的方括号：(1;2;3)。要解决这个问题，Java项目会使用第三方的库，比如Guava和Apach Commons，或者在这个项目中重写打印函数。在Kotlin中，它的标准库中有一个专门的函数来处理这种情况。</p>
+<p>本节你将自己实现这个函数。不借助Kotlin的工具来简化函数声明，从直接重写实现函数开始，然后再过度到Kotlin更惯用的方法来重写。</p>
+<p>下面的joinToString函数就展示了通过在元素中间添加分隔符号，在最前面添加前戳，在最末尾添加后戳的方式把集合的元素逐个添加到一个StringBuilder的过程。</p>
+<pre><code class="kotlin">/*joinToString()的基本实现*/
+fun &lt;T&gt; joinToString(
+    collection: Collection&lt;T&gt;,
+    separator: String,
+    prefix: String,
+    postfix: String
+): String {
+    val result = StringBuilder(prefix)
+    for ((index, element) in collection.withIndex()) {
+//        不用在第一个元素前添加分隔符
+        if (index &gt; 0) result.append(separator)
+        result.append(element)
+    }
+    result.append(postfix)
+    return result.toString()
+}
+</code></pre>
+<p>这个函数是泛型：它可以支持元素为任何类型的集合。这里泛型的语法和Java类似。</p>
+<p>我们来验证一下，这个函数运行起来是不是像我们设想的那样：</p>
+<pre><code class="kotlin">fun main() {
+    val list = listOf(1, 2, 3)
+    println(joinToString(list, &quot;;&quot;, &quot;(&quot;, &quot;)&quot;))
+}</code></pre>
+<p><img src="https://raw.githubusercontent.com/TheCara/RepoPicture/master/image/20220416201919.png" alt=""></p>
+<p>看来这个函数是可行的。</p>
+<h3 id="3-2-1-命名参数"><a href="#3-2-1-命名参数" class="headerlink" title="3.2.1 命名参数"></a>3.2.1 命名参数</h3><p>我们要关注的第一个问题就是函数的可读性。例子，看看joinToString的调用：</p>
+<pre><code class="kotlin">joinToString(collection,&quot;&quot;,&quot;&quot;,&quot;.&quot;)</code></pre>
+<p>你能看出这些String都对应的什么参数吗？这个集合的元素用空格还是点号来分割的？如果不去查看函数的声明，我们很难回答这个问题。或许你记住了这个声明，又或许你可以借助你的IDE，但从调用代码来看，这依然很隐晦</p>
+<p><code>表明名称</code> <strong>对于Boolean类型的标志，这个问题尤其明显。为了解决这个问题，一些Java编程风格，推荐尝试enum类型而不是采用Boolean；而另外一些风格，会通过让你添加注释，在注释中指明参数的名称，例如</strong>：</p>
+<pre><code class="java">joinToString(collection, /*     separator    */ &quot;&quot;,/* prefix    */&quot;&quot;,/*    postfix    */&quot;.&quot;);</code></pre>
+<p>在Kotlin中，可以做到更优雅：</p>
+<pre><code class="kotlin">joinToString(collection,separator = &quot;&quot;,prefix = &quot; &quot;,postfix = &quot;.&quot;)</code></pre>
+<p><strong>但调用Kotlin定义的函数时，可以显式的标明一些参数的名称。如果在调用一个函数时，指明了一个参数的名称，为了避免混淆，那它之后的所有参数都需要表明名称</strong>。</p>
+<blockquote>
+<p>当你在重命名函数的参数时，IntelliJ IDEA 可以帮助你调用该函数的地方，一同更新命名参数。不过需要注意的是，要确保在重命名的时候，是采用的IDEA自带的Rename（重命名）或者ChangeSignature（改变函数签名）来处理，而不是手动地修改参数名称。</p>
+</blockquote>
+<blockquote>
+<p>警告：</p>
+<p>不幸的是，当你调用Java函数时，不能采用命名函数，不管是JDK中的函数，或者是Android框架的函数，都不行。把参数名称存到.class文件Java8及其更高版本的一个可选功能，而Kotlin需要保持和Java6的兼容性。所以，编译器不能识别出调用函数的参数名称，然后把这些参数名对应到函数的定义的地方。</p>
+</blockquote>
+<h3 id="3-2-2-默认参数值"><a href="#3-2-2-默认参数值" class="headerlink" title="3.2.2 默认参数值"></a>3.2.2 默认参数值</h3><p>Java的另一个普遍存在的问题是，一些类的重载函数实在太多了。只要看一眼java.lang.Thread以及它对应的八个构造方法（<a href="http://mng.bg/4KZC)，能让人够受了！这些重载，原本是为了向后兼容，方便一些API的使用者，又或者出于别的原因，但导致的最终结果都是一致的：重复。这些参数名和类型被重复了一遍又一遍，如果你是一个良好的公民，还必须在每次重载的时候重复大部分的文档。与此同时当你调用了一个省略了部分参数的重载函数时，你可能会搞不清它们到底用的哪个。" target="_blank" rel="noopener">http://mng.bg/4KZC)，能让人够受了！这些重载，原本是为了向后兼容，方便一些API的使用者，又或者出于别的原因，但导致的最终结果都是一致的：重复。这些参数名和类型被重复了一遍又一遍，如果你是一个良好的公民，还必须在每次重载的时候重复大部分的文档。与此同时当你调用了一个省略了部分参数的重载函数时，你可能会搞不清它们到底用的哪个。</a></p>
+<p><code>使用默认参数值减少重载</code><strong>在Kotlin中，可以在声明函数的时候，指定参数的默认值，这样就可以避免创建重载的函数。让我们尝试改进一下前面的joinToString函数。在大多数情况下，字符串可以不加前戳或者后戳并用逗号分割。所以我们把这些设置为默认值</strong>。</p>
+<pre><code class="kotlin">fun main() {
+    val list = listOf(1, 2, 3)
+    println(joinToString(list, &quot;,&quot;, &quot;&quot;, &quot;&quot;))
+    println(joinToString(list))
+    println(joinToString(list, &quot;;&quot;))
+}
+
+/*joinToString()的基本实现*/
+fun &lt;T&gt; joinToString(
+    collection: Collection&lt;T&gt;,
+    separator: String = &quot;,&quot;,/*有默认值的参数*/
+    prefix: String = &quot;&quot;,
+    postfix: String = &quot;&quot;
+): String {
+    val result = StringBuilder(prefix)
+    for ((index, element) in collection.withIndex()) {
+        if (index &gt; 0) result.append(separator)
+        result.append(element)
+    }
+    result.append(postfix)
+    return result.toString()
+}
+</code></pre>
+<p><img src="https://raw.githubusercontent.com/TheCara/RepoPicture/master/image/20220418203941.png" alt=""></p>
+<p>当使用常规的调用语法时，必须按照函数声明中定义的参数顺序来给定参数，可以省略的只有排在末尾的参数。如果使用命名参数，可以省略中间的一些参数，也可以以你想要的任意顺序给定你需要的参数：</p>
+<pre><code class="kotlin"> println(joinToString(list, postfix = &quot;;&quot;,prefix = &quot;# &quot;))</code></pre>
+<p><img src="https://raw.githubusercontent.com/TheCara/RepoPicture/master/image/20220418204532.png" alt=""></p>
+<p><strong>注意，参数的默认值是被编码到被调用的函数中，而不是调用的地方。如果你修改了参数的默认值并重新编译这个函数，没有给参数重新赋值的调用者，将会开始使用行的默认值</strong>。</p>
+<blockquote>
+<p>默认值和Java</p>
+<p>考虑到Java没有参数默认值的概念，当你从Java中调用Kotlin函数的时候，必须显式地指定所有参数值。如果需要从Java代码中做频繁的调用，而且希望他能对Java的调用者更加便捷，可以使用@JvmOverloads注解它。这个指示编译器生成Java重载函数，从最后一个开始省略每个参数。</p>
+<p>举个例子，如果用@JvmOverloads注解joinToString，编译器就会生成如下的重载函数：</p>
+<pre><code class="java">String joinToString(Coollection&lt;T&gt; collection,String separator,String prefix,String postfix);
+String joinToString(Coollection&lt;T&gt; collection,String separator,String prefix);
+String joinToString(Coollection&lt;T&gt; collection,String separator);
+String joinToString(Coollection&lt;T&gt; collection);</code></pre>
+<p>每个重载函数的默认参数值都会被省略。</p>
+</blockquote>
+<h3 id="3-2-3-消除静态工具类：顶层函数和属性"><a href="#3-2-3-消除静态工具类：顶层函数和属性" class="headerlink" title="3.2.3 消除静态工具类：顶层函数和属性"></a>3.2.3 消除静态工具类：顶层函数和属性</h3><p>Java作为一门面向对象的语言，需要所有的代码都写作类的函数。大多数情况下，这种方式还能行得通。但事实上，几乎所有的大型项目，最终都有很多的代码并不能归属到任何一个类中。有时一个操作对应两个不同的类的对象，而且重要性相差无几。有时存在一个基本的对象，但你不想通过实例函数来添加操作，让它的API持续膨胀。</p>
+<p>结果就是，最终这个类将不包含任何的状态或者实例函数，而且仅仅作为一堆静态函数的容器。在JDK中，最合适的例子应该是Collection了，看看你自己的代码，是不是也有一些类本身的Util作为后戳命名。</p>
+<p><code>无需创建工具类</code> <strong>在Kotlin中，根本不需要去创建这些意义的类。相反，可以把这些函数直接放到代码文件的顶层，不用从属于任何类。这些放在文件顶层的函数依然是包类的成员，如果你需要从包外访问它，这需要import，但不需要跟外包一层</strong>。</p>
+<p>让我们来把joinToString直接放到strings的包中试一下。创建join.kt的文件：</p>
+<pre><code>/*声明 joinToString作为顶层函数*/
+package strings
+fun joinToString(...):String{
+...
+}</code></pre><p><code>创建顶层函数</code> 这些如何运行？当你编译这个文件的时候，会生成一些内，因为JVM只会执行类中的代码。当你使用Kotlin的时候，知道这些就够了。但是，如果需要从Java中来调用这些函数，你就必须理解它将会怎样被编译。为了方便理解，查看一段Java代码，这里会编译成相同的类：</p>
+<pre><code class="java">/*    Java    */
+package strings;
+public class JoinKt{
+    public static String joinToString(...){...}
+}</code></pre>
+<p>可以看到Kotlin编译生成的类的名称，对应包含函数的文件的名称。这个文件中的所有顶层函数编译为这个类的静态函数。因此，但从Java调用这个函数的时候，和调用任何其他静态函数一样非常简单：</p>
+<pre><code class="java">/*    java    */
+import strings.JoinKt;
+...
+JoinKt.joinToString(list,&quot;&quot;,&quot;&quot;,&quot;&quot;);
+</code></pre>
+<blockquote>
+<p>修改文件类名</p>
+<p>要修改包含Kotlin顶层函数的生成类的名称，需要为这个文件添加@JvmName的注解，将其放在这个文件的开头，位于包名的前面：</p>
+<pre><code class="kotlin">@file:JvmName(&quot;StringFunction&quot;)    //注解指定包名
+package strings    //包的声明跟在文件注解之后
+fun joinToString(...):String{...}</code></pre>
+<p>现在可以这样调用这个函数：</p>
+<pre><code class="java">/*    Java    */
+import strings.StringFunctions
+StringFunctions.joinToString(list,&quot;&quot;,&quot;&quot;,&quot;&quot;);</code></pre>
+</blockquote>
+<p><strong>顶层属性</strong></p>
+<p>和函数一样，属性也可以放在文件的顶层。在一个类的外面保存单独的数据片段虽然不常用，但还是有它的价值。</p>
+<p>例子，使用var属性来计算一些函数被执行的次数：</p>
+<pre><code class="kotlin">var opCount = 0 //声明一个顶层属性
+fun performOperation(){
+//    改变该属性的值
+    opCount ++
+    //...
+}
+fun reportOperationCount(){
+    println(&quot;Operation performed $opCount times&quot;)   //读取属性值
+}</code></pre>
+<p>像这个值将会被存储到一个静态的字段中。</p>
+<p>也可以在代码中用顶层属性来定义常量：</p>
+<pre><code class="kotlin">val UNIX_LINE_SEPARATOR = &quot;\n&quot;</code></pre>
+<p>默认情况下，顶层属性和其他任意的属性一样，是通过访问器暴露给Java使用（如果是val就只有一个getter，如果是var就对应一对getter和setter）。<code>暴露给Java调用时这样</code> <strong>为了方便使用，如果你想要把一个常量public static final的属性暴露给Java，可以用const修饰它（这个适用于所有的基本数据类型的属性，以及String类型）</strong>。</p>
+<pre><code class="kotlin">const val UNIX_LINE_SEPARATOR = &quot;\n&quot;</code></pre>
+<p>等同于Java代码</p>
+<pre><code class="java">/*    Java    */
+public static final String UNIX_LINE_SEPARATOR = &quot;\n&quot;</code></pre>
+<h2 id="3-3-给别人的类添加方法：扩展函数和属性"><a href="#3-3-给别人的类添加方法：扩展函数和属性" class="headerlink" title="3.3 给别人的类添加方法：扩展函数和属性"></a>3.3 给别人的类添加方法：扩展函数和属性</h2><p><code>使用扩展函数场景</code> <strong>Kotlin的一大特色，就是可以平滑地与现有代码集成。甚至，纯Kotlin的项目都可以基于Java库构建，如JDK、Android框架，以及其他的第三方框架。当你在一个现有的Java项目中集成Kotlin的时候，依然需要面临现有代码目前不能转成Kotlin，甚至将来也不能转成Kotlin的局面。当使用这些API的时候，如果不用重写，就能使用到Kotlin为它带来方便，岂不是更好</strong>？这里，可以用扩展函数来实现。</p>
+<p><code>定义一个扩展函数</code> 理论上，<strong>扩展函数</strong>非常简单，它就是一个类的成员函数，不过定义在类的外面。为了方便阐释，让我们添加一个方法，来计算一个字符串的最后一个字符：</p>
+<pre><code class="kotlin">fun String.lastChar(): Char = this.get(this.length - 1)</code></pre>
+<p>你所要做的，就是把你要扩展的类或者接口的名称，放到即将添加的函数前面。这个类的名称被称为<strong>接收者类型</strong>；用来调用这个扩展函数的对象，叫做<strong>接收者对象</strong>，如下</p>
+<p><img src="https://raw.githubusercontent.com/TheCara/RepoPicture/master/image/20220418232008.png" alt="接收者类型是由扩展函数定义 ，接收者对象是该类型的一个实例"></p>
+<p>可以像调用类的普通成员函数一样去调用这个函数：</p>
+<pre><code class="kotlin">fun main() {
+    println(&quot;Koltin&quot;.lastChar())
+}</code></pre>
+<p><img src="https://raw.githubusercontent.com/TheCara/RepoPicture/master/image/20220418232214.png" alt=""></p>
+<p>在这个例子中，String就是接收者类型，而“Kotlin”就是接收者对象。</p>
+<p>从某种意义上来说，你已经为String类添加了自己的方法。即使字符串不是代码的一部分，在没有类的源代码，你仍然可以在自己的项目中根据需要去扩展方法。不管String类是Java、Kotlin，或者像Groovy的其他JVM语言编写的，只要是它的编译为Java类，你就可以为这个类添加自己的扩展。</p>
+<p>在这个扩展函数中，可以像其他成员函数一样用this。而且也可以像普通的成员函数一样，省略他。</p>
+<pre><code class="kotlin">package strings
+fun String.lastChar(): Char = this.get(this.length - 1) //接收者对象成员可以不用this来访问</code></pre>
+<p><strong>在扩展函数中，可以直接访问被扩展的类的其他方法和属性，就好像是在这个类自己的方法中访问它们一样。注意，扩展函数并不允许你打破它的封装性。和在类内部定义的方法不同的是，扩展函数不能访问私有或者受保护的成员</strong>。</p>
+<h3 id="3-3-1-导入扩展函数"><a href="#3-3-1-导入扩展函数" class="headerlink" title="3.3.1 导入扩展函数"></a>3.3.1 导入扩展函数</h3><p>对于你定义的一个扩展函数，它不会自动的在整个项目范围类生效。相反，如果你要使用它，需要进行导入，就像其他任何的类或者函数一样。为了避免偶然性的命名冲突。Kotlin允许你和导入类一样的语法来导入单个函数：</p>
+<pre><code class="kotlin">import string.lastChar
+val c = &quot;Kotlin&quot;.lastChar()</code></pre>
+<p>当然，用*来导入也是可以的：</p>
+<pre><code class="kotlin">import string *
+val c = &quot;Kotlin&quot;.lastChar()</code></pre>
+<p>可以使用关键字as来修改导入的类或者函数名称：</p>
+<pre><code class="kotlin">import string.lastChar as last
+
+val c = &quot;Kotlin&quot;.last()</code></pre>
+<p>当你在不同的包中，有一些重名的函数，在导入时给它的重新命名就显得很有必要了，这样可以在同一个文件中去使用它们。在这种情况下，对于一般的类和函数，还有另一个选择：可以选择用全命名来指出这个类或者函数。对于扩展函数，Kotlin的语法要求你用简短的名称，修改，在导入声明的时候，关键字as就是你解决命名冲突问题的唯一方式。</p>
+<h3 id="3-3-2-从Java中调用扩展函数"><a href="#3-3-2-从Java中调用扩展函数" class="headerlink" title="3.3.2 从Java中调用扩展函数"></a>3.3.2 从Java中调用扩展函数</h3><p>实质上，扩展函数是静态函数，它把调用对象作为它的第一参数。调用扩展函数，不会扩展适配的或者任何运行时的额外消耗。</p>
+<p>这使得从Java中调用Kotlin的扩展函数变的非常简单：调用这个静态函数，然后把接收者对象作为第一个参数传进去集合。和其他顶层函数一样，包括这个函数的Java类的名称，是由这个函数声明的文件名称决定的。假设它声明在一个叫StringUtil.kt文件中：</p>
+<pre><code class="kotlin">/*    Java    */
+char c = StringUtil.lastChar(&quot;Java&quot;)</code></pre>
+<p>这个扩展函数被声明为顶层函数，所以，它将会被编译为一个静态函数。在Java中静态导入lastChar函数，就可以直接使用它，如lastChar(“Java”)。</p>
 <h1 id="4-类、对象和接口"><a href="#4-类、对象和接口" class="headerlink" title="4 类、对象和接口"></a>4 类、对象和接口</h1><h2 id="4-1-定义类继承结构"><a href="#4-1-定义类继承结构" class="headerlink" title="4.1 定义类继承结构"></a>4.1 定义类继承结构</h2><h3 id="4-1-1-Kotlin-中的接口"><a href="#4-1-1-Kotlin-中的接口" class="headerlink" title="4.1.1 Kotlin 中的接口"></a>4.1.1 Kotlin 中的接口</h3><p><strong>声明接口</strong></p>
 <pre><code class="kotlin">interface Clickable{
     fun click()
@@ -765,6 +981,12 @@ fun eval(expr: Expr): Int =
 <p>从<strong>构造方法</strong>中调用你自己类的另一个<strong>构造方法</strong>。</p>
 <p>可以修改 MyButton类 <strong>使得一个构造方法委托给同一个类的另一个构造方法</strong>，为参数传入默认值，图下👇。第二个方法继续调用super()。</p>
 <p><img src="https://raw.githubusercontent.com/TheCara/RepoPicture/master/image/20200906113216.png" alt=""></p>
+<blockquote>
+<p>注意 如果主构造函数中存在参数那么次构造函数中使用需要继承它。</p>
+<pre><code class="kotlin">class User(name:String){
+    constructor(name:String,age:Int):this(name)    //name需要继承
+}</code></pre>
+</blockquote>
 <h3 id="4-2-3-实现在接口中声明的属性"><a href="#4-2-3-实现在接口中声明的属性" class="headerlink" title="4.2.3 实现在接口中声明的属性"></a>4.2.3 实现在接口中声明的属性</h3><p><strong>在接口中声明一个属性</strong></p>
 <pre><code class="kotlin">interface User {
     val nickname: String
@@ -807,7 +1029,7 @@ class User(val name:String) {
     var address: String = &quot;unspecified&quot;
         set(value: String){
             println(&quot;&quot;&quot;
-                Address was changed for $name:&quot;$field&quot; -&gt; &quot;$value&quot;.&quot;&quot;&quot;.trinmIndent())    //读取支持字段的值
+                Address was changed for $name:&quot;$field&quot; -&gt; &quot;$value&quot;.&quot;&quot;&quot;.trimIndent())    //读取支持字段的值
                 field = value    // 更新支持字段的值
         }
 }</code></pre>
@@ -834,6 +1056,16 @@ Address was changed for Alice:
 <li><strong>伴生对象</strong>可以持有<strong>工场方法</strong>和其他与这个类的相关，但是在调用时并不依赖类实例方法。<strong>它们的成员可以通过类名来访问</strong>。</li>
 <li><strong>对象表达式用来代替Java的匿名内部类</strong></li>
 </ul>
+<blockquote>
+<p><strong>对象表达式</strong></p>
+<p>假如一个方法需要一个类,那么Kotlin将对象表达式传递给它就可以了</p>
+<pre><code class="kotlin">方法接收一个类(object:匿名对象的类型{
+    override fun 匿名类的方法(){
+        println(&quot;通过对象表达式调用了匿名类&quot;)
+    }
+})</code></pre>
+<p>这个方法参数需要匿名类通过对象表达式重写了类的方法。</p>
+</blockquote>
 <h3 id="4-4-1-对象声明：创建单例易如反掌"><a href="#4-4-1-对象声明：创建单例易如反掌" class="headerlink" title="4.4.1 对象声明：创建单例易如反掌"></a>4.4.1 对象声明：创建单例易如反掌</h3><p><strong>为什么使用对象声明？</strong></p>
 <p>在面向对象系统中一个相当常见的情形就是只需要一个实例的类。例如，可以使用一个对象声明来表示一个组织的工资单。</p>
 <p><strong>在Java中是如何实现单例模式？</strong></p>
@@ -2164,6 +2396,79 @@ Error: Type mismatch:inferred type is Collection&lt;Int&gt;
 </tr>
 </tbody></table>
 <p><strong>注意，setOf()和mapOf()返回的是Java标准库中类的实例（至少在Kotlin1.0版本中是这样），在底层它们都是可变的。但你不能完全信赖这一点：Kotlin的未来版本可能会使用真正不可变的实现类作为setOf和mapOf的返回值。</strong></p>
+<blockquote>
+<p><strong>Set集合</strong></p>
+<p>在set集合中只包含不相同元素，也就是说相同类型会被移除。</p>
+<p>elementAt函数</p>
+<pre><code class="kotlin">fun main() {
+    val set = setOf&lt;String&gt;(&quot;one&quot;, &quot;two&quot;, &quot;3&quot;, &quot;3&quot;)
+    println(set.elementAt(1))
+    println()
+    println(set.elementAt(4))
+}</code></pre>
+<p>描述</p>
+<p>返回给定index处的元素，如果超出边界抛出 ：[IndexOutOfBoundsException] 异常。</p>
+<p><img src="https://raw.githubusercontent.com/TheCara/RepoPicture/master/image/20220413162419.png" alt=""></p>
+</blockquote>
+<blockquote>
+<p><strong>集合之间的快速转换</strong></p>
+<p>toSet()函数转换到Set集合类型</p>
+<pre><code class="kotlin">fun main() {
+    var list = listOf&lt;String&gt;(&quot;one&quot;, &quot;two&quot;, &quot;3&quot;, &quot;3&quot;)
+    println(list)
+//    转换到toSet去除重复元素
+    val set = list.toSet()
+    println(set)
+//    转换到List类型
+    list = set.toList()
+    println(list)
+//    使用distinct去除重复元素
+    list += &quot;3&quot;
+    println(list.distinct())
+}
+</code></pre>
+<p><img src="https://raw.githubusercontent.com/TheCara/RepoPicture/master/img/20220414002233.png" alt=""></p>
+</blockquote>
+<blockquote>
+<p><strong>Map集合</strong></p>
+<p><strong>获取Map集合的值，getOrDefault函数</strong></p>
+<p>按照键值对获取值，在值为null时返回参数 defaultValue中的值</p>
+<pre><code class="kotlin">fun main() {
+//    创建集合键值对喂String与Int类型
+ val map = mapOf&lt;String, Int&gt;(Pair(&quot;one&quot;, 1), Pair(&quot;two&quot;, 2))
+//    获取键为 “one” 的值
+ println(map[&quot;one&quot;])
+
+//    使用 getOrDefault获取值    ,没有找到键值会返回 defaultValue = 0
+ val defaultValue = map.getOrDefault(&quot;two&quot;, 0)
+ println(defaultValue)
+}</code></pre>
+<p><img src="https://raw.githubusercontent.com/TheCara/RepoPicture/master/img/20220414224017.png" alt=""></p>
+<p><strong>遍历Map集合</strong></p>
+<pre><code class="kotlin">fun main() {
+ val map = mapOf&lt;String, Int&gt;(Pair(&quot;one&quot;, 1), Pair(&quot;two&quot;, 2), &quot;three&quot; to 3)
+//  通过forEach获取遍历键和值，使用匿名函数获取
+ map.forEach { print(&quot;${it.key} ${it.value} \n&quot;) }
+ println(&quot;--------------&quot;)
+//    通过for获取每个元素 ，key表示元素
+ for (key in map) {
+     print(&quot;${key.key} ${key.value} \n&quot;)
+ }
+}</code></pre>
+<p><img src="https://raw.githubusercontent.com/TheCara/RepoPicture/master/img/20220414230641.png" alt=""></p>
+<p><strong>可变Map添加元素</strong></p>
+<pre><code>fun main() {
+    val map = mutableMapOf&lt;String, Int&gt;(Pair(&quot;Li&quot;, 10), Pair(&quot;Liu&quot;, 20), &quot;Wang&quot; to 23)
+    map += &quot;Song&quot; to 12
+    map += Pair(&quot;Zhou&quot;, 15)
+    map[&quot;Tian&quot;] = 16
+//    put函数在添加完成后如果key存在返回替换前的值，不存在返回null
+    println(map.put(&quot;Zhou&quot;, 18))
+    println(map)
+}</code></pre><p>put函数</p>
+<p>按照key与参数value进行关联，在添加时如果存在就返回之前的值并添加新值。</p>
+<p><img src="https://raw.githubusercontent.com/TheCara/RepoPicture/master/img/20220415174643.png" alt=""></p>
+</blockquote>
 <p><strong>当你需要调用Java方法并把集合作为参数时。例如：使用java.util.Collection做为形参，你可以使用Collection或MutableCollection（只读集合或可变集合）的值作为实参传递给形参。</strong></p>
 <p><strong>这时的操作对可变性有重要影响。因为Java并不会区分只读集合与可变集合，即使Kotlin中把集合声明成只读的，Java代码也可以修改这个集合。Kotlin编译器不能完全的分析Java代码到底对集合做了什么，因此Kotlin无法拒绝向可以修改集合的Java代码传递只读Colleciton。</strong>例如，如下代码组成了一个多语言兼容的Kotlin/Java程序：</p>
 <pre><code class="java">/*    Java    */
@@ -2307,8 +2612,26 @@ fun main(args:Array&lt;String&gt;){
 }</code></pre>
 </blockquote>
 <h3 id="6-4-小结"><a href="#6-4-小结" class="headerlink" title="6.4 小结"></a>6.4 小结</h3><ul>
-<li></li>
+<li>Kotlin对空类型的支持，可以帮助我们在编译期，检测出潜在的NullPointerException错误。</li>
+<li>Kotlin提供了安全调用（?.）、Elvis运算符（?:）、非空断言（!!）及let函数这些工具来简洁的处理可空类型。</li>
+<li>as?运算符提供了一个简单的方式来把值转换成一个类型，以及处理当它拥有不同类型时的情况。</li>
+<li>Java中的类型在Kotlin中被解释成平台类型，允许开发者把它们当作可空或非空来对待。</li>
+<li>表示基本数据类型（如Int）看起来用起来都像普通的类，但通常会被编译成Java基本数据类型。</li>
+<li>可空的基本数据类型（如Int?）对应着Java中的装箱基本数据类型（如java.lang.Integer）。</li>
+<li>Any类型是所有其他类型的超类型，类似于Java的Object。而Unit类比于void。</li>
+<li>不会正常终止的函数使用Nothing类型作为返回类型。</li>
+<li>Kotlin使用标准Java集合类，并通过区分只读和可变集合来增强它们。</li>
+<li>当你在Kotlin中继承Java类或者实现Java接口时，你需要自己考虑参数的可空性和可变性。</li>
+<li>Kotlin的Array类就像普通的泛型，但它会被编译成Java数组。</li>
+<li>基本数据类型的数组使用像IntArray这样的特殊类来表示。</li>
 </ul>
+<h1 id="7-运算符重载及其他约定"><a href="#7-运算符重载及其他约定" class="headerlink" title="7 运算符重载及其他约定"></a>7 运算符重载及其他约定</h1><blockquote>
+<ul>
+<li>运算符重载</li>
+<li>约定：支持各种运算的特殊命名函数</li>
+<li>委托属性</li>
+</ul>
+</blockquote>
 <h1 id="8-高阶函数：Lambda作为形参和返回值"><a href="#8-高阶函数：Lambda作为形参和返回值" class="headerlink" title="8 高阶函数：Lambda作为形参和返回值"></a>8 高阶函数：Lambda作为形参和返回值</h1><p><strong>内联函数作用</strong></p>
 <p>能够消除lambda带来的性能开销，还能够使lambda内的控制流更加灵活。</p>
 <h2 id="8-1-声明高阶函数"><a href="#8-1-声明高阶函数" class="headerlink" title="8.1 声明高阶函数"></a>8.1 声明高阶函数</h2><p>定义</p>
@@ -4179,7 +4502,7 @@ class ClassInfo&lt;T : Any&gt;(cls: KClass&lt;T&gt;) {
     fun getConstructorParameter(propertyName: String): KParameter =
             jsonNameToParam[propertyName]!!
 
-    fun deserializeCOnstructorArgument(
+    fun deserializeConstructorArgument(
             param: KParameter, value: Any?
     ): Any? {
         val serializer = paramToSerializer[param]
@@ -4219,10 +4542,10 @@ private fun ensureAllParametersPresent(arguments: Map&lt;KParameter, Any?&gt;) {
 <li>KFunction0、KFunction1等这种不同参数数量的函数可以使用invoke方法调用。</li>
 <li>KProperty0和KProperty1是接收者数量不同的属性，支持用get方法取回值。KMutableProperty0和KMutableProperty1继承了这些接口，支持通过set方法来改变属性的值。</li>
 </ul>
-<h1 id="补充"><a href="#补充" class="headerlink" title="补充"></a>补充</h1><h3 id="字段和属性"><a href="#字段和属性" class="headerlink" title="字段和属性"></a>字段和属性</h3><p><a href="https://blog.csdn.net/chenchunlin526/article/details/71424844" target="_blank" rel="noopener">深入理解Java中的字段与属性的区别</a></p>
-<h4 id="属性和字段的区别"><a href="#属性和字段的区别" class="headerlink" title="属性和字段的区别"></a>属性和字段的区别</h4><p>属性（property），通常可以理解为get 和 set 方法。</p>
+<h1 id="补充"><a href="#补充" class="headerlink" title="补充"></a>补充</h1><h2 id="字段和属性"><a href="#字段和属性" class="headerlink" title="字段和属性"></a>字段和属性</h2><p><a href="https://blog.csdn.net/chenchunlin526/article/details/71424844" target="_blank" rel="noopener">深入理解Java中的字段与属性的区别</a></p>
+<h3 id="属性和字段的区别"><a href="#属性和字段的区别" class="headerlink" title="属性和字段的区别"></a>属性和字段的区别</h3><p>属性（property），通常可以理解为get 和 set 方法。</p>
 <p>字段（field），通常叫做 <strong>类成员</strong>，或者 <strong>类变量</strong> ，有时也叫 域 ，理解为 数据成员，用来承担数据的。</p>
-<h4 id="属性和字段详解"><a href="#属性和字段详解" class="headerlink" title="属性和字段详解"></a>属性和字段详解</h4><p><strong>字段（field）</strong></p>
+<h3 id="属性和字段详解"><a href="#属性和字段详解" class="headerlink" title="属性和字段详解"></a>属性和字段详解</h3><p><strong>字段（field）</strong></p>
 <p>类成员（字段field），通常在类中定义成员变量例如：</p>
 <p><img src="https://raw.githubusercontent.com/TheCara/RepoPicture/master/image/20200909213136.png" alt=""> </p>
 <p>解释为：<strong>FacebookUser类拥有成员变量nickname，有一个字段 nickname。</strong></p>
@@ -4233,7 +4556,11 @@ private fun ensureAllParametersPresent(arguments: Map&lt;KParameter, Any?&gt;) {
 <p><img src="https://raw.githubusercontent.com/TheCara/RepoPicture/master/image/20200909220317.png" alt=""></p>
 <p>这是一个属性，一个字段。</p>
 <p>总结：属性是对字段的封装，供外部访问。通常<strong>属性</strong>将对应的<strong>私有字段</strong>通过封装成公共属性，以便于外界访问和修改。</p>
-<h3 id="表达式"><a href="#表达式" class="headerlink" title="表达式"></a>表达式</h3><p>是指可以被求值的代码。</p>
+<h3 id="计算属性"><a href="#计算属性" class="headerlink" title="计算属性"></a>计算属性</h3><p>计算属性通过覆盖字段get或者set运算符来定义的，</p>
+<pre><code>class Book{
+    val name
+        get() {}
+}</code></pre><h3 id="表达式"><a href="#表达式" class="headerlink" title="表达式"></a>表达式</h3><p>是指可以被求值的代码。</p>
 <p>例如</p>
 <pre><code class="c">int result = add(x + 1,y)</code></pre>
 <blockquote>
@@ -4347,7 +4674,15 @@ it --  返回了生成的it形参</code></pre>
 <p>结构上同let一样区别是返回值不一样，let以闭包形式返回，以返回函数体最后一行的值，为空时返回Unit类型为默认值。而also函数返回调用对象本身。</p>
 <pre><code class="kotlin">object.also{
 //    函数体
-}</code></pre>
+}
+fun main() {
+    val string: String? = null
+    val stringTest: String? = &quot;test&quot;
+    println(string?.also { print(&quot;非空&quot;) })
+    println(stringTest?.also { print(&quot;非空&quot;) })
+}
+</code></pre>
+<p><img src="https://raw.githubusercontent.com/TheCara/RepoPicture/master/img/20220415181552.png" alt=""></p>
 <h2 id="takeIf-函数"><a href="#takeIf-函数" class="headerlink" title="takeIf 函数"></a>takeIf 函数</h2><p><strong>描述</strong></p>
 <p>对一个对象进行判断，使用判断表达式在表达式为true时返回对象本身，false时返回null。可以对返回的对象进行链式调用。</p>
 <pre><code class="kotlin">fun main() {
@@ -4430,6 +4765,9 @@ fun main() {
 }
 </code></pre>
 <p><img src="https://raw.githubusercontent.com/TheCara/RepoPicture/master/image/20220412191310.png" alt=""></p>
+<h2 id="伴生对象"><a href="#伴生对象" class="headerlink" title="伴生对象"></a>伴生对象</h2><p>companion伴生对象</p>
+<p><strong>可以做什么？</strong></p>
+<p>可以直接在代码中调用且只加载一次。它与Java中的static静态修饰符类似。</p>
 <p><strong>引用：</strong></p>
 <p><a href="https://www.web3.xin/code/2606.html" target="_blank" rel="noopener">Kotlin this表达式</a></p>
 <p><a href="https://www.jianshu.com/p/10358883455c" target="_blank" rel="noopener">kotlin中的函数引用详解</a>    </p>
