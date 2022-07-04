@@ -618,7 +618,7 @@ fun &lt;T&gt; joinToString(
 <p>警告：</p>
 <p>不幸的是，当你调用Java函数时，不能采用命名函数，不管是JDK中的函数，或者是Android框架的函数，都不行。把参数名称存到.class文件Java8及其更高版本的一个可选功能，而Kotlin需要保持和Java6的兼容性。所以，编译器不能识别出调用函数的参数名称，然后把这些参数名对应到函数的定义的地方。</p>
 </blockquote>
-<h3 id="3-2-2-默认参数值"><a href="#3-2-2-默认参数值" class="headerlink" title="3.2.2 默认参数值"></a>3.2.2 默认参数值</h3><p>Java的另一个普遍存在的问题是，一些类的重载函数实在太多了。只要看一眼java.lang.Thread以及它对应的八个构造方法（<a href="http://mng.bg/4KZC)，能让人够受了！这些重载，原本是为了向后兼容，方便一些API的使用者，又或者出于别的原因，但导致的最终结果都是一致的：重复。这些参数名和类型被重复了一遍又一遍，如果你是一个良好的公民，还必须在每次重载的时候重复大部分的文档。与此同时当你调用了一个省略了部分参数的重载函数时，你可能会搞不清它们到底用的哪个。" target="_blank" rel="noopener">http://mng.bg/4KZC)，能让人够受了！这些重载，原本是为了向后兼容，方便一些API的使用者，又或者出于别的原因，但导致的最终结果都是一致的：重复。这些参数名和类型被重复了一遍又一遍，如果你是一个良好的公民，还必须在每次重载的时候重复大部分的文档。与此同时当你调用了一个省略了部分参数的重载函数时，你可能会搞不清它们到底用的哪个。</a></p>
+<h3 id="3-2-2-默认参数值"><a href="#3-2-2-默认参数值" class="headerlink" title="3.2.2 默认参数值"></a>3.2.2 默认参数值</h3><p>Java的另一个普遍存在的问题是，一些类的重载函数实在太多了。只要看一眼java.lang.Thread以及它对应的八个构造方法（ <a href="http://mng.bg/4KZC" target="_blank" rel="noopener">http://mng.bg/4KZC</a> )，能让人够受了！这些重载，原本是为了向后兼容，方便一些API的使用者，又或者出于别的原因，但导致的最终结果都是一致的：重复。这些参数名和类型被重复了一遍又一遍，如果你是一个良好的公民，还必须在每次重载的时候重复大部分的文档。与此同时当你调用了一个省略了部分参数的重载函数时，你可能会搞不清它们到底用的哪个。</p>
 <p><code>使用默认参数值减少重载</code><strong>在Kotlin中，可以在声明函数的时候，指定参数的默认值，这样就可以避免创建重载的函数。让我们尝试改进一下前面的joinToString函数。在大多数情况下，字符串可以不加前戳或者后戳并用逗号分割。所以我们把这些设置为默认值</strong>。</p>
 <pre><code class="kotlin">fun main() {
     val list = listOf(1, 2, 3)
@@ -741,6 +741,127 @@ val c = &quot;Kotlin&quot;.last()</code></pre>
 <pre><code class="kotlin">/*    Java    */
 char c = StringUtil.lastChar(&quot;Java&quot;)</code></pre>
 <p>这个扩展函数被声明为顶层函数，所以，它将会被编译为一个静态函数。在Java中静态导入lastChar函数，就可以直接使用它，如lastChar(“Java”)。</p>
+<h3 id="3-3-3-作为扩展函数的工具函数"><a href="#3-3-3-作为扩展函数的工具函数" class="headerlink" title="3.3.3 作为扩展函数的工具函数"></a>3.3.3 作为扩展函数的工具函数</h3><p>现在，可以写一个joinToString函数的终极版本了，它和你在Kotlin标准库中看到的一摸一样。</p>
+<pre><code class="kotlin">/*扩展函数joinTOString()*/
+fun &lt;T&gt; Collection&lt;T&gt;.joinToString( //为Collection&lt;T&gt;声明一个扩展函数
+    separator: String = &quot;,&quot;,    //默认参数
+    prefix: String = &quot;&quot;,
+    postfix: String = &quot;&quot;
+): String {
+    val result = StringBuilder(prefix)
+    for ((index, element) in this.withIndex()) {    //this指向接收者对象：T的集合
+        if (index &gt; 0) result.append(separator)
+        result.append(element)
+    }
+    result.append(postfix)
+    return result.toString()
+}
+
+&gt;&gt;&gt; val list = listOf(1,2,3)
+&gt;&gt;&gt; println(list.joinToString(separator = &quot;;&quot;,
+        prefix = &quot;(&quot;,postfix = &quot;)&quot;))
+</code></pre>
+<p><img src="https://raw.githubusercontent.com/TheCara/RepoPicture/master/image/20220425215826.png" alt=""></p>
+<p>可以给元素的集合类添加一个扩展函数，然后给所有的参数添加一个默认值。这样，你就可以像使用一个类的成员函数一样，去调用joinToString了：</p>
+<pre><code class="kotlin">&gt;&gt;&gt; val list = arrayListOf(1,2,3)
+&gt;&gt;&gt; println(list.joinToString(&quot;&quot;))</code></pre>
+<p><img src="https://raw.githubusercontent.com/TheCara/RepoPicture/master/image/20220425220259.png" alt=""></p>
+<p>因为扩展函数无非就是静态函数的一个高效的语法糖，可以使用更具体的类型来作为接收者类型，而不是一个类。假设你需要一个join函数，只能由字符串集合来触发。</p>
+<pre><code class="kotlin">fun Collection&lt;String&gt;.join(
+    separator: String=&quot;,&quot;,
+    prefix: String=&quot;&quot;,
+    postfix: String=&quot;&quot;
+)=joinToString(separator,prefix,postfix)
+&gt;&gt;&gt; println(listOf(&quot;one&quot;,&quot;two&quot;,&quot;eight&quot;).join(&quot; &quot;))</code></pre>
+<p><img src="https://raw.githubusercontent.com/TheCara/RepoPicture/master/image/20220425220656.png" alt=""></p>
+<p>如果使用其他类型的对象列表来调用，将会报错：</p>
+<pre><code class="kotlin">&gt;&gt;&gt; listOf(1,2,8).join()
+Error:Type mismatch:inferred type is List&lt;Int&gt; but Collection&lt;String&gt; was expected</code></pre>
+<p>扩展函数的静态属性也决定了扩展函数不能被之类重写。</p>
+<h3 id="3-3-4-不可重写的扩展函数"><a href="#3-3-4-不可重写的扩展函数" class="headerlink" title="3.3.4 不可重写的扩展函数"></a>3.3.4 不可重写的扩展函数</h3><p><strong>在Kotlin中，重写成员函数是很平常的一件事。但是，不能重写扩展函数</strong>。<code>假设</code>这里有两个类，View和它的子类Button，然后Button重写了父类的clike函数。</p>
+<pre><code class="kotlin">/*重新成员函数*/
+open class View{
+    open fun click()=println(&quot;View clicked&quot;)
+}
+class Button:View(){
+    override fun click() {
+        println(&quot;Button clicked&quot;)   //Button 继承View
+    }
+}</code></pre>
+<p><strong>当你声明了类型View的变量，那么它被赋值为Button类型的对象，因为Button是View的子类。当你在调用这个变量的一般函数，比如clicke的时候，如果这个函数被Button重写了</strong>，<code>调用子类被重写的函数</code>  那么这里</p>
+<p>将会调用到Button中重写的函数：</p>
+<pre><code class="kotlin">fun main() {
+    val view:View= Button()
+    view.click()    //具体调用那个方法，由实际的view的值来决定
+}</code></pre>
+<p><img src="https://raw.githubusercontent.com/TheCara/RepoPicture/master/image/20220429005715.png" alt=""></p>
+<p>但是对于扩展函数来说，并不是这样的。如下：</p>
+<p><img src="https://raw.githubusercontent.com/TheCara/RepoPicture/master/image/20220429005809.png" alt="扩展函数声明在类的外部"></p>
+<p>扩展函数并不是类的一部分，它是声明在类之外的。尽管可以给基类和子类都分别定义一个同名的扩展函数，当这个函数被调用时，它会用到哪一个呢？这里，它是由该变量的静态类型所决定的，而不是这个变量的运行时类型。</p>
+<p>下面的例子就展示了两个分别声明在View和Button的showOff扩展函数。</p>
+<pre><code class="kotlin">fun main() {
+  val view= Button()
+    view.showOf()//扩展函数被静态的解析
+}
+
+/*不能重写扩展函数*/
+fun View.showOf()= println(&quot;I&#39;m a view&quot;)
+fun Button.showOf()= println(&quot;I&#39;m a button!&quot;)</code></pre>
+<p><img src="https://raw.githubusercontent.com/TheCara/RepoPicture/master/image/20220505184003.png" alt=""></p>
+<p>当你在调用一个类型为View的变量的showOff函数时，对应的扩展函数会被调用，尽管实际上这个变量现在是一个Button的对象。</p>
+<p>回想一下，扩展函数将会在Java中被编译为静态函数，同时接收值将会作为第一个参数，对于此你应该清楚，因为Java会执行相同的函数：</p>
+<pre><code class="kotlin">/* Java */
+&gt;&gt;&gt; View view = new Button();
+&gt;&gt;&gt; ExtensionKt.showOf(view);//showOff函数声明在extension.kt中
+I&#39;m a view</code></pre>
+<p>如你所见，扩展函数并不存在重写，因为Kotlin会把它们当作静态函数对待。</p>
+<blockquote>
+<p>注意：</p>
+<p><code>如果一个类的成员函数和扩展函数有相同的签明，成员函数往往会被优先使用</code>。你应该牢记，当在扩展API的时候；如果添加一个和扩展函数同名的成员函数，那么对应类定义的消费者将会重新编译代码，这将会改变它的意义并开始指向新的成员函数。</p>
+</blockquote>
+<h3 id="3-3-5-扩展函数"><a href="#3-3-5-扩展函数" class="headerlink" title="3.3.5 扩展函数"></a>3.3.5 扩展函数</h3><p>扩展函数提供了一种方法，<code>用来扩展API</code>，可以用来访问属性，用的是属性的语法而不是函数的语法。尽管它们被称为<strong>属性</strong>，但它们可以没有任何状态，因为没有合适的地方来存储它，不可能给现有的Java对象的实例添加额外的字段。但有时短语法仍然是便于使用的。</p>
+<p>上节，我们又定义了一个lastChar的函数，现在让我们把它转换成一个属性试试。<code>声明扩展属性</code></p>
+<pre><code class="kotlin">/*    声明一个扩展函数    */
+val String.lastChar: Char
+    get() = get(length - 1)</code></pre>
+<p>可以看到，和扩展函数一样，扩展属性也像接收者的一个普通的成员属性一样。这里，必须定义getter函数，因为没有支持字段，因此没有默认getter的实现。同理，初始化也不可以：因为没有地方存储初始化值。</p>
+<p><strong>如果在StringBuilder上定义一个相同的属性</strong>，可以置为var，因为StringBuilder的内容是可变的。<code>声明扩展属性</code>  </p>
+<pre><code class="kotlin">/*   声明一个可变的扩展函数   */
+var StringBuilder.lastChar: Char
+    get() = get(length - 1)
+    set(value: Char) {
+        this.setCharAt(length - 1, value)
+    }</code></pre>
+<p>可以像访问使用成员属性一个访问它：</p>
+<pre><code>fun main() {
+    println(&quot;Kotlin&quot;.lastChar())
+    val sb = StringBuilder(&quot;Kotlin?&quot;)
+    sb.lastChar = &#39;!&#39;
+    println(sb)
+}</code></pre><p><img src="https://raw.githubusercontent.com/TheCara/RepoPicture/master/image/20220514230636.png" alt=""></p>
+<p>注意，当你需要从Java中访问属性的时候，应该显式地调用它的getter属性：StringUtilKt.getLastChar(“Java”)。</p>
+<h2 id="3-4-处理集合：可变参数、中辍调用和库的支持"><a href="#3-4-处理集合：可变参数、中辍调用和库的支持" class="headerlink" title="3.4 处理集合：可变参数、中辍调用和库的支持"></a>3.4 处理集合：可变参数、中辍调用和库的支持</h2><p>这一节将会展示Kotlin标准库中用来处理集合的一些方法。另外，也会设计几个相关的语言特性：</p>
+<ul>
+<li><strong>可变参数的关键vararg</strong>，可以用来声明一个函数将可能有任意数量的参数</li>
+<li><strong>一个中辍表示法</strong>，当你在调用一些只有一个参数的函数时，使用它会让代码更简练</li>
+<li>解构声明，用来把一个单独的组合值展开到多个变量中</li>
+</ul>
+<h3 id="3-4-1扩展Java集合的API"><a href="#3-4-1扩展Java集合的API" class="headerlink" title="3.4.1扩展Java集合的API"></a>3.4.1扩展Java集合的API</h3><p>我们开始本章的前提，是基于Kotlin中的集合与Java的类的相同，但对API做了扩展。我们看一个示例，用来获取列表中最后一个元素并找到数字集合中的最大值：</p>
+<pre><code class="kotlin">fun main() {
+    val strings: List&lt;String&gt; = listOf(&quot;first&quot;, &quot;second&quot;, &quot;fourteenth&quot;)
+    println(strings.last())
+    val numbers: Collection&lt;Int&gt; = setOf(1, 14, 2)
+    println(numbers.max())
+}</code></pre>
+<p><img src="https://raw.githubusercontent.com/TheCara/RepoPicture/master/image/20220515212621.png" alt=""></p>
+<p>我们感兴趣的是<strong>它是怎么工作的</strong>：尽管它们是Java库类的实例，为什么在Kotlin中能对集合有这么多丰富的操作？现在答案很明显了：<strong>因为函数last和max都被声明成了扩展函数</strong>。</p>
+<p><strong>last函数不会比String的lastChar更复杂</strong>，在上节讨论过：它（last）是List类的一个扩展函数。对于max，我们做一个简单的声明（真正的库函数不仅用于Int数字，而且适用于任何可比较的元素）：</p>
+<pre><code class="kotlin">fun &lt;T&gt; List&lt;T&gt;.list(): T {/* 返回最后一个元素  */
+}
+
+fun Collection&lt;Int&gt;.max(): Int {/*  找到集合的最大值   */
+}</code></pre>
+<p><em>许多扩展函数在Kotlin标准库中都有声明，在这里，我们不会列出所有这些方法。你可能会想知道，在Kotlin标准库中学习所有内容的最佳方法。这个并没有比较，在你需要操作集合或任何其他对象的时候，IDE中的代码补全功能，将为你列出所有可能用于该类型对象的方法，不管是普通函数或者扩展函数，都会有显式，你可以选择所需的方法。除此之外，标准库的引用会列出库中每个类的所有可用的函数，包括成员函数及扩展函数。</em></p>
 <h1 id="4-类、对象和接口"><a href="#4-类、对象和接口" class="headerlink" title="4 类、对象和接口"></a>4 类、对象和接口</h1><h2 id="4-1-定义类继承结构"><a href="#4-1-定义类继承结构" class="headerlink" title="4.1 定义类继承结构"></a>4.1 定义类继承结构</h2><h3 id="4-1-1-Kotlin-中的接口"><a href="#4-1-1-Kotlin-中的接口" class="headerlink" title="4.1.1 Kotlin 中的接口"></a>4.1.1 Kotlin 中的接口</h3><p><strong>声明接口</strong></p>
 <pre><code class="kotlin">interface Clickable{
     fun click()
@@ -881,6 +1002,28 @@ interface View {
 <p>要把它（嵌套类）变成为一个内部类来持有一个外部类的引用的话需要使用 <strong>inner</strong> 修饰符。</p>
 <p><strong>kotlin中内部类访问外部类</strong></p>
 <p>在kotlin中引用外部类实例的语法与java不同。需要使用this@Outer从Inner类去访问Outer类。</p>
+<blockquote>
+<p>创建内部类</p>
+<pre><code class="kotlin">fun main() {
+    var innerClass = InnerClass()
+    innerClass.testClass().innerFun()
+
+}
+
+class InnerClass {
+    //  创建一个变量用来让内部类的方法调用
+    val tag = &quot;外部变量&quot;
+
+    //    使用inner修饰符修饰类如果不修饰内部类无法调用到外部变量
+    inner class testClass {
+        fun innerFun() {
+            println(&quot;内部类调用外部变量:$tag&quot;)
+        }
+    }
+}</code></pre>
+<p><img src="https://raw.githubusercontent.com/TheCara/RepoPicture/master/image/20220426195526.png" alt=""></p>
+<p>内部类调用到外部变量需要声明到inner修饰符，当然外部类调用内部类不需要。</p>
+</blockquote>
 <h3 id="4-1-5-密封类：定义受限的类继承结构"><a href="#4-1-5-密封类：定义受限的类继承结构" class="headerlink" title="4.1.5 密封类：定义受限的类继承结构"></a>4.1.5 密封类：定义受限的类继承结构</h3><p><strong>什么是密封类”sealed“</strong></p>
 <p>sealed 类。为父类添加了一个新的 sealed 修饰符，可对创建的子类做出严格的限制。<strong>所有的子类必须嵌套在父类中。</strong></p>
 <p><strong>为什么要使用密封类（定义受限的类继承结构）</strong></p>
@@ -1049,7 +1192,21 @@ Address was changed for Alice:
 <li>equals 用来比较实例</li>
 <li>hashCode用来作为例如HashMap这种基于哈希容器的键</li>
 <li>toString用来为类生成按声明顺序排列的所有字段的字符串表达形式</li>
+<li>copy函数，可以用这个函数复制并修改部分属性。</li>
 </ul>
+<blockquote>
+<p><strong>创建数据类</strong></p>
+<p>并且使用copy函数复制修改</p>
+<pre><code class="kotlin">fun main() {
+    val li=Student(&quot;小李&quot;,15)
+    val li18=li.copy(age = 18)
+    println(li)
+    println(li18)
+}
+data class Student(val name:String,val age:Int)
+</code></pre>
+<p><img src="https://raw.githubusercontent.com/TheCara/RepoPicture/master/image/20220426202102.png" alt=""></p>
+</blockquote>
 <h2 id="4-4-“object”-关键字：-将声明一个类与创建一个实例结合起来"><a href="#4-4-“object”-关键字：-将声明一个类与创建一个实例结合起来" class="headerlink" title="4.4 “object” 关键字： 将声明一个类与创建一个实例结合起来"></a>4.4 “object” 关键字： 将声明一个类与创建一个实例结合起来</h2><p>这个关键词定义一个类并同时创建一个实例（换句话说就是一个对象）。</p>
 <ul>
 <li><strong>对象声明</strong>是定义一个单例的一种方式。</li>
@@ -4768,6 +4925,58 @@ fun main() {
 <h2 id="伴生对象"><a href="#伴生对象" class="headerlink" title="伴生对象"></a>伴生对象</h2><p>companion伴生对象</p>
 <p><strong>可以做什么？</strong></p>
 <p>可以直接在代码中调用且只加载一次。它与Java中的static静态修饰符类似。</p>
+<pre><code class="kotlin">fun main() {
+   CompaionClass.testCompanionFun()
+    println(CompaionClass.testCompanionVal)
+}
+
+class CompaionClass{
+    companion object{
+        val testCompanionVal=&quot;伴生对象的变量&quot;
+        fun testCompanionFun(){
+            println(&quot;使用伴生对象的静态方法&quot;)
+        }
+    }
+}</code></pre>
+<p><img src="https://raw.githubusercontent.com/TheCara/RepoPicture/master/image/20220426192030.png" alt=""></p>
+<h2 id="Kotlin-运算符重载"><a href="#Kotlin-运算符重载" class="headerlink" title="Kotlin 运算符重载"></a>Kotlin 运算符重载</h2><p><strong>让运算符为用户定义的类工作</strong></p>
+<p>Kotlin中的operator将调用它相应运算符成员函数。a+b运算符可转换为a.plus(b)</p>
+<p>Kotlin只能重载一组特定的运算符。</p>
+<p><strong>案例用运算符重载拼接两个字符串</strong></p>
+<pre><code class="kotlin">fun main() {
+    val p1 = TestClass(&quot;wang&quot;)
+    val p2 = TestClass(name = &quot;li&quot;)
+    var sum = p1 + p2
+    println(sum)
+}
+
+data class TestClass(var name: String) {
+    //    拼接完返回String类型
+    operator fun plus(p1: TestClass): String {
+        var string = name + p1.name
+        return string
+    }
+}</code></pre>
+<h2 id="代数数据类型"><a href="#代数数据类型" class="headerlink" title="代数数据类型"></a>代数数据类型</h2><blockquote>
+<p><strong>什么是代数数据类型</strong></p>
+<p>代数：能够代表数字的符号。</p>
+<p>例如x+1=10中的x就代表代数。还可以通过运算符获得新的代数y*9=z。那么将这些代数或者数字转换成类型，以及通过这些类型所产生的类型就叫做代数数据类型。</p>
+</blockquote>
+<p>例子：</p>
+<pre><code class="kotlin">fun main() {
+    println(&quot;${getArea(Shape.Circle(5.0))}&quot;)    //获得圆形面积
+    println(&quot;${getArea(Shape.Rectangle(5.0, 5.0))}&quot;) //获得矩形面积
+    println(&quot;${getArea(Shape.Triangle(5.0, 5.0))}&quot;)  // 获得三角形面积
+}
+
+sealed class Shape {
+    //由于 sealed 密封类默认是open修饰的所以可以继承父类成为子类
+    class Circle(val radius: Double) : Shape()
+    class Rectangle(val width: Double, val height: Double) : Shape()
+    class Triangle(val base: Double, val height: Double) : Shape()
+}</code></pre>
+<p><img src="https://raw.githubusercontent.com/TheCara/RepoPicture/master/image/20220429203505.png" alt=""></p>
+<p>Shape密封类，这里将圆形等图形面积所需要的变量抽象为代数数据类型（ADT）。 因为这些形状都属于几何类型Shape所以可以抽象为代数数据类型。</p>
 <p><strong>引用：</strong></p>
 <p><a href="https://www.web3.xin/code/2606.html" target="_blank" rel="noopener">Kotlin this表达式</a></p>
 <p><a href="https://www.jianshu.com/p/10358883455c" target="_blank" rel="noopener">kotlin中的函数引用详解</a>    </p>
