@@ -488,7 +488,46 @@
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h1 id="android-support-v4-media"><a href="#android-support-v4-media" class="headerlink" title="android.support.v4.media"></a>android.support.v4.media</h1><h2 id="android-support-v4-media-session-MediaSessionCompat-类"><a href="#android-support-v4-media-session-MediaSessionCompat-类" class="headerlink" title="android.support.v4.media.session.MediaSessionCompat 类"></a>android.support.v4.media.session.MediaSessionCompat 类</h2><blockquote>
+                <h1 id="android-support-v4-media"><a href="#android-support-v4-media" class="headerlink" title="android.support.v4.media"></a>android.support.v4.media</h1><h2 id="session"><a href="#session" class="headerlink" title="session"></a>session</h2><h2 id="MediaControllerCompat-类"><a href="#MediaControllerCompat-类" class="headerlink" title="MediaControllerCompat 类"></a>MediaControllerCompat 类</h2><blockquote>
+<p>属于 media.session 包下。</p>
+<p>允许应用与正在进行的媒体会话进行互动。</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th align="center">方法名</th>
+<th align="center">参数</th>
+<th align="center">描述</th>
+<th align="center">返回值</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">getMetadata</td>
+<td align="center">无</td>
+<td align="center">获取此会话的当前元数据。</td>
+<td align="center">返回MediadataCompat类</td>
+</tr>
+<tr>
+<td align="center">getSessionActivity</td>
+<td align="center">无</td>
+<td align="center">获得与启动会话关联的用户界面的意图（如果存在的话）</td>
+<td align="center">PendingIntent意图或者null</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+</tbody></table>
+<h4 id="playFromMediaId"><a href="#playFromMediaId" class="headerlink" title="playFromMediaId"></a>playFromMediaId</h4><blockquote>
+<p>请求播放器开始播放一个特定的URI连接</p>
+<p>@param mediaId 请求媒体的uri。</p>
+<p>@param extras可选附加项，可以包含额外的信息</p>
+<p>关于要播放的媒体项目。</p>
+</blockquote>
+<pre><code class="java">public abstract void playFromMediaId(String mediaId, Bundle extras);</code></pre>
+<h2 id="MediaSessionCompat-类"><a href="#MediaSessionCompat-类" class="headerlink" title="MediaSessionCompat 类"></a>MediaSessionCompat 类</h2><blockquote>
 <p>Allows interaction with media controllers, volume keys, media buttons, and transport controls.</p>
 <p>允许与媒体控制器，音量键，媒体按钮和传输控件进行交互。</p>
 <p>当应用程序想要发布媒体播放信息或处理媒体密钥时，应创建MediaSession。 一般来说，一个应用程序只需要一个会话进行所有播放，但可创建多个会话来提供更精细的媒体控制。</p>
@@ -626,38 +665,6 @@
 <h4 id="FLAG-PLAYABLE"><a href="#FLAG-PLAYABLE" class="headerlink" title="FLAG_PLAYABLE"></a>FLAG_PLAYABLE</h4><pre><code class="java">int FLAG_PLAYABLE</code></pre>
 <p>标志：表示该项目可以播放。</p>
 <h4 id="FLAG-BROWSABLE"><a href="#FLAG-BROWSABLE" class="headerlink" title="FLAG_BROWSABLE"></a>FLAG_BROWSABLE</h4><pre><code>int FLAG_BROWSABLE</code></pre><p>标志：表示该项目有其自己的子项。</p>
-<h2 id="MediaControllerCompat-类"><a href="#MediaControllerCompat-类" class="headerlink" title="MediaControllerCompat 类"></a>MediaControllerCompat 类</h2><blockquote>
-<p>属于 media.session 包下。</p>
-<p>允许应用与正在进行的媒体会话进行互动。</p>
-</blockquote>
-<table>
-<thead>
-<tr>
-<th align="center">方法名</th>
-<th align="center">参数</th>
-<th align="center">描述</th>
-<th align="center">返回值</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center">getMetadata</td>
-<td align="center">无</td>
-<td align="center">获取此会话的当前元数据。</td>
-<td align="center">返回MediadataCompat类</td>
-</tr>
-<tr>
-<td align="center">getSessionActivity</td>
-<td align="center">无</td>
-<td align="center">获得与启动会话关联的用户界面的意图（如果存在的话）</td>
-<td align="center">PendingIntent意图或者null</td>
-</tr>
-<tr>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-</tr>
-</tbody></table>
 <blockquote>
 </blockquote>
 <h2 id="MediaSessonCompat-Token类"><a href="#MediaSessonCompat-Token类" class="headerlink" title="MediaSessonCompat.Token类"></a>MediaSessonCompat.Token类</h2><p>运行中的Token。表示可能会被会话的所有者传递给应用程序，以允许创建一个MediaControllerCompat与会话进行通信。</p>
@@ -794,7 +801,7 @@
 <td align="center">getDescription</td>
 <td align="center">无</td>
 <td align="center">为显式，返回次元数据的简单描述</td>
-<td align="center">MediaDescriptionCompat</td>
+<td align="center">MediaDescriptionCompat!</td>
 </tr>
 <tr>
 <td align="center"></td>
@@ -947,7 +954,153 @@
 <td align="center"><code>STATE_STOPPED</code>指示此项目的状态当前已停止。</td>
 </tr>
 </tbody></table>
+<h4 id="getLastPositionUpdateTime-方法"><a href="#getLastPositionUpdateTime-方法" class="headerlink" title="getLastPositionUpdateTime 方法"></a>getLastPositionUpdateTime 方法</h4><blockquote>
+<ul>
+<li><p>Get the elapsed real time at which position was last updated.</p>
+<p>获取最后一次更新位置的实时时间。</p>
+</li>
+<li><p>If the position has never been set this will return 0;</p>
+<p>如果位置没有被设置，这个将返回0;</p>
+</li>
+</ul>
+</blockquote>
+<pre><code class="kotlin">fun getLastPositionUpdateTime(): Long</code></pre>
+<p><strong>返回值</strong></p>
+<blockquote>
+<p>The last time the position was updated.</p>
+<p>最后一次更新位置的时间。</p>
+</blockquote>
+<h4 id="getPosition-方法"><a href="#getPosition-方法" class="headerlink" title="getPosition 方法"></a>getPosition 方法</h4><blockquote>
+<p>Get the playback position in ms at last position update time.</p>
+<p>在最后一次位置更新时，以ms为单位获得播放位置。</p>
+</blockquote>
+<pre><code class="kotlin">fun getPosition(): Long</code></pre>
+<h4 id="getPlaybackSpeed-方法"><a href="#getPlaybackSpeed-方法" class="headerlink" title="getPlaybackSpeed 方法"></a>getPlaybackSpeed 方法</h4><blockquote>
+<ul>
+<li><p>Get the current playback speed as a multiple of normal playback.</p>
+<p>将当前播放速度设置为正常播放速度的倍数。</p>
+</li>
+<li><p>This should be negative when rewinding.</p>
+<p>当倒带时，这应该是负的。</p>
+</li>
+<li><p>A value of 1 means normal playback and 0 means paused.</p>
+<p>1表示正常播放，0表示暂停。</p>
+</li>
+</ul>
+</blockquote>
+<pre><code class="kotlin">fun getPlaybackSpeed(): Float</code></pre>
+<p><strong>返回值</strong></p>
+<blockquote>
+<p>The current speed of playback.</p>
+<p>当前播放速度。</p>
+</blockquote>
 <h2 id="ServiceCompat"><a href="#ServiceCompat" class="headerlink" title="ServiceCompat"></a>ServiceCompat</h2><p>Helper用于访问在向后兼容的API级别4之后引入的 <code>Service</code>功能。</p>
+<h1 id="com-google-android-material"><a href="#com-google-android-material" class="headerlink" title="com.google.android.material"></a>com.google.android.material</h1><h2 id="snackbar-类"><a href="#snackbar-类" class="headerlink" title="snackbar 类"></a>snackbar 类</h2><blockquote>
+<p>Snackbars provide lightweight feedback about an operation.</p>
+<p>snackbar提供关于操作的轻量级反馈。</p>
+<p>They show a brief message at the bottom of the screen on mobile and lower left on larger devices.</p>
+<p>它们会在移动设备的屏幕底部和较大设备的左下方显示一条简短的信息。</p>
+</blockquote>
+<h4 id="make-方法"><a href="#make-方法" class="headerlink" title="make 方法"></a><strong>make 方法</strong></h4><blockquote>
+<p>Make a Snackbar to display a message</p>
+<p>制作一个Snackbar来显示一条信息</p>
+</blockquote>
+<p><strong>返回值</strong></p>
+<blockquote>
+<p><a href="https://developer.android.com/reference/com/google/android/material/snackbar/Snackbar" target="_blank" rel="noopener">Snackbar</a></p>
+</blockquote>
+<pre><code class="java">public static Snackbar make (
+                View view, 
+                CharSequence text, 
+                int duration)</code></pre>
+<p><strong>参数</strong></p>
+<blockquote>
+<p>view：父视图</p>
+<p>text：格式化文本</p>
+<p>duration：显式消息的时间</p>
+<ul>
+<li><code>BaseTransientBottomBar.LENGTH_SHORT</code></li>
+<li><code>BaseTransientBottomBar.LENGTH_LONG</code></li>
+<li><code>BaseTransientBottomBar.LENGTH_INDEFINITE</code></li>
+</ul>
+</blockquote>
+<h1 id="androidx-viewpager2-widget"><a href="#androidx-viewpager2-widget" class="headerlink" title="androidx.viewpager2.widget"></a>androidx.viewpager2.widget</h1><blockquote>
+<p>ViewPager2 replaces androidx.viewpager.widget.</p>
+<p>ViewPager2替换androidx.viewpager.widget。</p>
+<p>ViewPager, addressing most of its predecessor’s pain-points, including right-to-left layout support, vertical orientation, modifiable Fragment collections, etc.</p>
+<p>ViewPager，解决了其前辈的大部分痛点，包括从右向左的布局支持，垂直方向，可修改的片段集合等</p>
+</blockquote>
+<h4 id="registerOnPageChangeCallback-方法"><a href="#registerOnPageChangeCallback-方法" class="headerlink" title="registerOnPageChangeCallback 方法"></a>registerOnPageChangeCallback 方法</h4><pre><code class="java">public void registerOnPageChangeCallback(
+    @NonNull ViewPager2.OnPageChangeCallback callback
+)</code></pre>
+<blockquote>
+<p>Add a callback that will be invoked whenever the page changes or is incrementally scrolled.</p>
+<p>添加一个回调，该回调将在页面变动或滚动时调用。</p>
+<p>See OnPageChangeCallback.</p>
+<p>看到OnPageChangeCallback。</p>
+</blockquote>
+<h2 id="ViewPager2-OnPageChangeCallback-抽象类"><a href="#ViewPager2-OnPageChangeCallback-抽象类" class="headerlink" title="ViewPager2.OnPageChangeCallback 抽象类"></a>ViewPager2.OnPageChangeCallback 抽象类</h2><blockquote>
+<p>Callback interface for responding to changing state of the selected page.</p>
+<p>响应所选页面状态变化的回调接口。</p>
+<p>内部有三个抽象方法</p>
+</blockquote>
+<h4 id="onPageSelected-抽象方法"><a href="#onPageSelected-抽象方法" class="headerlink" title="onPageSelected 抽象方法"></a>onPageSelected 抽象方法</h4><blockquote>
+<p>This method will be invoked when a new page becomes selected.</p>
+<p>当选择新页面时，将调用此方法。</p>
+</blockquote>
+<pre><code class="java">public void onPageSelected(int position)</code></pre>
+<p><strong>参数</strong></p>
+<blockquote>
+<p>position：选定页面的位置索引</p>
+</blockquote>
+<h1 id="kotlinx-coroutines"><a href="#kotlinx-coroutines" class="headerlink" title="kotlinx.coroutines"></a>kotlinx.coroutines</h1><h2 id="CoroutineScope-接口"><a href="#CoroutineScope-接口" class="headerlink" title="CoroutineScope 接口"></a>CoroutineScope 接口</h2><blockquote>
+<p>Defines a scope for new coroutines.</p>
+<p>为新的协程定义作用域。</p>
+</blockquote>
+<pre><code class="kotlin">interface CoroutineScope</code></pre>
+<h1 id="androidx-navigation"><a href="#androidx-navigation" class="headerlink" title="androidx.navigation"></a>androidx.navigation</h1><h2 id="NavController-类"><a href="#NavController-类" class="headerlink" title="NavController 类"></a>NavController 类</h2><h4 id="addOnDestinationChangedListener-方法"><a href="#addOnDestinationChangedListener-方法" class="headerlink" title="addOnDestinationChangedListener 方法"></a>addOnDestinationChangedListener 方法</h4><blockquote>
+<p>Adds an OnDestinationChangedListener to this controller to receive a callback whenever the currentDestination or its arguments change.</p>
+<p>向控制器添加一个OnDestinationChangedListener，以便在currentDestination或其参数改变时接收回调。</p>
+</blockquote>
+<pre><code class="java">public void addOnDestinationChangedListener(
+    @NonNull NavController.OnDestinationChangedListener listener
+)</code></pre>
+<p><strong>参数</strong></p>
+<p>listener:</p>
+<blockquote>
+<p>the listener to receive events</p>
+<p>接收事件的侦听器</p>
+</blockquote>
+<h4 id="navigate-方法"><a href="#navigate-方法" class="headerlink" title="navigate 方法"></a>navigate 方法</h4><blockquote>
+<ul>
+<li><p>Navigate to a destination from the current navigation graph.</p>
+<p>从当前导航图导航到目标。</p>
+</li>
+<li><p>This supports both navigating via an action and directly navigating to a destination.</p>
+<p>这既支持通过操作导航，也支持直接导航到目的地。</p>
+</li>
+</ul>
+</blockquote>
+<pre><code class="java">@MainThread
+public void navigate(@IdRes int resId)</code></pre>
+<p><strong>参数</strong></p>
+<p>resId：</p>
+<blockquote>
+<p>an action id or a destination id to navigate to</p>
+<p>要导航到的操作id或目标id</p>
+</blockquote>
+<p><strong>报错</strong></p>
+<blockquote>
+<ul>
+<li><p>kotlin.IllegalStateException</p>
+<p>if there is no current navigation node 如果没有当前导航节点</p>
+</li>
+<li><p>kotlin.IllegalArgumentException</p>
+<p>if the desired destination cannot be found from the current destination</p>
+<p>如果无法从当前目标找到所需的目标</p>
+</li>
+</ul>
+</blockquote>
 <h1 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h1><p><a href="">关于媒体浏览器服务(MediaBrowserService)</a></p>
 <p><a href="https://www.apiref.com/android-zh/index.html" target="_blank" rel="noopener">Android开发手册</a></p>
 
@@ -1406,7 +1559,7 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
 
 
 
-    <a href="mailto:qyx2013@qq.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+    <a href="mailto:qyx2013@foxmaill.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
         <i class="fas fa-envelope-open"></i>
     </a>
 
@@ -1415,10 +1568,6 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
 
 
 
-
-    <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=1099178659" class="tooltipped" target="_blank" data-tooltip="QQ联系我: 1099178659" data-position="top" data-delay="50">
-        <i class="fab fa-qq"></i>
-    </a>
 
 
 
