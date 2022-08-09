@@ -895,6 +895,18 @@ public val isCancelled: Boolean</code></pre>
 // 协程运行中            
 }</code></pre>
 <p>一般协程创建的时候就处在 <strong>Active</strong>状态，但是也有特殊情况。</p>
+<h1 id="kotlin-coroutines-CoroutineContext类"><a href="#kotlin-coroutines-CoroutineContext类" class="headerlink" title="kotlin.coroutines.CoroutineContext类"></a>kotlin.coroutines.CoroutineContext类</h1><h4 id="plus方法"><a href="#plus方法" class="headerlink" title="plus方法"></a>plus方法</h4><blockquote>
+<ul>
+<li><p>Returns a context containing elements from this context and elements from  other [context].</p>
+<p>返回一个上下文，其中包含来自此上下文的元素和来自其他[context]的元素。</p>
+</li>
+<li><p>The elements from this context with the same key as in the other one are dropped.</p>
+<p>删除这个上下文中与另一个上下文中具有相同键的元素。</p>
+</li>
+</ul>
+</blockquote>
+<pre><code class="kotlin"> public operator fun plus(context: CoroutineContext)：CoroutineContext</code></pre>
+<p>简写为 “+”</p>
 <p><strong>引用：</strong></p>
 <p><a href="https://kaixue.io/kotlin-coroutines-1/" target="_blank" rel="noopener">Kotlin 的协程用力瞥一眼 - 学不会协程？很可能因为你看过的教程都是错的</a></p>
 <p><a href="https://kaixue.io/kotlin-coroutines-2/" target="_blank" rel="noopener">Kotlin 协程的挂起好神奇好难懂？今天我把它的皮给扒了</a></p>

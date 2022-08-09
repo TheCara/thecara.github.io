@@ -488,7 +488,7 @@
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h1 id="android-support-v4-media"><a href="#android-support-v4-media" class="headerlink" title="android.support.v4.media"></a>android.support.v4.media</h1><h2 id="session"><a href="#session" class="headerlink" title="session"></a>session</h2><h2 id="MediaControllerCompat-类"><a href="#MediaControllerCompat-类" class="headerlink" title="MediaControllerCompat 类"></a>MediaControllerCompat 类</h2><blockquote>
+                <h1 id="android-support-v4-media-session-MediaControllerCompat-类"><a href="#android-support-v4-media-session-MediaControllerCompat-类" class="headerlink" title="android.support.v4.media.session.MediaControllerCompat 类"></a>android.support.v4.media.session.MediaControllerCompat 类</h1><blockquote>
 <p>属于 media.session 包下。</p>
 <p>允许应用与正在进行的媒体会话进行互动。</p>
 </blockquote>
@@ -527,7 +527,7 @@
 <p>关于要播放的媒体项目。</p>
 </blockquote>
 <pre><code class="java">public abstract void playFromMediaId(String mediaId, Bundle extras);</code></pre>
-<h2 id="MediaSessionCompat-类"><a href="#MediaSessionCompat-类" class="headerlink" title="MediaSessionCompat 类"></a>MediaSessionCompat 类</h2><blockquote>
+<h1 id="android-support-v4-media-session-MediaSessionCompat-类"><a href="#android-support-v4-media-session-MediaSessionCompat-类" class="headerlink" title="android.support.v4.media.session.MediaSessionCompat 类"></a>android.support.v4.media.session.MediaSessionCompat 类</h1><blockquote>
 <p>Allows interaction with media controllers, volume keys, media buttons, and transport controls.</p>
 <p>允许与媒体控制器，音量键，媒体按钮和传输控件进行交互。</p>
 <p>当应用程序想要发布媒体播放信息或处理媒体密钥时，应创建MediaSession。 一般来说，一个应用程序只需要一个会话进行所有播放，但可创建多个会话来提供更精细的媒体控制。</p>
@@ -562,23 +562,40 @@
 <p>呼叫设置媒体会话。</p>
 <p>这应该在服务启动期间尽快调用。 它只能被调用一次。</p>
 </blockquote>
-<p><strong>getSessionToken</strong></p>
-<pre><code>@Nullable open fun getSessionToken(): MediaSessionCompat.Token?</code></pre><blockquote>
-<p>Gets the session token, or null if it has not yet been created or if it has been destroyed.</p>
-<p>获取会话标记，如果尚未创建或已销毁它，则为null。</p>
+<h4 id="getSessionToken-方法"><a href="#getSessionToken-方法" class="headerlink" title="getSessionToken 方法"></a><strong>getSessionToken 方法</strong></h4><p>kotlin中可缩写为“sessionToken”</p>
+<blockquote>
+<p>检索可供应用程序使用的令牌对象，以创建用于与此会话进行交互的<code>MediaControllerCompat</code> </p>
 </blockquote>
-<p><strong>setSessionActivity</strong></p>
-<p>PendingInten pi：启动到这个会话。</p>
+<pre><code class="java">public Token getSessionToken() {
+    return mImpl.getSessionToken();
+}</code></pre>
+<h4 id="setSessionActivity-方法"><a href="#setSessionActivity-方法" class="headerlink" title="setSessionActivity 方法"></a><strong>setSessionActivity 方法</strong></h4><p>PendingInten pi：启动到这个会话。</p>
 <pre><code>void setSessionActivity (PendingIntent pi)    </code></pre><blockquote>
 <p>为此会话设置启动用户界面的意图。 这可以用作到正在进行的媒体屏幕的快速链接。 意图应该是针对可能使用<code>startActivity(Intent)</code>开始的活动。</p>
 </blockquote>
-<h2 id="媒体浏览器服务-MediaBrowserService"><a href="#媒体浏览器服务-MediaBrowserService" class="headerlink" title="媒体浏览器服务 MediaBrowserService"></a>媒体浏览器服务 MediaBrowserService</h2><h4 id="关键类型"><a href="#关键类型" class="headerlink" title="关键类型"></a>关键类型</h4><ol>
+<h4 id="setActive-方法"><a href="#setActive-方法" class="headerlink" title="setActive 方法"></a>setActive 方法</h4><p>kotlin表示为“isActive”</p>
+<blockquote>
+<ul>
+<li><p>Sets if this session is currently active and ready to receive commands.</p>
+<p>如果此会话当前处于活动状态并准备好接收命令</p>
+</li>
+<li><p>If set to false your session’s controller may not be discoverable.</p>
+<p>如果设置为false，可能无法发现会话的控制器。</p>
+</li>
+<li><p>You must set the session to active before it can start receiving media button events or transport commands.</p>
+<p>在开始接收媒体按钮事件或传输命令之前，必须将会话设置为活动。</p>
+</li>
+</ul>
+</blockquote>
+<pre><code class="kotlin">open fun setActive(active: Boolean): Unit</code></pre>
+<h1 id="android-support-v4-media-session-MediaBrowserService类"><a href="#android-support-v4-media-session-MediaBrowserService类" class="headerlink" title="android.support.v4.media.session.MediaBrowserService类"></a>android.support.v4.media.session.MediaBrowserService类</h1><p>媒体浏览器服务</p>
+<h4 id="关键类型"><a href="#关键类型" class="headerlink" title="关键类型"></a>关键类型</h4><ol>
 <li>MediaBrowserServiceCompat 媒体浏览器服务</li>
 <li>MediaBrowserCompat 媒体浏览器</li>
 <li>MediaControllerCompat 媒体控制器</li>
 <li>MediaSessionCompat 媒体会话</li>
 </ol>
-<h2 id="MediaBrowserServiceCompat"><a href="#MediaBrowserServiceCompat" class="headerlink" title="MediaBrowserServiceCompat"></a>MediaBrowserServiceCompat</h2><blockquote>
+<h1 id="android-support-v4-media-session-MediaBrowserServiceCompat"><a href="#android-support-v4-media-session-MediaBrowserServiceCompat" class="headerlink" title="android.support.v4.media.session.MediaBrowserServiceCompat"></a>android.support.v4.media.session.MediaBrowserServiceCompat</h1><blockquote>
 <p>作用</p>
 <p>音乐播放后台服务。</p>
 <p>客户端中获取音乐数据的服务，所有的音乐数据都通过该服务与服务端进行交互获取。</p>
@@ -604,7 +621,7 @@
 <p>此方法中的 parentId 与上面的方法 onGetRoot 中返回的RootId没有关系，客户端连接后，它可以通过重复调用MediaBrowserCompat.subscribe()方法来发起数据请求。而每次调用subscribe()方法都会返回onLoadChildren()回调到该service中，然后返回MediaBrowser.MediaItem()对象列表</p>
 <p>每个MediaItem都有唯一的Id字符串，它其实是一个隐式的token。当客户想打开子菜单或者播放item时，它就将ID传入。</p>
 </blockquote>
-<h2 id="MediaBrowserServiceCompat-BrowserRoot-抽象类"><a href="#MediaBrowserServiceCompat-BrowserRoot-抽象类" class="headerlink" title="MediaBrowserServiceCompat.BrowserRoot 抽象类"></a>MediaBrowserServiceCompat.BrowserRoot 抽象类</h2><blockquote>
+<h1 id="android-support-v4-media-session-MediaBrowserServiceCompat-BrowserRoot-抽象类"><a href="#android-support-v4-media-session-MediaBrowserServiceCompat-BrowserRoot-抽象类" class="headerlink" title="android.support.v4.media.session.MediaBrowserServiceCompat.BrowserRoot 抽象类"></a>android.support.v4.media.session.MediaBrowserServiceCompat.BrowserRoot 抽象类</h1><blockquote>
 <p>包含浏览器首次连接客户端的信息。</p>
 </blockquote>
 <table>
@@ -631,7 +648,7 @@
 <td align="center"></td>
 </tr>
 </tbody></table>
-<h2 id="MediaBrowserServiceCompat-Result-类"><a href="#MediaBrowserServiceCompat-Result-类" class="headerlink" title="MediaBrowserServiceCompat.Result 类"></a>MediaBrowserServiceCompat.Result 类</h2><blockquote>
+<h1 id="android-support-v4-media-session-MediaBrowserServiceCompat-Result-类"><a href="#android-support-v4-media-session-MediaBrowserServiceCompat-Result-类" class="headerlink" title="android.support.v4.media.session.MediaBrowserServiceCompat.Result 类"></a>android.support.v4.media.session.MediaBrowserServiceCompat.Result 类</h1><blockquote>
 <p>异步回调方法的完成处理程序</p>
 </blockquote>
 <table>
@@ -658,7 +675,7 @@
 <td align="center"></td>
 </tr>
 </tbody></table>
-<h2 id="MediaBrowserCompat"><a href="#MediaBrowserCompat" class="headerlink" title="MediaBrowserCompat"></a>MediaBrowserCompat</h2><h3 id="MediaBrowserCompat-MediaItem常量"><a href="#MediaBrowserCompat-MediaItem常量" class="headerlink" title="MediaBrowserCompat.MediaItem常量"></a>MediaBrowserCompat.MediaItem常量</h3><blockquote>
+<h1 id="android-support-v4-media-session-MediaBrowserCompat"><a href="#android-support-v4-media-session-MediaBrowserCompat" class="headerlink" title="android.support.v4.media.session.MediaBrowserCompat"></a>android.support.v4.media.session.MediaBrowserCompat</h1><h3 id="MediaBrowserCompat-MediaItem常量"><a href="#MediaBrowserCompat-MediaItem常量" class="headerlink" title="MediaBrowserCompat.MediaItem常量"></a>MediaBrowserCompat.MediaItem常量</h3><blockquote>
 <p>一个包含单个媒体项目信息的类，用于浏览媒体。</p>
 </blockquote>
 <p><strong>常量</strong></p>
@@ -668,7 +685,7 @@
 <blockquote>
 </blockquote>
 <h2 id="MediaSessonCompat-Token类"><a href="#MediaSessonCompat-Token类" class="headerlink" title="MediaSessonCompat.Token类"></a>MediaSessonCompat.Token类</h2><p>运行中的Token。表示可能会被会话的所有者传递给应用程序，以允许创建一个MediaControllerCompat与会话进行通信。</p>
-<h2 id="MediaMetadataCompat"><a href="#MediaMetadataCompat" class="headerlink" title="MediaMetadataCompat"></a>MediaMetadataCompat</h2><blockquote>
+<h2 id="MediaMetadataCompat-类"><a href="#MediaMetadataCompat-类" class="headerlink" title="MediaMetadataCompat 类"></a>MediaMetadataCompat 类</h2><blockquote>
 <p>包含有关项目的元数据，例如标题，艺术家等</p>
 </blockquote>
 <p><strong>各个常量</strong></p>
@@ -802,18 +819,6 @@
 <td align="center">无</td>
 <td align="center">为显式，返回次元数据的简单描述</td>
 <td align="center">MediaDescriptionCompat!</td>
-</tr>
-<tr>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-</tr>
-<tr>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
 </tr>
 </tbody></table>
 <h2 id="MediaDescriptionCompat"><a href="#MediaDescriptionCompat" class="headerlink" title="MediaDescriptionCompat"></a>MediaDescriptionCompat</h2><blockquote>
@@ -995,7 +1000,7 @@
 <p>当前播放速度。</p>
 </blockquote>
 <h2 id="ServiceCompat"><a href="#ServiceCompat" class="headerlink" title="ServiceCompat"></a>ServiceCompat</h2><p>Helper用于访问在向后兼容的API级别4之后引入的 <code>Service</code>功能。</p>
-<h1 id="com-google-android-material"><a href="#com-google-android-material" class="headerlink" title="com.google.android.material"></a>com.google.android.material</h1><h2 id="snackbar-类"><a href="#snackbar-类" class="headerlink" title="snackbar 类"></a>snackbar 类</h2><blockquote>
+<h1 id="com-google-android-material-snackbar-类"><a href="#com-google-android-material-snackbar-类" class="headerlink" title="com.google.android.material.snackbar 类"></a>com.google.android.material.snackbar 类</h1><blockquote>
 <p>Snackbars provide lightweight feedback about an operation.</p>
 <p>snackbar提供关于操作的轻量级反馈。</p>
 <p>They show a brief message at the bottom of the screen on mobile and lower left on larger devices.</p>
@@ -1024,41 +1029,29 @@
 <li><code>BaseTransientBottomBar.LENGTH_INDEFINITE</code></li>
 </ul>
 </blockquote>
-<h1 id="androidx-viewpager2-widget"><a href="#androidx-viewpager2-widget" class="headerlink" title="androidx.viewpager2.widget"></a>androidx.viewpager2.widget</h1><blockquote>
-<p>ViewPager2 replaces androidx.viewpager.widget.</p>
-<p>ViewPager2替换androidx.viewpager.widget。</p>
-<p>ViewPager, addressing most of its predecessor’s pain-points, including right-to-left layout support, vertical orientation, modifiable Fragment collections, etc.</p>
-<p>ViewPager，解决了其前辈的大部分痛点，包括从右向左的布局支持，垂直方向，可修改的片段集合等</p>
-</blockquote>
-<h4 id="registerOnPageChangeCallback-方法"><a href="#registerOnPageChangeCallback-方法" class="headerlink" title="registerOnPageChangeCallback 方法"></a>registerOnPageChangeCallback 方法</h4><pre><code class="java">public void registerOnPageChangeCallback(
-    @NonNull ViewPager2.OnPageChangeCallback callback
-)</code></pre>
-<blockquote>
-<p>Add a callback that will be invoked whenever the page changes or is incrementally scrolled.</p>
-<p>添加一个回调，该回调将在页面变动或滚动时调用。</p>
-<p>See OnPageChangeCallback.</p>
-<p>看到OnPageChangeCallback。</p>
-</blockquote>
-<h2 id="ViewPager2-OnPageChangeCallback-抽象类"><a href="#ViewPager2-OnPageChangeCallback-抽象类" class="headerlink" title="ViewPager2.OnPageChangeCallback 抽象类"></a>ViewPager2.OnPageChangeCallback 抽象类</h2><blockquote>
-<p>Callback interface for responding to changing state of the selected page.</p>
-<p>响应所选页面状态变化的回调接口。</p>
-<p>内部有三个抽象方法</p>
-</blockquote>
-<h4 id="onPageSelected-抽象方法"><a href="#onPageSelected-抽象方法" class="headerlink" title="onPageSelected 抽象方法"></a>onPageSelected 抽象方法</h4><blockquote>
-<p>This method will be invoked when a new page becomes selected.</p>
-<p>当选择新页面时，将调用此方法。</p>
-</blockquote>
-<pre><code class="java">public void onPageSelected(int position)</code></pre>
-<p><strong>参数</strong></p>
-<blockquote>
-<p>position：选定页面的位置索引</p>
-</blockquote>
-<h1 id="kotlinx-coroutines"><a href="#kotlinx-coroutines" class="headerlink" title="kotlinx.coroutines"></a>kotlinx.coroutines</h1><h2 id="CoroutineScope-接口"><a href="#CoroutineScope-接口" class="headerlink" title="CoroutineScope 接口"></a>CoroutineScope 接口</h2><blockquote>
+<h1 id="kotlinx-coroutines-CoroutineScope-接口"><a href="#kotlinx-coroutines-CoroutineScope-接口" class="headerlink" title="kotlinx.coroutines.CoroutineScope 接口"></a>kotlinx.coroutines.CoroutineScope 接口</h1><blockquote>
 <p>Defines a scope for new coroutines.</p>
 <p>为新的协程定义作用域。</p>
 </blockquote>
 <pre><code class="kotlin">interface CoroutineScope</code></pre>
-<h1 id="androidx-navigation"><a href="#androidx-navigation" class="headerlink" title="androidx.navigation"></a>androidx.navigation</h1><h2 id="NavController-类"><a href="#NavController-类" class="headerlink" title="NavController 类"></a>NavController 类</h2><h4 id="addOnDestinationChangedListener-方法"><a href="#addOnDestinationChangedListener-方法" class="headerlink" title="addOnDestinationChangedListener 方法"></a>addOnDestinationChangedListener 方法</h4><blockquote>
+<h1 id="kotlinx-coroutines-tasks包"><a href="#kotlinx-coroutines-tasks包" class="headerlink" title="kotlinx.coroutines.tasks包"></a>kotlinx.coroutines.tasks包</h1><h4 id="await-方法"><a href="#await-方法" class="headerlink" title="await 方法"></a>await 方法</h4><blockquote>
+<ul>
+<li><p>Awaits the completion of the task without blocking a thread.</p>
+<p>等待任务完成而不阻塞线程。</p>
+</li>
+<li><p>This suspending function is cancellable.</p>
+<p>这个暂停功能是可以取消的。</p>
+</li>
+<li><p>If the Job of the current coroutine is cancelled or completed while this suspending function is waiting, this function stops waiting for the completion stage and immediately resumes with CancellationException.</p>
+<p>如果当前协程的Job在挂起函数等待期间被取消或完成，该函数将停止等待完成阶段，并立即用CancellationException恢复。</p>
+</li>
+<li><p>For bi-directional cancellation, an overload that accepts CancellationTokenSource can be used.</p>
+<p>对于双向取消，可以使用接受CancellationTokenSource的重载。</p>
+</li>
+</ul>
+</blockquote>
+<pre><code class="kotlin">suspend fun &lt;T&gt; Task&lt;T&gt;.await(): T</code></pre>
+<h1 id="androidx-navigation-NavController-类"><a href="#androidx-navigation-NavController-类" class="headerlink" title="androidx.navigation.NavController 类"></a>androidx.navigation.NavController 类</h1><h4 id="addOnDestinationChangedListener-方法"><a href="#addOnDestinationChangedListener-方法" class="headerlink" title="addOnDestinationChangedListener 方法"></a>addOnDestinationChangedListener 方法</h4><blockquote>
 <p>Adds an OnDestinationChangedListener to this controller to receive a callback whenever the currentDestination or its arguments change.</p>
 <p>向控制器添加一个OnDestinationChangedListener，以便在currentDestination或其参数改变时接收回调。</p>
 </blockquote>
@@ -1101,6 +1094,80 @@ public void navigate(@IdRes int resId)</code></pre>
 </li>
 </ul>
 </blockquote>
+<h1 id="androidx-navigation-viewpager2-widget-类"><a href="#androidx-navigation-viewpager2-widget-类" class="headerlink" title="androidx.navigation.viewpager2.widget 类"></a>androidx.navigation.viewpager2.widget 类</h1><blockquote>
+<p>ViewPager2 replaces androidx.viewpager.widget.</p>
+<p>ViewPager2替换androidx.viewpager.widget。</p>
+<p>ViewPager, addressing most of its predecessor’s pain-points, including right-to-left layout support, vertical orientation, modifiable Fragment collections, etc.</p>
+<p>ViewPager，解决了其前辈的大部分痛点，包括从右向左的布局支持，垂直方向，可修改的片段集合等</p>
+</blockquote>
+<h4 id="registerOnPageChangeCallback-方法"><a href="#registerOnPageChangeCallback-方法" class="headerlink" title="registerOnPageChangeCallback 方法"></a>registerOnPageChangeCallback 方法</h4><pre><code class="java">public void registerOnPageChangeCallback(
+    @NonNull ViewPager2.OnPageChangeCallback callback
+)</code></pre>
+<blockquote>
+<p>Add a callback that will be invoked whenever the page changes or is incrementally scrolled.</p>
+<p>添加一个回调，该回调将在页面变动或滚动时调用。</p>
+<p>See OnPageChangeCallback.</p>
+<p>看到OnPageChangeCallback。</p>
+</blockquote>
+<h1 id="androidx-navigation-viewpager2-OnPageChangeCallback-抽象类"><a href="#androidx-navigation-viewpager2-OnPageChangeCallback-抽象类" class="headerlink" title="androidx.navigation.viewpager2.OnPageChangeCallback 抽象类"></a>androidx.navigation.viewpager2.OnPageChangeCallback 抽象类</h1><blockquote>
+<p>Callback interface for responding to changing state of the selected page.</p>
+<p>响应所选页面状态变化的回调接口。</p>
+<p>内部有三个抽象方法</p>
+</blockquote>
+<h4 id="onPageSelected-抽象方法"><a href="#onPageSelected-抽象方法" class="headerlink" title="onPageSelected 抽象方法"></a>onPageSelected 抽象方法</h4><blockquote>
+<p>This method will be invoked when a new page becomes selected.</p>
+<p>当选择新页面时，将调用此方法。</p>
+</blockquote>
+<pre><code class="java">public void onPageSelected(int position)</code></pre>
+<p><strong>参数</strong></p>
+<blockquote>
+<p>position：选定页面的位置索引</p>
+</blockquote>
+<h1 id="androidX-fragment-app-Fragment-类"><a href="#androidX-fragment-app-Fragment-类" class="headerlink" title="androidX.fragment.app.Fragment 类"></a>androidX.fragment.app.Fragment 类</h1><h4 id="getViewLifecycleOwner-方法"><a href="#getViewLifecycleOwner-方法" class="headerlink" title="getViewLifecycleOwner 方法"></a>getViewLifecycleOwner 方法</h4><blockquote>
+<ul>
+<li><p>Get a LifecycleOwner that represents the Fragment’s View lifecycle.</p>
+<p>获取一个代表Fragment视图生命周期的LifecycleOwner。</p>
+</li>
+<li><p>In most cases, this mirrors the lifecycle of the Fragment itself, but in cases of detached Fragments, the lifecycle of the Fragment can be considerably longer than the lifecycle of the View itself.</p>
+<p>在大多数情况下，这反映了Fragment本身的生命周期，但在分离Fragment的情况下，Fragment的生命周期可能比View本身的生命周期长得多。</p>
+</li>
+</ul>
+</blockquote>
+<pre><code class="java">@MainThread
+public @NonNull LifecycleOwner getViewLifecycleOwner()</code></pre>
+<p><strong>返回值</strong></p>
+<blockquote>
+<p>A LifecycleOwner that represents the Fragment’s View lifecycle.</p>
+<p>代表Fragment视图生命周期的LifecycleOwner。</p>
+</blockquote>
+<p><strong>错误</strong></p>
+<blockquote>
+<p>java.lang.IllegalStateException：if the Fragment’s View is null. 如果Fragment的视图为空。</p>
+</blockquote>
+<h1 id="javax-inject-Inject-接口"><a href="#javax-inject-Inject-接口" class="headerlink" title="javax.inject.Inject 接口"></a>javax.inject.Inject 接口</h1><ul>
+<li><p>Identifies injectable constructors, methods, and fields.</p>
+<p>标识可注入的构造函数、方法和字段。</p>
+</li>
+<li><p>May apply to static as well as instance members.</p>
+<p>可以应用于静态成员和实例成员。</p>
+</li>
+<li><p>An injectable member may have any access modifier (private, package-private,protected, public).</p>
+<p>可注入成员可以有任何访问修饰符(private, package-private,protected, public)。</p>
+</li>
+<li><p>Constructors are injected first, followed by fields, and then methods.</p>
+<p>首先注入构造函数，然后是字段，然后是方法。</p>
+</li>
+<li><p>Fields and methods in superclasses are injected before those in subclasses.</p>
+<p>父类中的字段和方法在子类中的字段和方法之前注入。</p>
+</li>
+<li><p>Ordering of injection among fields and among methods in the same class is not specified.</p>
+<p>没有指定同一类中字段之间和方法之间的注入顺序。</p>
+</li>
+</ul>
+<pre><code class="java">@Target({ METHOD, CONSTRUCTOR, FIELD })
+@Retention(RUNTIME)
+@Documented
+public @interface Inject {}</code></pre>
 <h1 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h1><p><a href="">关于媒体浏览器服务(MediaBrowserService)</a></p>
 <p><a href="https://www.apiref.com/android-zh/index.html" target="_blank" rel="noopener">Android开发手册</a></p>
 

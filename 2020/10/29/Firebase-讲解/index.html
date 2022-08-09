@@ -533,6 +533,43 @@
 <h1 id="将-Storage中的数据链接添加到元数据中"><a href="#将-Storage中的数据链接添加到元数据中" class="headerlink" title="将 Storage中的数据链接添加到元数据中"></a>将 Storage中的数据链接添加到元数据中</h1><p><img src="https://raw.githubusercontent.com/TheCara/RepoPicture/master/image/20201104131958.png" alt="点击上传文件"></p>
 <p><img src="https://raw.githubusercontent.com/TheCara/RepoPicture/master/image/2020-11-4-2.gif" alt="选择要添加的元数据连接"></p>
 <p><img src="https://raw.githubusercontent.com/TheCara/RepoPicture/master/image/20201104152013.png" alt="粘贴即可"></p>
+<h1 id="com-google-firebase-firestore-Query类"><a href="#com-google-firebase-firestore-Query类" class="headerlink" title="com.google.firebase.firestore.Query类"></a>com.google.firebase.firestore.Query类</h1><ul>
+<li><p>A Query which you can read or listen to.</p>
+<p>您可以阅读或收听的查询。</p>
+</li>
+<li><p>You can also construct refined Query objects by adding filters and ordering.</p>
+<p>您还可以通过添加过滤器和排序来构造精细的Query对象。</p>
+</li>
+</ul>
+<h4 id="get方法"><a href="#get方法" class="headerlink" title="get方法"></a>get方法</h4><blockquote>
+<p>Executes the query and returns the results as a QuerySnapshot.</p>
+<p>执行查询并以QuerySnapshot的形式返回结果。</p>
+</blockquote>
+<pre><code class="java">public Task&lt;QuerySnapshot&gt; get ()</code></pre>
+<p><strong>返回值</strong></p>
+<blockquote>
+<p>将返回的结果解析为Query</p>
+</blockquote>
+<h1 id="com-google-firebase-firestore-QuerySnapshot类"><a href="#com-google-firebase-firestore-QuerySnapshot类" class="headerlink" title="com.google.firebase.firestore.QuerySnapshot类"></a>com.google.firebase.firestore.QuerySnapshot类</h1><blockquote>
+<ul>
+<li><p>A QuerySnapshot contains the results of a query.</p>
+<p>quersnapshot查询结果。</p>
+</li>
+<li><p>It can contain zero or more DocumentSnapshot objects.</p>
+<p>它可以包含零个或多个DocumentSnapshot对象。</p>
+</li>
+</ul>
+</blockquote>
+<h4 id="toObjects方法"><a href="#toObjects方法" class="headerlink" title="toObjects方法"></a>toObjects方法</h4><blockquote>
+<p>Returns the contents of the documents in the QuerySnapshot, converted to the provided class, as a list.</p>
+<p>以列表的形式返回QuerySnapshot中文档的内容，并转换为提供的类。</p>
+</blockquote>
+<pre><code class="java">public List&lt;T&gt; toObjects (Class&lt;T&gt; clazz)</code></pre>
+<p><strong>参数</strong></p>
+<blockquote>
+<p>The POJO type used to convert the documents in the list.</p>
+<p>用来转换列表中文档的POJO类型。</p>
+</blockquote>
 
             </div>
             <hr/>

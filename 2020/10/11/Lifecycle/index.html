@@ -551,12 +551,51 @@ class MyObserver : LifecycleObserver {
 <p><img src="https://raw.githubusercontent.com/TheCara/RepoPicture/master/image/2020-10-11-1.gif" alt="Log"></p>
 <p>library 26.1.0 及之后的库中，<strong>AppCompatActivity的父类SupportActivity已经默认实现了LifecycleOwner接口，直接通过getLifecycle() 方法获得Lifecycle对象。</strong></p>
 <p>之后通过 <strong>addObserver()</strong> 方法将Lifecycle 跟指定 LifecycleObserver 进行绑定。</p>
-<h1 id="Docs"><a href="#Docs" class="headerlink" title="Docs"></a>Docs</h1><h2 id="androidx-lifecycle-ViewModelProvider-类"><a href="#androidx-lifecycle-ViewModelProvider-类" class="headerlink" title="androidx.lifecycle.ViewModelProvider 类"></a>androidx.lifecycle.ViewModelProvider 类</h2><blockquote>
+<h1 id="Docs"><a href="#Docs" class="headerlink" title="Docs"></a>Docs</h1><h1 id="androidx-lifecycle"><a href="#androidx-lifecycle" class="headerlink" title="androidx.lifecycle"></a>androidx.lifecycle</h1><h2 id="ViewModelProvider-类"><a href="#ViewModelProvider-类" class="headerlink" title="ViewModelProvider 类"></a>ViewModelProvider 类</h2><blockquote>
 <p>An utility class that provides ViewModels for a scope.</p>
 <p>Default ViewModelProvider for an Activity or a Fragment can be obtained by passing it to the constructor: ViewModelProvider(myFragment)</p>
 <p>为作用域提供ViewModels的实用程序类。</p>
 </blockquote>
-<h2 id="androidx-lifecycle-LiveData-类"><a href="#androidx-lifecycle-LiveData-类" class="headerlink" title="androidx.lifecycle.LiveData 类"></a>androidx.lifecycle.LiveData 类</h2><blockquote>
+<h4 id="构造方法"><a href="#构造方法" class="headerlink" title="构造方法"></a>构造方法</h4><h4 id="ViewModelProvider"><a href="#ViewModelProvider" class="headerlink" title="ViewModelProvider"></a>ViewModelProvider</h4><blockquote>
+<ul>
+<li><p>Creates ViewModelProvider.</p>
+<p>创建ViewModelProvider。</p>
+</li>
+<li><p>This will create ViewModels and retain them in a store of the given ViewModelStoreOwner.</p>
+<p>这将创建ViewModels，并将它们保留在给定的ViewModelStoreOwner的存储中。</p>
+</li>
+</ul>
+</blockquote>
+<pre><code class="java">public final ViewModelProvider(@NonNull ViewModelStoreOwner owner)</code></pre>
+<h4 id="get-方法"><a href="#get-方法" class="headerlink" title="get 方法"></a>get 方法</h4><blockquote>
+<ul>
+<li><p>Returns an existing ViewModel or creates a new one in the scope (usually, a fragment or an activity), associated with this ViewModelProvider.</p>
+<p>返回一个现有的ViewModel，或者在范围(通常是片段或活动)中创建一个与这个ViewModelProvider相关联的新ViewModel。</p>
+</li>
+<li><p>The created ViewModel is associated with the given scope and will be retained as long as the scope is alive (e.g. if it is an activity, until it is finished or process is killed).</p>
+<p>创建的ViewModel与给定的作用域相关联，只要作用域还活着，ViewModel就会被保留(例如，如果它是一个活动，直到它完成或进程被终止)。</p>
+</li>
+</ul>
+</blockquote>
+<pre><code class="kotlin">@MainThread
+public @NonNull T &lt;T extends ViewModel&gt; get(@NonNull Class&lt;@NonNull T&gt; modelClass)</code></pre>
+<p><strong>参数</strong></p>
+<blockquote>
+<p>modelClass：The class of the ViewModel to create an instance of it if it is not present.</p>
+<p>ViewModel的类，如果它不存在，可以创建它的实例。</p>
+</blockquote>
+<p><strong>返回值</strong></p>
+<blockquote>
+<p>A ViewModel that is an instance of the given type T.</p>
+<p>一个ViewModel，它是给定类型T的一个实例。</p>
+</blockquote>
+<p><strong>报错</strong></p>
+<blockquote>
+<p>java.lang.IllegalArgumentException：</p>
+<p>if the given modelClass is local or anonymous class.</p>
+<p>如果给定的modelClass是本地或匿名类。</p>
+</blockquote>
+<h2 id="LiveData-类"><a href="#LiveData-类" class="headerlink" title="LiveData 类"></a>LiveData 类</h2><blockquote>
 <p>LiveData is a data holder class that can be observed within a given lifecycle.</p>
 <p>LiveData是一个数据持有者类，可以在给定的生命周期中观察它。</p>
 <p>This means that an Observer can be added in a pair with a LifecycleOwner, and this observer will be notified about modifications of the wrapped data only if the paired LifecycleOwner is in active state.</p>
